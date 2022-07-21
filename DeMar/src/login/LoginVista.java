@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -19,10 +20,13 @@ public class LoginVista extends JFrame {
     private JComboBox<String> cbxTipoUsuario;
     private JButton btnIngresar, btnCerrar;
     private ImageIcon iFondo, iIcono;
-    private LoginControlador loginAcciones;
+    private LoginControlador loginControlador;
+    private LoginControlador principalVista;
+    
 
-public LoginVista(LoginControlador loginAcciones) {
-    this.loginAcciones = loginAcciones;
+public LoginVista(LoginControlador loginControlador) {
+    this.loginControlador = loginControlador;
+    this.principalVista = loginControlador;
     this.agregarImagenes();
     this.crearPanels();
     this.crearLabels();
@@ -151,6 +155,7 @@ public void crearButtons() {
     btnIngresar.setBackground(Color.WHITE);
     btnIngresar.setForeground(Color.DARK_GRAY);
     btnIngresar.setFocusable(false);
+    btnIngresar.addActionListener(principalVista);
     pLogin.add(btnIngresar);
 
     // BOTON CERRAR ----------------------------------------------------------------------
@@ -161,10 +166,11 @@ public void crearButtons() {
     btnCerrar.setForeground(Color.BLACK);
     btnCerrar.setFocusable(false);
     btnCerrar.setBorder(null);
-    btnCerrar.addActionListener(this.loginAcciones);
+    btnCerrar.addActionListener(this.loginControlador);
     pLogin.add(btnCerrar);
 }
 
 public JButton getBtnCerrar() { return this.btnCerrar; }
+public JButton getBtnIngresar() { return this.btnIngresar; }
 
 }
