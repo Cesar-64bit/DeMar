@@ -17,6 +17,7 @@ import javax.swing.JLabel;
 import java.awt.Color;
 
 public class MenuPrincipalVista extends JFrame{
+
     
     private JPanel pFondo, pUsuario;
     private JLabel lblTitulo;
@@ -29,6 +30,9 @@ public class MenuPrincipalVista extends JFrame{
         this.crearBotones();
         
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+     //   setDefaultCloseOperation(EXIT_ON_CLOSE); // Esto sirve para cerrar todo el programa
+
         setSize(1200, 600);
         setLocationRelativeTo(this);
         setLayout(null);
