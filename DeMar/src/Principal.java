@@ -1,7 +1,7 @@
-package DeMar.src;
+package DeMar.DeMar.src;
 
 import javax.swing.SwingUtilities;
-import DeMar.src.login.LoginControlador;
+import DeMar.DeMar.src.login.LoginControlador;
 
 public class Principal {
     public static void main(String[] args) {

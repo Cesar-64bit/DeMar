@@ -1,4 +1,4 @@
-package DeMar.src.login;
+package DeMar.DeMar.src.login;
 
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -43,8 +43,8 @@ public LoginVista(LoginControlador loginControlador) {
   }
 
 public void agregarImagenes() {
-    iFondo = new ImageIcon("DeMar/resources/images/FondoMarLogin.jpg");
-    iIcono = new ImageIcon("DeMar/resources/images/AtunIcono.jpg");
+    iFondo = new ImageIcon("src/DeMar/DeMar/resources/images/FondoMarLogin.jpg");
+    iIcono = new ImageIcon("src/DeMar/DeMar/resources/images/AtunIcono.jpg");
 }
 
 public void crearLabels() {

@@ -1,9 +1,9 @@
-package DeMar.src.login;
+package DeMar.DeMar.src.login;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
-import DeMar.src.menuPrincipal.MenuPrincipalVista;
+import DeMar.DeMar.src.menuPrincipal.MenuPrincipalVista;
 
 public class LoginControlador extends MouseAdapter implements ActionListener {
     private LoginVista loginVista;
