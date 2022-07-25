@@ -39,6 +39,22 @@ public class LoginModelo {
         catch(SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
-        return "cesar";
+        return "Error";
+    }
+
+    public String tipoUsuario(String tipoUsuario) {
+        try {
+            String consulta = "SELECT perfiles.nombre FROM perfiles INNER JOIN usuarios ON perfiles.id = usuarios.idPerfil WHERE usuarios.nombre = '"+tipoUsuario+"';";
+
+            java.sql.Statement declaracion = conectar.con.createStatement();
+            ResultSet resultado = declaracion.executeQuery(consulta);
+
+            resultado.next();
+            return resultado.getString(1);
+        }
+        catch(SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+        return "Error";
     }
 }

@@ -31,7 +31,9 @@ public class LoginControlador extends MouseAdapter implements ActionListener {
                     JOptionPane.showMessageDialog(null, "Bienvenido");
 
                     String nombreUsuario = lgnModelo.nombreEmpleado(loginVista.getTxtNombreUsuario());
-                    MenuPrincipalVista principalVista = new MenuPrincipalVista(nombreUsuario);
+                    String tipoUsuario = lgnModelo.tipoUsuario(loginVista.getTxtNombreUsuario());
+                    
+                    MenuPrincipalVista principalVista = new MenuPrincipalVista(nombreUsuario, tipoUsuario);
                     principalVista.getClass();
                 }
                 else
