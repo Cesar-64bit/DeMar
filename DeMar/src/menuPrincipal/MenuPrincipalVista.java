@@ -8,25 +8,30 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import java.awt.Color;
+import java.awt.Font;
 
 public class MenuPrincipalVista extends JFrame{
-    private JPanel pFondo, pUsuario, pSeparador;
+    private JPanel pFondo, pUsuario;
     private JPanel pSombraArea, pSombraEmpleados, pSombraProveedores,
                    pSombraPedidos, pSombraPagos, pSombraPrestamos,
-                   pSombraRecepcion, pSombraGastos;
+                   pSombraRecepcion, pSombraGastos, pSombraInsumos;
     private JButton btnArea, btnEmpleados, btnProveedores, btnPedidos,
-                   btnPagos, btnPrestamos, btnRecepcion,btnGastos;
-    private ImageIcon imgEmpleados, imgProveedor, imgPedidos, imgPagos,
-                   imgPrestamos, imgRecepcion, imgGastos, imgFotoPerfil;
-    private JLabel lblNombreEmpleado, lblFotoPerfil;
-    private String nombreUsuario;
+                    btnPagos, btnPrestamos, btnRecepcion,btnGastos,
+                    btnInsumo, btnUsuarios, btnPerfiles, btnCerrarSesion;
+    private ImageIcon imgAreas, imgEmpleados, imgProveedor, imgPedidos, imgPagos,
+                      imgPrestamos, imgRecepcion, imgGastos, imgFotoPerfil, imgInsumo;
+    private JLabel lblNombreEmpleado, lblTipoAcceso, lblFotoPerfil;
+    private String nombreUsuario, tipoUsuario;
     
     Color colorContenedor = new Color(255, 255,255);
     Color sombraBotones = new Color(206,212,218);
 
-    public MenuPrincipalVista(String nombreUsuario) {
+    public MenuPrincipalVista(String nombreUsuario, String tipoUsuario) {
         super("Menu Principal");
+
         this.nombreUsuario = nombreUsuario;
+        this.tipoUsuario = tipoUsuario;
+
         this.agregarImagenes();
         this.crearPanels();
         this.crearLabels();
@@ -41,6 +46,7 @@ public class MenuPrincipalVista extends JFrame{
     }
 
     public void agregarImagenes() {
+        imgAreas = new ImageIcon("DeMar/resources/images/areas.png");
         imgEmpleados = new ImageIcon("DeMar/resources/images/empleados.png");
         imgProveedor = new ImageIcon("DeMar/resources/images/proveedores.png");
         imgPedidos = new ImageIcon("DeMar/resources/images/pedidos.png");
@@ -49,6 +55,7 @@ public class MenuPrincipalVista extends JFrame{
         imgRecepcion = new ImageIcon("DeMar/resources/images/recepcion.png");
         imgGastos = new ImageIcon("DeMar/resources/images/gastos.png");
         imgFotoPerfil = new ImageIcon("DeMar/resources/images/perfil3.png");
+        imgInsumo = new ImageIcon("DeMar/resources/images/insumo.png");
     }
 
     public void crearPanels(){
@@ -64,19 +71,10 @@ public class MenuPrincipalVista extends JFrame{
         pUsuario = new JPanel(); //asinar a un atributo un rol
         pUsuario.setSize(250,600);
         pUsuario.setLocation(0, 0);
-        pUsuario.setBackground(Color.WHITE); //pantalla de fondo blanco
+        pUsuario.setBackground(new Color(106,139,170)); //pantalla de fondo blanco
         pUsuario.setLayout(null);
         this.add(pUsuario);    //agregar un panel
         pFondo.add(pUsuario); //agregar un panel sobre otro
-
-        // PANEL SEPARADOR ------------------------------------------------------------------------
-        pSeparador = new JPanel();
-        pSeparador.setSize(3, 600);
-        pSeparador.setLocation(250, 10);
-        pSeparador.setBackground(Color.BLACK);
-        pSeparador.setLayout(null);
-        this.add(pSeparador);
-        pFondo.add(pSeparador);
 
         pSombraArea = new JPanel();
         pSombraArea.setSize(240, 150);
@@ -141,16 +139,34 @@ public class MenuPrincipalVista extends JFrame{
         pSombraGastos.setLayout(null);
         this.add(pSombraGastos);
         pFondo.add(pSombraGastos);
+
+        pSombraInsumos = new JPanel();
+        pSombraInsumos.setSize(240,150);
+        pSombraInsumos.setLocation(880, 380);
+        pSombraInsumos.setBackground(sombraBotones);
+        pSombraInsumos.setLayout(null);
+        this.add(pSombraInsumos);
+        pFondo.add(pSombraInsumos);
     }
     
     public void crearLabels(){
-        //TITULOS ------------------------------------------------------------
+        // NOMBRE EMPLEADO ------------------------------------------------------------
         lblNombreEmpleado = new JLabel(nombreUsuario);
         lblNombreEmpleado.setSize(100,50);
         lblNombreEmpleado.setLocation((pUsuario.getWidth() - lblNombreEmpleado.getWidth()) / 2, 5);
-        lblNombreEmpleado.setForeground(Color.black);
+        lblNombreEmpleado.setForeground(Color.WHITE);
         lblNombreEmpleado.setHorizontalAlignment(SwingConstants.CENTER);
+        lblNombreEmpleado.setFont(new Font("Arial", Font.BOLD, 16));
         pUsuario.add(lblNombreEmpleado);
+
+        // TIPO DE ACCESO
+        lblTipoAcceso = new JLabel(tipoUsuario);
+        lblTipoAcceso.setSize(100, 50);
+        lblTipoAcceso.setLocation((pUsuario.getWidth() - lblTipoAcceso.getWidth()) / 2, 200);
+        lblTipoAcceso.setForeground(Color.WHITE);
+        lblTipoAcceso.setHorizontalAlignment(SwingConstants.CENTER);
+        lblTipoAcceso.setFont(new Font("Arial", Font.BOLD, 14));
+        pUsuario.add(lblTipoAcceso);
 
         // FOTO PERFIL ---------------------------------------------------------
         lblFotoPerfil = new JLabel();
@@ -158,16 +174,17 @@ public class MenuPrincipalVista extends JFrame{
         lblFotoPerfil.setLocation((pUsuario.getWidth() - lblFotoPerfil.getWidth()) / 2,60);
         lblFotoPerfil.setIcon(imgFotoPerfil);
         pUsuario.add(lblFotoPerfil);
-    } 
-    
+    }
+
     public void crearButtons(){
-        btnArea = new JButton ("Areas");
+        btnArea = new JButton();
         btnArea.setSize(220,130);
         btnArea.setLocation((pSombraArea.getWidth() - btnArea.getWidth()) / 2, 10);
         btnArea.setBackground(colorContenedor);
         btnArea.setForeground(Color.BLACK);
         btnArea.setFocusable(false);
         btnArea.setBorder(null);
+        btnArea.setIcon(imgAreas);
         btnArea.setHorizontalAlignment(SwingConstants.CENTER);
         pSombraArea.add(btnArea);
         
@@ -247,6 +264,50 @@ public class MenuPrincipalVista extends JFrame{
         btnGastos.setIcon(imgGastos);
         btnGastos.setHorizontalAlignment(SwingConstants.CENTER);
         pSombraGastos.add(btnGastos);
+
+        btnInsumo = new JButton();
+        btnInsumo.setSize(220, 130);
+        btnInsumo.setLocation((pSombraInsumos.getWidth() - btnInsumo.getWidth()) / 2, 10);
+        btnInsumo.setBackground(colorContenedor);
+        btnInsumo.setForeground(Color.BLACK);
+        btnInsumo.setFocusable(false);
+        btnInsumo.setBorder(null);
+        btnInsumo.setIcon(imgInsumo);
+        btnInsumo.setHorizontalAlignment(SwingConstants.CENTER);
+        pSombraInsumos.add(btnInsumo);
+
+        // BOTON USUARIOS -----------------------------------------------------------------------
+        btnUsuarios = new JButton("Usuarios");
+        btnUsuarios.setSize(150, 50);
+        btnUsuarios.setLocation((pUsuario.getWidth() - btnUsuarios.getWidth()) / 2, 300);
+        btnUsuarios.setBackground(colorContenedor);
+        btnUsuarios.setForeground(Color.BLACK);
+        btnUsuarios.setFocusable(false);
+      //  btnUsuarios.setBorder(null);
+        btnUsuarios.setHorizontalAlignment(SwingConstants.CENTER);
+        pUsuario.add(btnUsuarios);
+
+        // BOTON PERFILES -----------------------------------------------------------------------
+        btnPerfiles = new JButton("Perfiles");
+        btnPerfiles.setSize(150, 50);
+        btnPerfiles.setLocation((pUsuario.getWidth() - btnPerfiles.getWidth()) / 2, 365);
+        btnPerfiles.setBackground(colorContenedor);
+        btnPerfiles.setForeground(Color.BLACK);
+        btnPerfiles.setFocusable(false);
+        //btnPerfiles.setBorder(null);
+        btnPerfiles.setHorizontalAlignment(SwingConstants.CENTER);
+        pUsuario.add(btnPerfiles);
+
+        // BOTON CERRAR SESIÓN
+        btnCerrarSesion = new JButton("Cerrar sesión");
+        btnCerrarSesion.setSize(150, 50);
+        btnCerrarSesion.setLocation((pUsuario.getWidth() - btnCerrarSesion.getWidth()) / 2, 470);
+        btnCerrarSesion.setBackground(colorContenedor);
+        btnCerrarSesion.setForeground(Color.BLACK);
+        btnCerrarSesion.setFocusable(false);
+        //btnPerfiles.setBorder(null);
+        btnCerrarSesion.setHorizontalAlignment(SwingConstants.CENTER);
+        pUsuario.add(btnCerrarSesion);
     }
 
     /*OBTENER EL TEXTO DE LA ETIQUETA*/
