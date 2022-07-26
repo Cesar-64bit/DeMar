@@ -6,6 +6,7 @@ import java.sql.ResultSetMetaData;
 import javax.swing.table.DefaultTableModel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class Modelo {
     protected String ip;
@@ -107,5 +108,20 @@ public class Modelo {
         }
         
         return tabla;
+    }
+    
+    //Metodo general para realizar CONSULTAS DE SELECCIÓN.
+    //Solo es necesario recibir la consulta.
+    public DefaultTableModel consultaSeleccion(String consulta){
+        try{
+            this.establecerConexion();
+            Statement s = conexion.createStatement();
+            ResultSet rs = s.executeQuery(consulta);
+            return modelarTabla(rs);
+        }catch(SQLException e){
+            return null;
+        }finally{
+            this.finalizarConexion();
+        }
     }
 }
