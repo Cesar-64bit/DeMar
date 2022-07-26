@@ -4,18 +4,24 @@ package DeMar.src.menuPrincipal;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+
+import DeMar.src.areas.AreasVista;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import java.awt.Color;
 import java.awt.Font;
 
-public class MenuPrincipalVista extends JFrame{
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class MenuPrincipalVista extends JFrame implements ActionListener {
     private JPanel pFondo, pUsuario;
     private JPanel pSombraArea, pSombraEmpleados, pSombraProveedores,
                    pSombraPedidos, pSombraPagos, pSombraPrestamos,
                    pSombraRecepcion, pSombraGastos, pSombraInsumos;
-    private JButton btnArea, btnEmpleados, btnProveedores, btnPedidos,
+    public JButton btnArea, btnEmpleados, btnProveedores, btnPedidos,
                     btnPagos, btnPrestamos, btnRecepcion,btnGastos,
                     btnInsumo, btnUsuarios, btnPerfiles, btnCerrarSesion;
     private ImageIcon imgAreas, imgEmpleados, imgProveedor, imgPedidos, imgPagos,
@@ -25,7 +31,7 @@ public class MenuPrincipalVista extends JFrame{
     
     Color colorContenedor = new Color(255, 255,255);
     Color sombraBotones = new Color(206,212,218);
-
+    
     public MenuPrincipalVista(String nombreUsuario, String tipoUsuario) {
         super("Menu Principal");
 
@@ -186,6 +192,7 @@ public class MenuPrincipalVista extends JFrame{
         btnArea.setBorder(null);
         btnArea.setIcon(imgAreas);
         btnArea.setHorizontalAlignment(SwingConstants.CENTER);
+        btnArea.addActionListener(obtenerAccion);
         pSombraArea.add(btnArea);
         
         btnEmpleados = new JButton();
@@ -310,6 +317,18 @@ public class MenuPrincipalVista extends JFrame{
         pUsuario.add(btnCerrarSesion);
     }
 
-    /*OBTENER EL TEXTO DE LA ETIQUETA*/
-    public String getLblNombreEmpleado() { return lblNombreEmpleado.getText(); }
+    /* MOSTRAR OTRAS VENTANAS */
+    ActionListener obtenerAccion = new ActionListener() {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if(e.getSource() == btnArea) {
+                AreasVista aVista = new AreasVista();
+                aVista.getClass();
+            }
+        }
+    };
+    
+    @Override
+    public void actionPerformed(ActionEvent e) { }
 }
