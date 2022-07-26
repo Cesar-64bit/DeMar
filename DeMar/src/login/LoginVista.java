@@ -27,6 +27,7 @@ public class LoginVista extends JFrame {
     public LoginVista(LoginControlador loginControlador) {
         this.loginControlador = loginControlador;
         this.principalVista = loginControlador;
+
         this.agregarImagenes();
         this.crearPanels();
         this.crearLabels();
@@ -170,11 +171,9 @@ public class LoginVista extends JFrame {
         pLogin.add(btnCerrar);
     }
 
-    // OBTENER INFORMACIÓN DE BOTONES
+    /* OBTENER EVENTOS */
     public JButton getBtnCerrar() { return this.btnCerrar; }
     public JButton getBtnIngresar() { return this.btnIngresar; }
-
-    // OBTENER INFROMACIÓN DE CAJAS DE TEXTO
     public String getTxtNombreUsuario() { return txtNombreUsuario.getText(); }
     
     public String getTxtClaveUsuario() {
