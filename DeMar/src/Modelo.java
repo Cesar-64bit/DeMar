@@ -96,7 +96,7 @@ public class Modelo {
         //CONSTRUCCIÓN
         //Se le agregan las columnas
         for(int i = 1; i <= columnas; i++){
-            tabla.addColumn(metaData.getCatalogName(i));
+            tabla.addColumn(metaData.getColumnName(i));
         }
         //Se le agregan las filas
         while(resultado.next()){
@@ -106,7 +106,6 @@ public class Modelo {
             }
             tabla.addRow(fila);
         }
-        
         return tabla;
     }
     

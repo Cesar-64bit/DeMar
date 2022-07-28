@@ -172,10 +172,15 @@ public class LoginVista extends JFrame {
     }
 
     /* OBTENER EVENTOS */
-    public JButton getBtnCerrar() { return this.btnCerrar; }
-    public JButton getBtnIngresar() { return this.btnIngresar; }
-    public String getTxtNombreUsuario() { return txtNombreUsuario.getText(); }
-    
+    public JButton getBtnCerrar() {
+        return this.btnCerrar;
+    }
+    public JButton getBtnIngresar() { 
+        return this.btnIngresar;
+    }
+    public String getTxtNombreUsuario() { 
+        return txtNombreUsuario.getText();
+    }
     public String getTxtClaveUsuario() {
         String claveUsuario = new String(txtClaveUsuario.getPassword());
         return claveUsuario;

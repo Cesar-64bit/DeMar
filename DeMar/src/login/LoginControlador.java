@@ -11,7 +11,9 @@ public class LoginControlador extends MouseAdapter implements ActionListener {
     LoginModelo lgnModelo = new LoginModelo();
     private LoginVista loginVista;
 
-    public LoginControlador() { this.loginVista = new LoginVista(this); }
+    public LoginControlador() { 
+        this.loginVista = new LoginVista(this);
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
