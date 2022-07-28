@@ -14,7 +14,7 @@ public class PedidosModelo extends Modelo{
     public PedidosModelo(PedidosModelo pedidosModelo){
         super(pedidosModelo);
     }
-
+    
     //CONSULTAS
     //Seleccionar un pedido con su ID.
     public DefaultTableModel selID(int id){
