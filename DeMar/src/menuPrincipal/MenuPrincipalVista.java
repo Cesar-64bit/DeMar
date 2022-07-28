@@ -1,12 +1,10 @@
 package DeMar.src.menuPrincipal;
+import DeMar.src.areas.AreasControlador;
 
 /*imports para elementos gráficos*/
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-
-import DeMar.src.areas.AreasVista;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
@@ -21,7 +19,7 @@ public class MenuPrincipalVista extends JFrame implements ActionListener {
     private JPanel pSombraArea, pSombraEmpleados, pSombraProveedores,
                    pSombraPedidos, pSombraPagos, pSombraPrestamos,
                    pSombraRecepcion, pSombraGastos, pSombraInsumos;
-    public JButton btnArea, btnEmpleados, btnProveedores, btnPedidos,
+    private JButton btnArea, btnEmpleados, btnProveedores, btnPedidos,
                     btnPagos, btnPrestamos, btnRecepcion,btnGastos,
                     btnInsumo, btnUsuarios, btnPerfiles, btnCerrarSesion;
     private ImageIcon imgAreas, imgEmpleados, imgProveedor, imgPedidos, imgPagos,
@@ -323,7 +321,7 @@ public class MenuPrincipalVista extends JFrame implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             if(e.getSource() == btnArea) {
-                AreasVista aVista = new AreasVista();
+                AreasControlador aVista = new AreasControlador();
                 aVista.getClass();
             }
         }
