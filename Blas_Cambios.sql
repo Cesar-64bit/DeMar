@@ -60,8 +60,108 @@ CHANGE COLUMN `estado` `estado` INT(1) NOT NULL DEFAULT 2 COMMENT '0 : entregado
 
 
 
+-- CESAR_28/07/2022
+-- Procedimiento para MOSTRAR TODAS LAS AREAS
+USE `demar`;
+DROP procedure IF EXISTS `seleccionarAreas`;
+DELIMITER $$
+USE `demar`$$
+CREATE PROCEDURE `seleccionarAreas` ()
+BEGIN
+	SELECT *FROM areas;
+END$$
+DELIMITER ;
+-- ---------------------------------------------
+-- Procedimientos para MOSTRAR UN AREA CON SU ID
+USE `demar`;
+DROP procedure IF EXISTS `buscarUnArea`;
+DELIMITER $$
+USE `demar`$$
+CREATE PROCEDURE `buscarUnArea` (IN idArea VARCHAR(11))
+BEGIN
+	SELECT *FROM areas WHERE id = idArea;
+END$$
+DELIMITER ;
+
+
+
+-- BLAS_28/07/2022
+-- Procedimiento para SELECINAR PEDIDOS SEGUN LA FECHA, EL PROVEEDOR, EL EMPLEADO Y EL ESTADO.
+USE `demar`;
+DROP procedure IF EXISTS `seleccionarPedidosFiltros`;
+DELIMITER $$
+USE `demar`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `seleccionarPedidosFiltros`
+(IN fechaPedidoP DATETIME, IN idProveedorP INT(11), IN idEmpleadoP INT(11), IN estadoP INT(1))
+BEGIN
+	IF(fechaPedidoP!='' and idProveedorP!='' and idEmpleadoP!='')
+    THEN SELECT * FROM demar.pedidos
+    WHERE fecha_pedido=fechaPedidoP and idproveedor=idProveedorP and idempleado=idEmpleadoP and estado=estadoP;
+    ELSEIF(fechaPedidoP!='' and idProveedorP='' and idEmpleadoP='')
+    THEN SELECT * FROM demar.pedidos
+    WHERE fecha_pedido = fechaPedidoP and estado=estadoP;
+    ELSEIF(fechaPedidoP='' and idProveedorP!='' and idEmpleadoP='')
+    THEN SELECT * FROM demar.pedidos WHERE idproveedor = idProveedorP;
+    ELSEIF(fechaPedidoP='' and idProveedorP='' and idEmpleadoP!='')
+    THEN SELECT * FROM demar.pedidos
+    WHERE idempleado = idEmpleadoP and estado=estadoP;
+    ELSEIF(fechaPedidoP!='' and idProveedorP!='' and idEmpleadoP='')
+    THEN SELECT * FROM demar.pedidos
+    WHERE fecha_pedido=fechaPedidoP and idproveedor=idProveedorP and estado=estadoP;
+    ELSEIF(fechaPedidoP!='' and idProveedorP='' and idEmpleadoP!='')
+    THEN SELECT * FROM demar.pedidos
+    WHERE fecha_pedido=fechaPedidoP and idempleado=idEmpleadoP and estado=estadoP;
+    ELSEIF(fechaPedidoP='' and idProveedorP!='' and idEmpleadoP!='')
+    THEN SELECT * FROM demar.pedidos
+    WHERE idproveedor=idProveedorP and idempleado=idEmpleadoP and estado=estadoP;
+    ELSE SELECT * FROM demar.pedidos WHERE estado=estadoP;
+    END IF;
+END$$
+DELIMITER ;
+-- --------------------------------------------------------------------------------
+-- Eliminación del procedimiento almacenado seleccionarPedidosPen (Quedo obsoleto).
+USE `demar`;
+DROP procedure IF EXISTS `seleccionarPedidosPen`;
+-- ----------------------------------------------------------------
+-- Procedimiento almacenado para SELECCIONAR LOS DETALLES_PEDIDOS DE UN PEDIDO
+USE `demar`;
+DROP procedure IF EXISTS `seleccionarDetallesPedidos`;
+DELIMITER $$
+USE `demar`$$
+CREATE PROCEDURE `seleccionarDetallesPedidos` (IN idPedido INT(11))
+BEGIN
+	SELECT * FROM demar.detalles_pedidos
+    WHERE pedido = idPedido;
+END$$
+DELIMITER ;
+-- -----------------------------
+-- Modificación a pedidos.estado
+ALTER TABLE `demar`.`pedidos` 
+CHANGE COLUMN `estado` `estado` INT(1) NOT NULL DEFAULT 3 COMMENT '0 : entregado\n1 : en proceso\n2: pendiente\n3: en captura' ;
+-- ------------------------------------------------------
+-- Procedimiento almacenado para INSERTAR UN NUEVO PEDIDO
+USE `demar`;
+DROP procedure IF EXISTS `demar`.`insertarPedido`;
+DELIMITER $$
+USE `demar`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertarPedido`(IN idProveedorP INT(11), IN idEmpleadoP INT(11))
+BEGIN
+	SET @pendiente = (SELECT id FROM demar.pedidos WHERE estado = '3');
+    IF(@pendiente = null)
+    THEN INSERT INTO `demar`.`pedidos` (`fecha_pedido`, `idproveedor`, `idempleado`) VALUES (now(), @pendiente, idEmpleadoP);
+    END IF;
+END$$
+DELIMITER ;
+;
+-- 
+-- 
+
+
+
 -- PRUEBAS DE LOS PROCESOS ALMACENADOS --
 call demar.buscarUnPedido('1');
 call demar.seleccionarPedidos();
 call demar.seleccionarPedidosPen('0');
 call demar.seleccionarPedidosPen('1');
+call demar.seleccionarPedidosFiltros('', '4', '', '1');
+call demar.insertarPedido('3', '1');

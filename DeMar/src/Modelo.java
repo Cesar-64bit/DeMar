@@ -111,7 +111,7 @@ public class Modelo {
     
     //Metodo general para realizar CONSULTAS DE SELECCIÓN.
     //Solo es necesario recibir la consulta.
-    public DefaultTableModel consultaSeleccion(String consulta){
+    protected DefaultTableModel consultaSeleccion(String consulta){
         try{
             this.establecerConexion();
             Statement s = conexion.createStatement();
@@ -119,6 +119,21 @@ public class Modelo {
             return modelarTabla(rs);
         }catch(SQLException e){
             return null;
+        }finally{
+            this.finalizarConexion();
+        }
+    }
+    
+    //Metodo general para realizar CONSULTAS DE PERSISTENCIA
+    //Solo es necesario recibir la consulta.
+    protected boolean consultaPersistencia(String consulta){
+        try{
+            this.establecerConexion();
+            Statement s = conexion.createStatement();
+            s.execute(consulta);
+            return true;
+        }catch(SQLException e){
+            return false;
         }finally{
             this.finalizarConexion();
         }
