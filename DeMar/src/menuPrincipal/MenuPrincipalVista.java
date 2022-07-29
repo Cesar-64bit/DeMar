@@ -315,19 +315,4 @@ public class MenuPrincipalVista extends JFrame {
     public JButton getBtnAreas() {
         return btnArea;
     }
-
-    /* MOSTRAR OTRAS VENTANAS */
-  /*   ActionListener obtenerAccion = new ActionListener() {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            if(e.getSource() == btnArea) {
-                AreasControlador aVista = new AreasControlador();
-                aVista.getClass();
-            }
-        }
-    };
-    
-    @Override
-    public void actionPerformed(ActionEvent e) { }*/
 }
