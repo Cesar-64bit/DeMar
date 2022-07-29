@@ -14,11 +14,7 @@ public class AreasModelo extends Modelo {
     public AreasModelo(AreasModelo areasModelo) {
         super(areasModelo);
     }
-
-    // AGREGAR
-    // Agregar una nueva áreas
-    /* PENDIENTE */
-
+    
     // CONSULTAS
     // Seleccionar todad las áreas son excepciones
     public DefaultTableModel selTodos() {
