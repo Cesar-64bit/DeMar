@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import javax.swing.JOptionPane;
 
-import DeMar.src.menuPrincipal.MenuPrincipalVista;
+import DeMar.src.menuPrincipal.MenuPrincipalControlador;
 
 public class LoginControlador extends MouseAdapter implements ActionListener {
     LoginModelo lgnModelo = new LoginModelo();
@@ -25,18 +25,14 @@ public class LoginControlador extends MouseAdapter implements ActionListener {
             if(lgnModelo.conectar.establecerConexion()) {
 
                 // VALIDA EL LOGIN
-                if(lgnModelo.validadLogin (
-                    loginVista.getTxtNombreUsuario(),
-                    loginVista.getTxtClaveUsuario(),
-                    loginVista.getCbxTipoUsuario())) {
-
+                if(lgnModelo.validadLogin (loginVista.getTxtNombreUsuario(), loginVista.getTxtClaveUsuario(), loginVista.getCbxTipoUsuario())) {
                     JOptionPane.showMessageDialog(null, "Bienvenido");
 
                     String nombreUsuario = lgnModelo.nombreEmpleado(loginVista.getTxtNombreUsuario());
                     String tipoUsuario = lgnModelo.tipoUsuario(loginVista.getTxtNombreUsuario());
                     
-                    MenuPrincipalVista principalVista = new MenuPrincipalVista(nombreUsuario, tipoUsuario);
-                    principalVista.getClass();
+                    MenuPrincipalControlador principalControlador = new MenuPrincipalControlador(nombreUsuario, tipoUsuario);
+                    principalControlador.getClass();
                 }
                 else
                     JOptionPane.showMessageDialog(null, "Datos inválidos");
