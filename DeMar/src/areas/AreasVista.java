@@ -5,8 +5,10 @@ import java.awt.Color;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import java.awt.Font;
+
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -14,17 +16,19 @@ import javax.swing.SwingConstants;
 
 public class AreasVista extends JFrame {
     // VARIABLES PARA OBJETOS GRÁFICOS
-    private JPanel pFondo, pContenedor, pSeparador, pNombre, pInsumoEntrada,
+    protected JPanel pFondo, pContenedor, pSeparador, pNombre, pInsumoEntrada,
                     pCantidadEmpleados, pSueldoBase, pHoraEntrada, pHoraSalida,
                     pBuscar;
-    private JLabel lblNombre, lblInsumoEntrada, lblCantidaEmpleados,
+    protected JLabel lblNombre, lblInsumoEntrada, lblCantidaEmpleados,
                     lblSueldoBase, lblHoraEntrada, lblHoraSalida;
-    private JTextField txtNombre, txtInsumoEntrada, txtCantidadEmpleados,
+    protected JTextField txtNombre, txtInsumoEntrada, txtCantidadEmpleados,
                         txtSueldoBase, txtHoraEntrada, txtHoraSalida,
                         txtBuscar;
-    private JButton btnBuscar, btnAgregar, btnModificar, btnEliminar, btnLimpiar;
+    protected JButton btnBuscar, btnAgregar, btnModificar, btnEliminar, btnLimpiar;
+    protected AreasControlador aControlador;
+    private String auxNombre;
 
-    private AreasControlador aControlador;
+    public JTable obtenerTabla;
 
     /* Constructor */
     public AreasVista(AreasControlador aControlador) {
@@ -43,8 +47,10 @@ public class AreasVista extends JFrame {
         setVisible(true);
     }
 
-
     public void diseñarJTable(JTable tabla, JScrollPane scroll) {
+        obtenerTabla = tabla;
+        obtenerTabla.addMouseListener(aControlador);
+
         tabla.setBounds(400,100,600,400);
         scroll.setBounds(400,100,600,400);
         pFondo.add(scroll);
@@ -293,6 +299,22 @@ public class AreasVista extends JFrame {
         pContenedor.add(btnLimpiar);
     }
 
+    public void confirmarRegistro(boolean registro) {
+        if(registro == true)
+            JOptionPane.showMessageDialog(null, "Se agregó correctamente");
+        else
+            JOptionPane.showMessageDialog(null, "Ocurrió un error");
+    }
+
+    public int confirmarAccion(String boton) {
+        int respuesta = JOptionPane.showConfirmDialog(null, "¿Desea "+boton+"?", "Alerta", JOptionPane.YES_NO_OPTION);
+        return respuesta;
+    }
+
+    public JTable getTabla() {
+        return obtenerTabla;
+    }
+
     /* OBTENER EVENTOS DE BOTONES */
     public JButton getBtnBuscar() { 
         return btnBuscar;
@@ -305,17 +327,77 @@ public class AreasVista extends JFrame {
     public JButton getBtnModificar() {
         return btnModificar;
     }
-
+    
     public JButton getBtnEliminar() {
         return btnEliminar;
     }
 
-    public JButton getLimpiar() {
+    public JButton getBtnLimpiar() {
         return btnLimpiar;
     }
 
     /* OBTENER CONTENIDO DE LAS CAJAS DE TEXTO */
     public int getTxtBuscar() {
         return Integer.parseInt(txtBuscar.getText());
+    }
+
+    public String getTxtNombre() {
+        return txtNombre.getText();
+    }
+    
+    public String getTxtInsumo() {
+        return txtInsumoEntrada.getText();
+    }
+
+    public int getTxtEmpleados() {
+        return Integer.parseInt(txtCantidadEmpleados.getText());
+    }
+
+    public float getTxtSueldo() {
+        return Float.parseFloat(txtSueldoBase.getText());
+    }
+
+    public String getTxtEntrada() {
+        return txtHoraEntrada.getText();
+    }
+
+    public String getTxtSalida() {
+        return txtHoraSalida.getText();
+    }
+
+    public void setTxtNombre(JTable jtabla, int filas) {
+        txtNombre.setText(String.valueOf(jtabla.getValueAt(filas, 1)));
+    }
+    public void setTxtInsumo(JTable jtabla, int filas) {
+        txtInsumoEntrada.setText(String.valueOf(jtabla.getValueAt(filas, 2)));
+    }
+    public void setTxtEmpleados(JTable jtabla, int filas) {
+        txtCantidadEmpleados.setText(String.valueOf(jtabla.getValueAt(filas, 3)));
+    }
+    public void setTxtSueldo(JTable jtabla, int filas) {
+        txtSueldoBase.setText(String.valueOf(jtabla.getValueAt(filas, 4)));
+    }
+    public void setTxtEntrada(JTable jtabla, int filas) {
+        txtHoraEntrada.setText(String.valueOf(jtabla.getValueAt(filas, 5)));
+    }
+    public void setTxtSalida(JTable jtabla, int filas) {
+        txtHoraSalida.setText(String.valueOf(jtabla.getValueAt(filas, 6)));
+    }
+
+    public String getAuxNombre() {
+        return this.auxNombre;
+    }
+    public void setAuxNombre(String auxNombre) {
+        this.auxNombre = auxNombre;
+    }
+
+    /* ESTABLECER CONTENIDO EN LAS CAJAS DE TEXTO*/
+    public void limpiar() {
+        txtNombre.setText("");
+        txtInsumoEntrada.setText("");
+        txtCantidadEmpleados.setText("");
+        txtSueldoBase.setText("");
+        txtHoraEntrada.setText("");
+        txtHoraSalida.setText("");
     }
 }
