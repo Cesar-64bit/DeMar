@@ -1,5 +1,4 @@
 package DeMar.src.menuPrincipal;
-import DeMar.src.areas.AreasControlador;
 
 /*imports para elementos gráficos*/
 import javax.swing.JFrame;
@@ -11,10 +10,7 @@ import javax.swing.ImageIcon;
 import java.awt.Color;
 import java.awt.Font;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-public class MenuPrincipalVista extends JFrame implements ActionListener {
+public class MenuPrincipalVista extends JFrame {
     private JPanel pFondo, pUsuario;
     private JPanel pSombraArea, pSombraEmpleados, pSombraProveedores,
                    pSombraPedidos, pSombraPagos, pSombraPrestamos,
@@ -26,22 +22,23 @@ public class MenuPrincipalVista extends JFrame implements ActionListener {
                       imgPrestamos, imgRecepcion, imgGastos, imgFotoPerfil, imgInsumo;
     private JLabel lblNombreEmpleado, lblTipoAcceso, lblFotoPerfil;
     private String nombreUsuario, tipoUsuario;
+
+    private MenuPrincipalControlador mnControlador;
     
     Color colorContenedor = new Color(255, 255,255);
     Color sombraBotones = new Color(206,212,218);
     
-    public MenuPrincipalVista(String nombreUsuario, String tipoUsuario) {
+    public MenuPrincipalVista(String nombreUsuario, String tipoUsuario, MenuPrincipalControlador mnControlador) {
         super("Menu Principal");
 
         this.nombreUsuario = nombreUsuario;
         this.tipoUsuario = tipoUsuario;
+        this.mnControlador = mnControlador;
 
         this.agregarImagenes();
         this.crearPanels();
         this.crearLabels();
         this.crearButtons();
-        
-     //   setDefaultCloseOperation(EXIT_ON_CLOSE); // Esto sirve para cerrar todo el programa
 
         setSize(1200, 600);
         setLocationRelativeTo(this);
@@ -190,7 +187,7 @@ public class MenuPrincipalVista extends JFrame implements ActionListener {
         btnArea.setBorder(null);
         btnArea.setIcon(imgAreas);
         btnArea.setHorizontalAlignment(SwingConstants.CENTER);
-        btnArea.addActionListener(obtenerAccion);
+        btnArea.addActionListener(mnControlador);
         pSombraArea.add(btnArea);
         
         btnEmpleados = new JButton();
@@ -315,18 +312,7 @@ public class MenuPrincipalVista extends JFrame implements ActionListener {
         pUsuario.add(btnCerrarSesion);
     }
 
-    /* MOSTRAR OTRAS VENTANAS */
-    ActionListener obtenerAccion = new ActionListener() {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            if(e.getSource() == btnArea) {
-                AreasControlador aVista = new AreasControlador();
-                aVista.getClass();
-            }
-        }
-    };
-    
-    @Override
-    public void actionPerformed(ActionEvent e) { }
+    public JButton getBtnAreas() {
+        return btnArea;
+    }
 }
