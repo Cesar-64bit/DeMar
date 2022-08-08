@@ -8,7 +8,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import java.awt.Font;
-
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -25,17 +24,16 @@ public class AreasVista extends JFrame {
                         txtSueldoBase, txtHoraEntrada, txtHoraSalida,
                         txtBuscar;
     protected JButton btnBuscar, btnAgregar, btnModificar, btnEliminar, btnLimpiar;
-    protected AreasControlador aControlador;
-    private String auxNombre;
+    protected String auxNombre;
+    protected JTable obtenerTabla;
 
-    public JTable obtenerTabla;
+    protected AreasControlador aControlador;
 
     /* Constructor */
     public AreasVista(AreasControlador aControlador) {
         super("Areas");
 
         this.aControlador = aControlador;
-
         this.crearPanels();
         this.crearLabels();
         this.crearTextField();
@@ -298,6 +296,15 @@ public class AreasVista extends JFrame {
         btnLimpiar.addActionListener(aControlador);
         pContenedor.add(btnLimpiar);
     }
+    
+    public void limpiar() {
+        txtNombre.setText("");
+        txtInsumoEntrada.setText("");
+        txtCantidadEmpleados.setText("");
+        txtSueldoBase.setText("");
+        txtHoraEntrada.setText("");
+        txtHoraSalida.setText("");
+    }
 
     public void confirmarRegistro(boolean registro) {
         if(registro == true)
@@ -389,15 +396,5 @@ public class AreasVista extends JFrame {
     }
     public void setAuxNombre(String auxNombre) {
         this.auxNombre = auxNombre;
-    }
-
-    /* ESTABLECER CONTENIDO EN LAS CAJAS DE TEXTO*/
-    public void limpiar() {
-        txtNombre.setText("");
-        txtInsumoEntrada.setText("");
-        txtCantidadEmpleados.setText("");
-        txtSueldoBase.setText("");
-        txtHoraEntrada.setText("");
-        txtHoraSalida.setText("");
     }
 }
