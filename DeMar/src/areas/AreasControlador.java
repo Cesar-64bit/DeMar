@@ -13,7 +13,7 @@ public class AreasControlador implements ActionListener, MouseListener {
     JScrollPane scroll = new JScrollPane();
     JTable tabla = new JTable();
 
-    private AreasVista aVista;
+    protected AreasVista aVista;
 
 
     public AreasControlador() {

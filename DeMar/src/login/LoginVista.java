@@ -27,7 +27,6 @@ public class LoginVista extends JFrame {
     public LoginVista(LoginControlador loginControlador) {
         this.loginControlador = loginControlador;
         this.principalVista = loginControlador;
-
         this.agregarImagenes();
         this.crearPanels();
         this.crearLabels();

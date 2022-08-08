@@ -17,7 +17,7 @@ public class AreasModelo extends Modelo {
     }
 
     // CONSULTAS
-    // Seleccionar todad las áreas son excepciones
+    // Seleccionar todas las áreas sin excepciones
     public DefaultTableModel selTodos() {
         String consulta = "CALL seleccionarAreas();";
         return consultaSeleccion(consulta);
@@ -31,13 +31,13 @@ public class AreasModelo extends Modelo {
 
     // Agregar una nueva área
     public boolean registrar(String nombre, String insumo, int cEmpleados, float sBase, String hEntrada, String hSalida) {
-        String consulta = "CALL agregarArea('"+nombre+"', '"+insumo+"','"+cEmpleados+"','"+sBase+"','"+hEntrada+"','"+hSalida+"')";
+        String consulta = "CALL agregarArea('"+nombre+"', '"+insumo+"','"+cEmpleados+"','"+sBase+"','"+hEntrada+"','"+hSalida+"');";
         return consultaPersistencia(consulta);
     }
 
     // Modificar áreas
     public boolean modificar(String nombre, String insumo, int cEmpleados, float sBase, String hEntrada, String hSalida, String auxNombre) {
-        String consulta = "CALL modificarAreas('"+nombre+"','"+insumo+"','"+cEmpleados+"','"+sBase+"','"+hEntrada+"','"+hSalida+"', '"+auxNombre+"')";
+        String consulta = "CALL modificarAreas('"+nombre+"','"+insumo+"','"+cEmpleados+"','"+sBase+"','"+hEntrada+"','"+hSalida+"', '"+auxNombre+"');";
         return consultaPersistencia(consulta);
     }
 
