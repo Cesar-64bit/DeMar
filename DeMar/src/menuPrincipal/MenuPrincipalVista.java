@@ -199,6 +199,7 @@ public class MenuPrincipalVista extends JFrame {
         btnEmpleados.setBorder(null);
         btnEmpleados.setIcon(imgEmpleados);
         btnEmpleados.setHorizontalAlignment(SwingConstants.CENTER);
+        btnEmpleados.addActionListener(mnControlador);
         pSombraEmpleados.add(btnEmpleados);
         
         btnProveedores = new JButton();
@@ -314,5 +315,9 @@ public class MenuPrincipalVista extends JFrame {
 
     public JButton getBtnAreas() {
         return btnArea;
+    }
+
+    public JButton getBtnEmpleados() {
+        return btnEmpleados;
     }
 }

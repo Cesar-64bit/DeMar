@@ -3,6 +3,7 @@ package DeMar.src;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSetMetaData;
+
 import javax.swing.table.DefaultTableModel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -108,15 +109,24 @@ public class Modelo {
         }
         return tabla;
     }
+
+    // Obtener el ResultSet
+    public ResultSet obteneResultSet(String consulta) {
+        try{
+            Statement s = conexion.createStatement();
+            ResultSet rs = s.executeQuery(consulta);
+            return rs;
+        }catch(SQLException e){
+            return null;
+        }
+    }
     
     //Metodo general para realizar CONSULTAS DE SELECCIÓN.
     //Solo es necesario recibir la consulta.
     protected DefaultTableModel consultaSeleccion(String consulta){
         try{
             this.establecerConexion();
-            Statement s = conexion.createStatement();
-            ResultSet rs = s.executeQuery(consulta);
-            return modelarTabla(rs);
+            return modelarTabla(obteneResultSet(consulta));
         }catch(SQLException e){
             return null;
         }finally{

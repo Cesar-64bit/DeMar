@@ -30,6 +30,24 @@ UPDATE areas SET nombre = nArea, insumo_entrada = insumo, cantidad_empleados = c
 END$$
 DELIMITER ;
 
+
+--- Procedimiento para seleccionar todos los empleados con estado = 1
+CREATE PROCEDURE seleccionarEmpleados() 
+SELECT *FROM empleados WHERE estado = 1;
+
+--- Procedimiento para filtrar las areas y agregarlas al JComboBox
+CREATE PROCEDURE filtrarAreas()
+SELECT nombre FROM areas;
+
+
+--- Procedimiento para agregar empleados
+CREATE PROCEDURE agregarEmpleado(IN nombre VARCHAR(50), IN telefono VARCHAR(15), IN direccion VARCHAR(50), IN dias VARCHAR(11), IN fechaContrato VARCHAR(10), IN area VARCHAR(10))
+INSERT INTO empleados(nombre, telefono, direccion, dias_laborados, fecha_contrato, idareas, estado)
+VALUES (nombre, telefono, direccion, dias, fechaContrato, area, 1);
+
+-- Procedimiento para optener el ID de una Area
+CREATE PROCEDURE obtenerIDArea(IN nombreArea VARCHAR(30)) SELECT id FROM areas WHERE nombre=nombreArea;
+
 --------------------------------------------------------
 
 --- PRUEBAS
@@ -49,3 +67,4 @@ CHANGE COLUMN `hora_entrada` `hora_entrada` TIME NULL DEFAULT NULL ;
 
 ALTER TABLE `demar`.`areas` 
 CHANGE COLUMN `hora_salida` `hora_salida` TIME NULL DEFAULT NULL ;
+
