@@ -24,7 +24,7 @@ public class EmpleadosControlador implements ActionListener, MouseListener {
 
     /* ESTE MÉTODO MUESTRA LOS VALORES ACTUALES Y SE CARGAN AL ABRIR LA VENTA */
     public void mostrarDatosIniciales() {
-        tabla.setModel(modEmpleados.selTodos());
+        tabla.setModel(modEmpleados.selecEmpleadosActivos());
         scroll.setViewportView(tabla);
 
         this.eVista.diseñarJTable(tabla, scroll);
@@ -45,19 +45,19 @@ public class EmpleadosControlador implements ActionListener, MouseListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == eVista.getBtnAgregar()) {
-            if(modEmpleados.registrar(
-                                    eVista.getTxtNombre(), eVista.getTxtTelefono(), 
-                                    eVista.getTxtDireccion(), eVista.getTxtDiasLaborador(), 
-                                    eVista.getTxtFechaContrato(), obtenerAreaID(eVista.getTxtAreas())) == true) {
-            }
+            boolean registro = modEmpleados.registrar(
+                                                eVista.getTxtNombre(), eVista.getTxtTelefono(), 
+                                                eVista.getTxtDireccion(), eVista.getTxtDiasLaborador(), 
+                                                eVista.getTxtFechaContrato(), obtenerAreaID(eVista.getTxtAreas()));
+            eVista.confirmarRegistro(registro);
         }
-
         if(e.getSource() == eVista.getBtnModificar()) {
             // Pendiente
         }
 
         if(e.getSource() == eVista.getBtnEliminar()) {
-            // Pendiente
+            if(eVista.confirmarAccion(eVista.getBtnEliminar().getText()) == 0)
+                modEmpleados.eliminar(eVista.getTxtNumeroEmpleado());
         }
 
         if(e.getSource() == eVista.getBtnLimpiar()) {

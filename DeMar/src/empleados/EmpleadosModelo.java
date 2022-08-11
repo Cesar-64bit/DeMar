@@ -17,9 +17,9 @@ public class EmpleadosModelo extends Modelo {
     }
 
     // CONSULTAS
-    // Seleccionar todos los empleados sin excepción
-    public DefaultTableModel selTodos() {
-        String consulta = "CALL seleccionarEmpleados();";
+    // Seleccionar todos los empleados activos estado = 1
+    public DefaultTableModel selecEmpleadosActivos() {
+        String consulta = "CALL selecEmpleadosActivos();";
         return consultaSeleccion(consulta);
     }
 
@@ -38,6 +38,12 @@ public class EmpleadosModelo extends Modelo {
     // Agregar nuevos empleados
     public boolean registrar(String nombre, String telefono, String direccion, Float dias, String fechaContrato, int idAreas) {
         String consulta = "CALL agregarEmpleado('"+nombre+"', '"+telefono+"', '"+direccion+"', '"+dias+"', '"+fechaContrato+"', '"+idAreas+"');";
+        return consultaPersistencia(consulta);
+    }
+
+    // Eliminación lógica de un empleado
+    public boolean eliminar(String id) {
+        String consulta = "CALL eliminarEmpleado('"+id+"')";
         return consultaPersistencia(consulta);
     }
 }
