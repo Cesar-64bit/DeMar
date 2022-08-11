@@ -12,6 +12,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.awt.event.ActionListener;
 
@@ -323,6 +325,10 @@ public class EmpleadosVista extends JFrame {
     }
 
     /* OBTENER CAJAS DE TEXTO */
+    public String getTxtNumeroEmpleado() {
+        return txtNumeroEmpleado.getText();
+    }
+
     public String getTxtNombre() {
         return txtNombre.getText();
     }
@@ -382,5 +388,18 @@ public class EmpleadosVista extends JFrame {
 
         for(int indice = 0; indice < filas; indice++)
             txtAreas.addItem(areas.getValueAt(indice, 0).toString());
+    }
+    
+    /* MENSAJES */
+    public int confirmarAccion(String boton) {
+        int respuesta = JOptionPane.showConfirmDialog(null, "¿Desea "+boton+"?", "Alerta", JOptionPane.YES_NO_OPTION);
+        return respuesta;
+    }
+
+    public void confirmarRegistro(boolean registro) {
+        if(registro == true)
+            JOptionPane.showMessageDialog(null, "Se agregó correctamente");
+        else
+            JOptionPane.showMessageDialog(null, "Ocurrió un error");
     }
 }

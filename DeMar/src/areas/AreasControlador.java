@@ -52,12 +52,12 @@ public class AreasControlador implements ActionListener, MouseListener {
         }
         if(e.getSource() == aVista.getBtnModificar()) {
             if(aVista.confirmarAccion(aVista.getBtnModificar().getText()) == 0) {
-                boolean registro = modAreas.modificar(
+                boolean modificar = modAreas.modificar(
                                                     aVista.getTxtNombre(), aVista.getTxtInsumo(),
                                                     aVista.getTxtEmpleados(), aVista.getTxtSueldo(), 
                                                     aVista.getTxtEntrada(), aVista.getTxtSalida(),
                                                     aVista.getAuxNombre());
-                aVista.confirmarRegistro(registro);
+                aVista.confirmarRegistro(modificar);
             }
         }
         if(e.getSource() == aVista.getBtnEliminar()) {

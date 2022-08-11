@@ -211,6 +211,7 @@ public class MenuPrincipalVista extends JFrame {
         btnProveedores.setBorder(null);
         btnProveedores.setIcon(imgProveedor);
         btnProveedores.setHorizontalAlignment(SwingConstants.CENTER);
+        btnProveedores.addActionListener(mnControlador);
         pSombraProveedores.add (btnProveedores);
     
         btnPedidos = new JButton();
@@ -222,6 +223,7 @@ public class MenuPrincipalVista extends JFrame {
         btnPedidos.setBorder(null);
         btnPedidos.setIcon(imgPedidos);
         btnPedidos.setHorizontalAlignment(SwingConstants.CENTER);
+        btnPedidos.addActionListener(mnControlador);
         pSombraPedidos.add(btnPedidos);
         
         btnPagos = new JButton();
@@ -233,6 +235,7 @@ public class MenuPrincipalVista extends JFrame {
         btnPagos.setBorder(null);
         btnPagos.setIcon(imgPagos);
         btnPagos.setHorizontalAlignment(SwingConstants.CENTER);
+        btnPagos.addActionListener(mnControlador);
         pSombraPagos.add(btnPagos);
         
         btnPrestamos = new JButton();
@@ -244,6 +247,7 @@ public class MenuPrincipalVista extends JFrame {
         btnPrestamos.setBorder(null);
         btnPrestamos.setIcon(imgPrestamos);
         btnPrestamos.setHorizontalAlignment(SwingConstants.CENTER);
+        btnPrestamos.addActionListener(mnControlador);
         pSombraPrestamos.add(btnPrestamos);
         
         btnRecepcion = new JButton();
@@ -255,6 +259,7 @@ public class MenuPrincipalVista extends JFrame {
         btnRecepcion.setBorder(null);
         btnRecepcion.setIcon(imgRecepcion);
         btnRecepcion.setHorizontalAlignment(SwingConstants.CENTER);
+        btnRecepcion.addActionListener(mnControlador);
         pSombraRecepcion.add(btnRecepcion);
         
         btnGastos = new JButton();
@@ -266,6 +271,7 @@ public class MenuPrincipalVista extends JFrame {
         btnGastos.setBorder(null);
         btnGastos.setIcon(imgGastos);
         btnGastos.setHorizontalAlignment(SwingConstants.CENTER);
+        btnGastos.addActionListener(mnControlador);
         pSombraGastos.add(btnGastos);
 
         btnInsumo = new JButton();
@@ -277,6 +283,7 @@ public class MenuPrincipalVista extends JFrame {
         btnInsumo.setBorder(null);
         btnInsumo.setIcon(imgInsumo);
         btnInsumo.setHorizontalAlignment(SwingConstants.CENTER);
+        btnInsumo.addActionListener(mnControlador);
         pSombraInsumos.add(btnInsumo);
 
         // BOTON USUARIOS -----------------------------------------------------------------------
@@ -319,5 +326,33 @@ public class MenuPrincipalVista extends JFrame {
 
     public JButton getBtnEmpleados() {
         return btnEmpleados;
+    }
+
+    public JButton getBtnProveedores() {
+        return btnProveedores;
+    }
+
+    public JButton getBtnPedidos() {
+        return btnPedidos;
+    }
+
+    public JButton getBtnPagos() {
+        return btnPagos;
+    }
+
+    public JButton getBtnPrestamos() {
+        return btnPrestamos;
+    }
+
+    public JButton getBtnRecepcion() {
+        return btnRecepcion;
+    }
+
+    public JButton getBtnGastos() {
+        return btnGastos;
+    }
+
+    public JButton getBtnInsumos() {
+        return btnInsumo;
     }
 }

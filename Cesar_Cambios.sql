@@ -31,8 +31,10 @@ END$$
 DELIMITER ;
 
 
+-- CESAR_08/08/2022
+
 --- Procedimiento para seleccionar todos los empleados con estado = 1
-CREATE PROCEDURE seleccionarEmpleados() 
+CREATE PROCEDURE selecEmpleadoActivos() 
 SELECT *FROM empleados WHERE estado = 1;
 
 --- Procedimiento para filtrar las areas y agregarlas al JComboBox
@@ -47,6 +49,25 @@ VALUES (nombre, telefono, direccion, dias, fechaContrato, area, 1);
 
 -- Procedimiento para optener el ID de una Area
 CREATE PROCEDURE obtenerIDArea(IN nombreArea VARCHAR(30)) SELECT id FROM areas WHERE nombre=nombreArea;
+
+--- Procedimiento para eliminar (cambiar estado a 0) de un empleado
+CREATE PROCEDURE eliminarEmpleado(IN idEmpleado VARCHAR(11)) UPDATE empleados SET  estado = 0 WHERE id = idEmpleado;
+
+--- Procedimiento para selecccionar todos los proveedores con estatus = 1
+CREATE PROCEDURE selecProveedoresActivos() SELECT *FROM proveedores WHERE estatus = 1;
+
+-- Procedimiento para agregar empleados
+CREATE PROCEDURE agregarProveedor(IN nombre VARCHAR(30), IN insumo VARCHAR(10), IN telefono VARCHAR(15))
+INSERT INTO proveedores(nombre, insumo, telefono, estatus)
+VALUES (nombre, insumo, telefono, 1); 
+
+--- Procedimiento para eliminar (cambiar de estatis a 0) a un proveedor
+CREATE PROCEDURE eliminarProveedor(IN idProveedor VARCHAR(11)) UPDATE proveedores SET estatus = 0 WHERE id = idProveedor;
+
+-- Procedimiento para modificar proveedores
+CREATE PROCEDURE modificarProveedores(IN idProveedor VARCHAR(11), IN nombre VARCHAR(30), IN insumo VARCHAR(10), IN telefono VARCHAR(15))
+UPDATE proveedores SET nombre = nombre, insumo = insumo, telefono = telefono WHERE id = idProveedor;
+
 
 --------------------------------------------------------
 
