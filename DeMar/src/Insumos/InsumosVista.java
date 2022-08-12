@@ -5,7 +5,7 @@ import java.awt.Color;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class InsumosVista extends JFrame{
+public class InsumosVista extends JFrame {
     protected JPanel pFondo, pContenedor, pSeparador;
 
     protected InsumosControlador insumosControlador;
