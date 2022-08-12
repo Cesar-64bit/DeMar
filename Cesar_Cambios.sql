@@ -56,7 +56,7 @@ CREATE PROCEDURE eliminarEmpleado(IN idEmpleado VARCHAR(11)) UPDATE empleados SE
 --- Procedimiento para selecccionar todos los proveedores con estatus = 1
 CREATE PROCEDURE selecProveedoresActivos() SELECT *FROM proveedores WHERE estatus = 1;
 
--- Procedimiento para agregar empleados
+--- Procedimiento para agregar empleados
 CREATE PROCEDURE agregarProveedor(IN nombre VARCHAR(30), IN insumo VARCHAR(10), IN telefono VARCHAR(15))
 INSERT INTO proveedores(nombre, insumo, telefono, estatus)
 VALUES (nombre, insumo, telefono, 1); 
@@ -64,10 +64,18 @@ VALUES (nombre, insumo, telefono, 1);
 --- Procedimiento para eliminar (cambiar de estatis a 0) a un proveedor
 CREATE PROCEDURE eliminarProveedor(IN idProveedor VARCHAR(11)) UPDATE proveedores SET estatus = 0 WHERE id = idProveedor;
 
--- Procedimiento para modificar proveedores
+--- Procedimiento para modificar proveedores
 CREATE PROCEDURE modificarProveedores(IN idProveedor VARCHAR(11), IN nombre VARCHAR(30), IN insumo VARCHAR(10), IN telefono VARCHAR(15))
 UPDATE proveedores SET nombre = nombre, insumo = insumo, telefono = telefono WHERE id = idProveedor;
 
+
+-- Procedimiento para seleccionar todos los pagos
+CREATE PROCEDURE selecPagos() SELECT *FROM pagos;
+
+--- Procedimiento para agregar pagos
+CREATE PROCEDURE agregarPagos(IN total FLOAT, IN tipoPago VARCHAR(10), IN fecha DATETIME, IN empleado INT(11), IN detallesPedidos INT(11))
+INSERT INTO pagos(total, tipo_pago, fecha, empleado, idDetallesPedido)
+values (total, tipoPago, fecha, empleado, detallesPedidos);
 
 --------------------------------------------------------
 
@@ -88,4 +96,10 @@ CHANGE COLUMN `hora_entrada` `hora_entrada` TIME NULL DEFAULT NULL ;
 
 ALTER TABLE `demar`.`areas` 
 CHANGE COLUMN `hora_salida` `hora_salida` TIME NULL DEFAULT NULL ;
+
+
+
+--- SE MODIFICÓ LA COLUMNA FLOAT PARA DEFINIR EL RANGO
+ALTER TABLE `demar`.`pagos` 
+CHANGE COLUMN `total` `total` DOUBLE NULL DEFAULT NULL ;
 
