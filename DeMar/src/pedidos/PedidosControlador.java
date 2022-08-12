@@ -4,12 +4,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class PedidosControlador{
+    private int idUsuario;
     protected PedidosVista pedidosVista;
 
-    public PedidosControlador() {
+    public PedidosControlador(String nombreUsuario) {
         this.pedidosVista = new PedidosVista(this);
 
-        pedidosVista.lblNomEmpleado.setText("Fulanito Fulan de los Grandes Fulanos");
+        pedidosVista.lblNomEmpleado.setText(nombreUsuario);
 
         this.asignarEventos();
     }

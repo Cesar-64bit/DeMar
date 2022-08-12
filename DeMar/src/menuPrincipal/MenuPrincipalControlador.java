@@ -17,9 +17,11 @@ import DeMar.src.recepcion.RecepcionControlador;
 public class MenuPrincipalControlador extends MouseAdapter implements ActionListener {
 
     private MenuPrincipalVista mnPrincipalVista;
+    private String nombreUsuario;
 
     public MenuPrincipalControlador(String nombreUsuario, String tipoUsuario) {
         this.mnPrincipalVista = new MenuPrincipalVista(nombreUsuario, tipoUsuario, this);   
+        this.nombreUsuario = nombreUsuario;
     }
 
     @Override
@@ -37,7 +39,7 @@ public class MenuPrincipalControlador extends MouseAdapter implements ActionList
             pVista.getClass();
         }
         if(e.getSource() == mnPrincipalVista.getBtnPedidos()) {
-            PedidosControlador pedidosVista = new PedidosControlador();
+            PedidosControlador pedidosVista = new PedidosControlador(nombreUsuario);
             pedidosVista.getClass();
         }
         if(e.getSource() == mnPrincipalVista.getBtnPagos()) {

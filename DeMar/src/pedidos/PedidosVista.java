@@ -27,8 +27,8 @@ public class PedidosVista extends JFrame {
     protected PedidosControlador pedidosControlador;
 
     //VALORES GENERALES
-    private int anchoPan = 800;    //Altura de la pantalla.
-    private int altoPan = 500;      //Anchura de la pantalla.
+    private int anchoPan = 1100;    //Altura de la pantalla.
+    private int altoPan = 600;      //Anchura de la pantalla.
     private int anchoJTP = (int)(anchoPan - anchoPan*.08f);
     private int altoJTP = (int)(altoPan);
     private int ejexJTP = (int)(anchoPan*.026f);

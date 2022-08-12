@@ -6,7 +6,7 @@ public class exePedidos {
     public static void main(String[] args) {
         Runnable runApplication = new Runnable() {
             public void run() {
-                PedidosControlador login = new PedidosControlador();
+                PedidosControlador login = new PedidosControlador("");
                 login.getClass();
             }
         };
