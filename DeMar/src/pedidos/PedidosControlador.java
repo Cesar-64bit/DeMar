@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class PedidosControlador{
-    private int idUsuario;
     protected PedidosVista pedidosVista;
 
     public PedidosControlador(String nombreUsuario) {
