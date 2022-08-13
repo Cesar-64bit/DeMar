@@ -117,6 +117,58 @@ CREATE PROCEDURE eliminarRecepcion(IN folioRec VARCHAR(11)) UPDATE recepciones S
 CREATE PROCEDURE modificarRecepcion(IN folioRec VARCHAR(11), IN fecha VARCHAR(30), IN cantidad varchar(11), IN idEmpleado VARCHAR(11))
 UPDATE recepciones SET fecha = fecha, cantidad = cantidad, idEmpleado = idEmpleado WHERE folio = folioRec;
 
+
+--- Procedimiento para agregar Gastos
+USE `demar`;
+DROP procedure IF EXISTS `agregarGastos`;
+
+USE `demar`;
+DROP procedure IF EXISTS `demar`.`agregarGastos`;
+;
+
+DELIMITER $$
+USE `demar`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `agregarGastos`(IN tipo VARCHAR(50), IN cantidad VARCHAR(11), IN fecha VARCHAR(30), IN idempleado VARCHAR(11))
+INSERT INTO gastos(tipo, cantidad, fecha, idempleado)
+VALUES(tipo, cantidad, fecha, idempleado)$$
+
+DELIMITER ;
+;
+
+--- Procedimiento para modificar Gastos
+CREATE PROCEDURE modificarGastos(IN idGasto VARCHAR(11), IN tipo VARCHAR(50), IN cantidad VARCHAR(11), IN fecha VARCHAR(30), IN idempleado VARCHAR(11))
+UPDATE gastos SET tipo = tipo, cantidad = cantidad, fecha = fecha, idempleado = idempleado WHERE id = idGasto;
+
+--- PProcedimiento para eliminar Gastos
+CREATE PROCEDURE eliminarGastos(IN idGasto VARCHAR(11)) DELETE FROM gastos WHERE id = idGasto;
+
+--- Procedimiento para selecctionar todos los gastos sin excepcion
+CREATE PROCEDURE selecGastos() SELECT *FROM gastos;
+
+--- Procedimiento para seleccionar los insumos con estado = 1
+CREATE PROCEDURE selectInsumos() SELECT *FROM insumos WHERE estado = 1;
+
+--- Procedimiento para filtrar los proveedores
+CREATE PROCEDURE filProveedores() SELECT NOMBRE FROM proveedores;
+
+--- Procedimiento para obtener el ID de un proveedor
+CREATE PROCEDURE idProveedor(IN nomProveedor VARCHAR(30)) SELECT id FROM proveedores WHERE nombre = nomProveedor;
+
+
+--- Procedimiento para agregar un insumos
+CREATE PROCEDURE agregarInsumos(IN nombre VARCHAR(30), IN proveedor VARCHAR(11), IN precio VARCHAR(11))
+INSERT INTO insumos(nombre, proveedor, precio, estado) 
+VALUES(nombre, proveedor, precio, 1);
+
+--- Procedimiento para modificar un insumo
+CREATE PROCEDURE modificarInsumo(IN folioInsumo VARCHAR(11), IN nombre VARCHAR(30), IN proveedor VARCHAR(11), IN precio VARCHAR(11))
+UPDATE insumos SET nombre = nombre, proveedor = proveedor, precio = precio WHERE folio = folioInsumo;
+
+
+--- Procedimiento para la eliminación lógica de un insumo
+CREATE PROCEDURE eliminarInsumo(IN folioInsumo VARCHAR(11))
+UPDATE insumos SET estado = 0 WHERE folio = folioInsumo;
+
 --------------------------------------------------------
 
 --- PRUEBAS
@@ -136,3 +188,6 @@ CHANGE COLUMN `hora_entrada` `hora_entrada` TIME NULL DEFAULT NULL ;
 
 ALTER TABLE `demar`.`areas` 
 CHANGE COLUMN `hora_salida` `hora_salida` TIME NULL DEFAULT NULL ;
+
+ALTER TABLE `demar`.`gastos` 
+CHANGE COLUMN `cantidad` `cantidad` DOUBLE NULL DEFAULT NULL ;
