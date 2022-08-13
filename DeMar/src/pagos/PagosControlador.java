@@ -42,10 +42,18 @@ public class PagosControlador implements ActionListener, MouseListener {
             pagosVista.confirmarRegistro(registro);
         }
         if(e.getSource() == pagosVista.getBtnModificar()) {
-
+            if(pagosVista.confirmarAccion(pagosVista.getBtnModificar().getText()) == 0)
+                modPagos.modificar(
+                                    pagosVista.getTxtFolio(),
+                                    pagosVista.getTxtTotal(), 
+                                    pagosVista.getTxtTipoPago(), 
+                                    pagosVista.getTxtFecha(), 
+                                    pagosVista.getTxtTEmpleado(), 
+                                    pagosVista.getTxtDetallePedido());
         }
         if(e.getSource() == pagosVista.getBtnEliminar()) {
-
+            if(pagosVista.confirmarAccion(pagosVista.getBtnEliminar().getText()) == 0)
+                modPagos.eliminar(pagosVista.getTxtFolio());
         }
         if(e.getSource() == pagosVista.getBtnLimpiar()) {
             pagosVista.limpiar();

@@ -329,6 +329,10 @@ public class PagosVista extends JFrame {
     }
 
     /* OBTENER CAJAS DE TEXTO */
+    public String getTxtFolio() {
+        return txtFolio.getText();
+    }
+
     public String getTxtTotal() {
         return txtTotal.getText();
     }
@@ -346,7 +350,7 @@ public class PagosVista extends JFrame {
     }
 
     public String getTxtDetallePedido() {
-        return txtTotal.getText();
+        return txtDetallesPedido.getText();
     }
 
     /* ESTABLECER TEXTO EN LAS CAJAS DE TEXTO */
