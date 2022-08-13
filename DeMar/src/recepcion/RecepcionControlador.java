@@ -32,8 +32,8 @@ public class RecepcionControlador implements ActionListener, MouseListener{
         this.recepcionVista.diseñarJTable(tabla, scroll);
     }
 
-    // SE COLOCAN LAS ÁREAS EN UN JCOMBOBOX
-      public void rellenarEmpleados() {
+    // SE COLOCAN LOS EMPLEADOS EN UN JCOMBOBOX
+    public void rellenarEmpleados() {
         recepcionVista.setCbmEmpleados(modRecepcion.filEmpleados());
     }
 
