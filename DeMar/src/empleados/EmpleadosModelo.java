@@ -23,6 +23,12 @@ public class EmpleadosModelo extends Modelo {
         return consultaSeleccion(consulta);
     }
 
+    // Seleccionar un empleado con un ID
+    public DefaultTableModel selID(int id){ 
+        String consulta = "CALL buscarUnEmpleado('"+ id +"');";
+        return consultaSeleccion(consulta);
+    }
+
     // Consulta para filtrarAreas
     public DefaultTableModel filAreas() {
         String consulta = "CALL filtrarAreas();";

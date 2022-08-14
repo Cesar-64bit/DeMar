@@ -184,6 +184,25 @@ UPDATE prestamos set fecha = fechaPrestamo, fechaPagado = fechaPago, cantidad = 
 --- Procedimiento para eliminar préstamos
 CREATE PROCEDURE eliminarPrestamos(IN idPrestamo VARCHAR(11)) UPDATE prestamos SET estado = 0 WHERE id = idPrestamo;
 
+--- Procedimiento para buscar un empleado con el ID
+CREATE PROCEDURE buscarUnEmpleado(IN idEmpleado VARCHAR(11)) SELECT *FROM empleados WHERE id = idEmpleado;
+
+--- Procedimiento para buscar un pago con el ID
+CREATE PROCEDURE buscarUnPago(IN folioPago VARCHAR(11)) SELECT *FROM pagos WHERE folio = folioPago;
+
+--- Procedimiento para buscar un préstamo con el ID
+CREATE PROCEDURE buscarUnPrestamo(IN idPrestamo VARCHAR(11)) SELECT *FROM prestamos WHERE id = idPrestamo;
+
+--- Procedimiento para buscar una recepción con el ID
+CREATE PROCEDURE buscarUnaRecepcion(IN folioRecepcion VARCHAR(11)) SELECT *FROM recepciones WHERE folio = folioRecepcion;
+
+--- Procedimiento para buscar un gasto con el ID
+CREATE PROCEDURE buscarUnGasto(IN idGasto VARCHAR(11)) SELECT *FROM gastos WHERE id = idGasto;
+
+--- Procedimiento para buscar un insumo con el ID
+CREATE PROCEDURE buscarUnInsumo(IN folioInsumo VARCHAR(11)) SELECT *FROM insumos WHERE folio = folioInsumo;
+
+
 --------------------------------------------------------
 
 --- PRUEBAS

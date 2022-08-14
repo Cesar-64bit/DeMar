@@ -32,6 +32,14 @@ public class InsumosControlador implements ActionListener, MouseListener {
         this.insumosVista.diseñarJTable(tabla, scroll);
     }
 
+    /* ESTE MÉTODO MUESTRA EL VALOR BUSCADO POR ID */
+    public void buscarID(int ID) {
+        tabla.setModel(modInsumo.selID(ID));
+        scroll.setViewportView(tabla);
+
+        this.insumosVista.diseñarJTable(tabla, scroll);
+    }
+
      // SE COLOCAN LOS PROVEEDORES EN UN JCOMBOBOX
      public void rellenarProveedores() {
         insumosVista.setCbmProveedor(modInsumo.filProveedores());
@@ -39,6 +47,10 @@ public class InsumosControlador implements ActionListener, MouseListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if(e.getSource() == insumosVista.getBtnBuscar()) {
+            buscarID(insumosVista.getTxtBuscar());
+
+        }
         if(e.getSource() == insumosVista.getBtnAgregar()) {
             boolean registro = modInsumo.registrar(
                                                     insumosVista.getTxtNombre(),

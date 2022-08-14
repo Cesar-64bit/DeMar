@@ -30,6 +30,13 @@ public class GastosControlador implements ActionListener, MouseListener{
         this.gastosVista.diseñarJTable(tabla, scroll);
     }
 
+     /* ESTE MÉTODO MUESTRA EL VALOR BUSCADO POR ID */
+     public void buscarID(int ID) {
+        tabla.setModel(modGastos.selID(ID));
+        scroll.setViewportView(tabla);
+
+        this.gastosVista.diseñarJTable(tabla, scroll);
+    }
 
     // SE COLOCAN LOS EMPLEADOS EN UN JCOMBOBOX
     public void rellenarEmpleados() {
@@ -38,6 +45,10 @@ public class GastosControlador implements ActionListener, MouseListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if(e.getSource() == gastosVista.getBtnBuscar()) {
+            buscarID(gastosVista.getTxtBuscar());
+
+        }
         if(e.getSource() == gastosVista.getBtnAgregar()) {
             boolean registro = modGastos.registrar(
                                                     gastosVista.getTxtTipo(),

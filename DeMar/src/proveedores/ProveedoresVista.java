@@ -21,9 +21,9 @@ public class ProveedoresVista extends JFrame{
     protected JLabel lblNumeroProveedor, lblNombre,
                     lblInsumo, lblTelefono;
     protected JTextField txtNumeroProveedor, txtNombre,
-                    txtInsumo, txtTelefono;
+                    txtInsumo, txtTelefono, txtBuscar;
     protected JButton btnAgregar, btnModificar, btnEliminar,
-                    btnLimpiar;
+                    btnLimpiar, btnBuscar;
     protected JTable obtenerTabla;
 
     protected ProveedoresControlador pControlador;
@@ -47,8 +47,8 @@ public class ProveedoresVista extends JFrame{
         obtenerTabla = tabla;
         obtenerTabla.addMouseListener(pControlador);
 
-        tabla.setBounds(380,125,690,175);
-        scroll.setBounds(380,125,690,175);
+        tabla.setBounds(380,125,690,200);
+        scroll.setBounds(380,125,690,200);
         pFondo.add(scroll);
     }
 
@@ -186,6 +186,14 @@ public class ProveedoresVista extends JFrame{
         txtTelefono.setBorder(null);
         txtTelefono.setHorizontalAlignment(SwingConstants.CENTER);
         pContenedor.add(txtTelefono);
+
+        txtBuscar = new JTextField();
+        txtBuscar.setSize(300, 35);
+        txtBuscar.setLocation(380, 75);
+        txtBuscar.setBackground(Color.WHITE);
+        txtBuscar.setCaretColor(Color.BLACK);
+        txtBuscar.setHorizontalAlignment(SwingConstants.CENTER);
+        pFondo.add(txtBuscar);
     }
 
     public void crearButtons() {
@@ -224,6 +232,15 @@ public class ProveedoresVista extends JFrame{
         btnLimpiar.setFocusable(false);
         btnLimpiar.addActionListener((ActionListener) pControlador);
         pContenedorBotones.add(btnLimpiar);
+
+        btnBuscar = new JButton("Buscar");
+        btnBuscar.setSize(100, 35);
+        btnBuscar.setLocation(700, 75);
+        btnBuscar.setBackground(Color.WHITE);
+        btnBuscar.setForeground(Color.DARK_GRAY);
+        btnBuscar.setFocusable(false);
+        btnBuscar.addActionListener((ActionListener) pControlador);
+        pFondo.add(btnBuscar);
     }
 
     public void limpiar() {
@@ -255,6 +272,10 @@ public class ProveedoresVista extends JFrame{
         return btnLimpiar;
     }
 
+    public JButton getBtnBuscar() {
+        return btnBuscar;
+    }
+
     /* OBTENER CONTENIDO DE LAS CAJAS DE TEXTO */
     public String getTxtNumeroProveedor() {
         return txtNumeroProveedor.getText();
@@ -270,6 +291,10 @@ public class ProveedoresVista extends JFrame{
 
     public String getTxtTelefono() {
         return txtTelefono.getText();
+    }
+
+    public int getTxtBuscar() {
+        return Integer.parseInt(txtBuscar.getText());
     }
 
     /* ESTABLECER TEXTO EN LAS CAJAS DE TEXTO */

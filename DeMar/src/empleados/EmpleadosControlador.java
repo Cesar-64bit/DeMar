@@ -30,6 +30,14 @@ public class EmpleadosControlador implements ActionListener, MouseListener {
         this.eVista.diseñarJTable(tabla, scroll);
     }
 
+    /* ESTE MÉTODO MUESTRA EL VALOR BUSCADO POR ID */
+    public void buscarID(int ID) {
+        tabla.setModel(modEmpleados.selID(ID));
+        scroll.setViewportView(tabla);
+
+        this.eVista.diseñarJTable(tabla, scroll);
+    }
+
     // SE OBTIENE EL ID DEL AREA
     public int obtenerAreaID(String nombre) {
         DefaultTableModel id = modEmpleados.obtenerIDArea(nombre);
@@ -44,6 +52,9 @@ public class EmpleadosControlador implements ActionListener, MouseListener {
     // EVENTOS DE LOS BOTONES
     @Override
     public void actionPerformed(ActionEvent e) {
+        if(e.getSource() == eVista.getBtnBuscar()) {
+            buscarID(eVista.getTxtBuscar());
+        }
         if(e.getSource() == eVista.getBtnAgregar()) {
             boolean registro = modEmpleados.registrar(
                                                 eVista.getTxtNombre(), eVista.getTxtTelefono(), 

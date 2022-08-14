@@ -24,8 +24,9 @@ public class PrestamosVista extends JFrame {
     protected JLabel lblFolio, lblFechaPrestamo, lblFechaPago, lblCantidad,
                     lblPlazosTotales, lblPlazosPagados, lblTipoPlazo, lblEmpleado;
     protected JTextField txtFolio, txtFechaPrestamo, txtFechaPago, txtEmpleado,
-                    txtCantidad, txtplazosTotales, txtPlazosPagados;
-    protected JButton btnAgregar, btnModificar, btnEliminar, btnLimpiar;
+                    txtCantidad, txtplazosTotales, txtPlazosPagados, txtBuscar;
+    protected JButton btnAgregar, btnModificar, btnEliminar, btnLimpiar,
+                    btnBuscar;
     protected JTable obtenerTabla;
 
     protected JComboBox<String> cmbEmpleado, cmbTipoPago;
@@ -52,8 +53,8 @@ public class PrestamosVista extends JFrame {
         obtenerTabla = tabla;
         obtenerTabla.addMouseListener(prestamosControlador);
 
-        tabla.setBounds(380,150,690,175);
-        scroll.setBounds(380,150,690,175);
+        tabla.setBounds(380,125,690,200);
+        scroll.setBounds(380,125,690,200);
         pFondo.add(scroll);
     }
 
@@ -294,6 +295,14 @@ public class PrestamosVista extends JFrame {
         txtPlazosPagados.setBorder(null);
         txtPlazosPagados.setHorizontalAlignment(SwingConstants.CENTER);
         pContenedor.add(txtPlazosPagados);
+
+        txtBuscar = new JTextField();
+        txtBuscar.setSize(300, 35);
+        txtBuscar.setLocation(380, 75);
+        txtBuscar.setBackground(Color.WHITE);
+        txtBuscar.setCaretColor(Color.BLACK);
+        txtBuscar.setHorizontalAlignment(SwingConstants.CENTER);
+        pFondo.add(txtBuscar);
     }
 
     public void crearButtons() {
@@ -332,6 +341,15 @@ public class PrestamosVista extends JFrame {
         btnLimpiar.setFocusable(false);
         btnLimpiar.addActionListener((ActionListener) prestamosControlador);
         pContenedorBotones.add(btnLimpiar);
+
+        btnBuscar = new JButton("Buscar");
+        btnBuscar.setSize(100, 35);
+        btnBuscar.setLocation(700, 75);
+        btnBuscar.setBackground(Color.WHITE);
+        btnBuscar.setForeground(Color.DARK_GRAY);
+        btnBuscar.setFocusable(false);
+        btnBuscar.addActionListener((ActionListener) prestamosControlador);
+        pFondo.add(btnBuscar);
     }
 
     public void limpiar() {
@@ -375,6 +393,10 @@ public class PrestamosVista extends JFrame {
         return btnLimpiar;
     }
 
+    public JButton getBtnBuscar(){ 
+        return  btnBuscar;
+    }
+
     /* OBTENER CAJAS DE TEXTO */
     public String getTxtFolio() {
         return txtFolio.getText();
@@ -406,6 +428,10 @@ public class PrestamosVista extends JFrame {
 
     public String getTxtPlazosPagados() {
         return txtPlazosPagados.getText();
+    }
+
+    public int getTxtBuscar() {
+        return Integer.parseInt(txtBuscar.getText());
     }
 
     /* ESTABLECER TEXTO EN LAS CAJAS DE TEXTO */

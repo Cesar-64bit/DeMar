@@ -23,6 +23,12 @@ public class ProveedoresModelo extends Modelo {
         return consultaSeleccion(consulta);
     }
 
+     // Seleccionar un proveedor con un ID
+     public DefaultTableModel selID(int id){ 
+        String consulta = "CALL buscarUnProveedor('"+ id +"');";
+        return consultaSeleccion(consulta);
+    }
+
     // Agregar nuevos proveedores
     public boolean registrar(String nombre, String insumo, String telefono) {
         String consulta = "CALL agregarProveedor('"+nombre+"', '"+insumo+"', '"+telefono+"');";

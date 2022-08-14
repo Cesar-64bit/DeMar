@@ -22,9 +22,10 @@ public class RecepcionVista extends JFrame {
     protected JLabel lblFolio, lblFecha, lblCantidad,
                     lblEmpleado;
     protected JTextField txtFolio, txtFecha, txtCantidad,
-                    txtEmpleado;
+                    txtEmpleado, txtBuscar;
     protected JComboBox<String> cmbEmpleados;
-    protected JButton btnAgregar, btnModificar, btnEliminar, btnLimpiar;
+    protected JButton btnAgregar, btnModificar, btnEliminar, btnLimpiar,
+                    btnBuscar;
     protected JTable obtenerTabla;
 
     protected RecepcionControlador recepcionControlador;
@@ -48,8 +49,8 @@ public class RecepcionVista extends JFrame {
         obtenerTabla = tabla;
         obtenerTabla.addMouseListener(recepcionControlador);
 
-        tabla.setBounds(380,150,690,175);
-        scroll.setBounds(380,150,690,175);
+        tabla.setBounds(380,125,690,200);
+        scroll.setBounds(380,125,690,200);
         pFondo.add(scroll);
     }
 
@@ -197,6 +198,14 @@ public class RecepcionVista extends JFrame {
         txtEmpleado.setHorizontalAlignment(SwingConstants.CENTER);
         pContenedor.add(txtEmpleado);
 
+        txtBuscar = new JTextField();
+        txtBuscar.setSize(300, 35);
+        txtBuscar.setLocation(380, 75);
+        txtBuscar.setBackground(Color.WHITE);
+        txtBuscar.setCaretColor(Color.BLACK);
+        txtBuscar.setHorizontalAlignment(SwingConstants.CENTER);
+        pFondo.add(txtBuscar);
+
     }
 
     public void crearButtons() {
@@ -235,6 +244,15 @@ public class RecepcionVista extends JFrame {
         btnLimpiar.setFocusable(false);
         btnLimpiar.addActionListener((ActionListener) recepcionControlador);
         pContenedorBotones.add(btnLimpiar);
+
+        btnBuscar = new JButton("Buscar");
+        btnBuscar.setSize(100, 35);
+        btnBuscar.setLocation(700, 75);
+        btnBuscar.setBackground(Color.WHITE);
+        btnBuscar.setForeground(Color.DARK_GRAY);
+        btnBuscar.setFocusable(false);
+        btnBuscar.addActionListener((ActionListener) recepcionControlador);
+        pFondo.add(btnBuscar);
     }
 
     public void limpiar() {
@@ -275,6 +293,10 @@ public class RecepcionVista extends JFrame {
         return btnLimpiar;
     }
 
+    public JButton getBtnBuscar() {
+        return btnBuscar;
+    }
+
     /* OBTENER CAJAS DE TEXTO */
     public String getTxtFolio() {
         return txtFolio.getText();
@@ -290,6 +312,10 @@ public class RecepcionVista extends JFrame {
 
     public String getTxtEmpleado() {
         return txtEmpleado.getText();
+    }
+
+    public int getTxtBuscar() {
+        return Integer.parseInt(txtBuscar.getText());
     }
 
     /* ESTABLECER TETXTO EN LAS CAJAS DE TEXTO */

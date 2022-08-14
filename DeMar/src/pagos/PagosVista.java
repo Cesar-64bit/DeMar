@@ -22,9 +22,10 @@ public class PagosVista extends JFrame {
     protected JLabel lblFolio, lblTotal, lblTipoPago,
                     lblFecha, lblEmpleado, lblDetallesPedidos;
     protected JTextField txtFolio, txtTotal, txtTipoPago, txtFecha,
-                        txtEmpleado, txtDetallesPedido;
+                        txtEmpleado, txtDetallesPedido, txtBuscar;
     protected JComboBox<String> cmbTipoPago;
-    protected JButton btnAgregar, btnModificar, btnEliminar, btnLimpiar;
+    protected JButton btnAgregar, btnModificar, btnEliminar, btnLimpiar,
+                    btnBuscar;
     protected JTable obtenerTabla;
 
     protected PagosControlador pagosControlador;
@@ -48,8 +49,8 @@ public class PagosVista extends JFrame {
         obtenerTabla = tabla;
         obtenerTabla.addMouseListener(pagosControlador);
 
-        tabla.setBounds(380,150,690,175);
-        scroll.setBounds(380,150,690,175);
+        tabla.setBounds(380,125,690,200);
+        scroll.setBounds(380,125,690,200);
         pFondo.add(scroll);
     }
 
@@ -248,6 +249,14 @@ public class PagosVista extends JFrame {
         txtDetallesPedido.setBorder(null);
         txtDetallesPedido.setHorizontalAlignment(SwingConstants.CENTER);
         pContenedor.add(txtDetallesPedido);
+
+        txtBuscar = new JTextField();
+        txtBuscar.setSize(300, 35);
+        txtBuscar.setLocation(380, 75);
+        txtBuscar.setBackground(Color.WHITE);
+        txtBuscar.setCaretColor(Color.BLACK);
+        txtBuscar.setHorizontalAlignment(SwingConstants.CENTER);
+        pFondo.add(txtBuscar);
     }
 
     public void crearButtons() {
@@ -286,6 +295,15 @@ public class PagosVista extends JFrame {
         btnLimpiar.setFocusable(false);
         btnLimpiar.addActionListener((ActionListener) pagosControlador);
         pContenedorBotones.add(btnLimpiar);
+
+        btnBuscar = new JButton("Buscar");
+        btnBuscar.setSize(100, 35);
+        btnBuscar.setLocation(700, 75);
+        btnBuscar.setBackground(Color.WHITE);
+        btnBuscar.setForeground(Color.DARK_GRAY);
+        btnBuscar.setFocusable(false);
+        btnBuscar.addActionListener((ActionListener) pagosControlador);
+        pFondo.add(btnBuscar);
     }
 
     public void limpiar() {
@@ -328,6 +346,10 @@ public class PagosVista extends JFrame {
         return btnLimpiar;
     }
 
+    public JButton getBtnBuscar() {
+        return btnBuscar;
+    }
+
     /* OBTENER CAJAS DE TEXTO */
     public String getTxtFolio() {
         return txtFolio.getText();
@@ -351,6 +373,10 @@ public class PagosVista extends JFrame {
 
     public String getTxtDetallePedido() {
         return txtDetallesPedido.getText();
+    }
+
+    public int getTxtBuscar() {
+        return Integer.parseInt(txtBuscar.getText());
     }
 
     /* ESTABLECER TEXTO EN LAS CAJAS DE TEXTO */

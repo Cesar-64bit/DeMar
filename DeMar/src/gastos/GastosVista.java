@@ -23,9 +23,10 @@ public class GastosVista extends JFrame {
     protected JLabel lblIDGasto, lblTipoGasto, lblCantidad,
                     lblFecha, lblEmpleado;
     protected JTextField txtGasto, txtTipo, txtCantidad,
-                        txtFecha, txtEmpleado;
+                        txtFecha, txtEmpleado, txtBuscar;
     protected JComboBox<String> cmbEmpleado;
-    protected JButton btnAgregar, btnModificar, btnEliminar, btnLimpiar;
+    protected JButton btnAgregar, btnModificar, btnEliminar, btnLimpiar,
+                    btnBuscar;
     protected JTable obtenerTabla;
 
     protected GastosControlador gastosControlador;
@@ -49,8 +50,8 @@ public class GastosVista extends JFrame {
         obtenerTabla = tabla;
         obtenerTabla.addMouseListener(gastosControlador);
 
-        tabla.setBounds(380,150,690,175);
-        scroll.setBounds(380,150,690,175);
+        tabla.setBounds(380,125,690,200);
+        scroll.setBounds(380,125,690,200);
         pFondo.add(scroll);
     }
 
@@ -224,6 +225,14 @@ public class GastosVista extends JFrame {
         txtEmpleado.setEnabled(false);
         txtEmpleado.setHorizontalAlignment(SwingConstants.CENTER);
         pContenedor.add(txtEmpleado);
+
+        txtBuscar = new JTextField();
+        txtBuscar.setSize(300, 35);
+        txtBuscar.setLocation(380, 75);
+        txtBuscar.setBackground(Color.WHITE);
+        txtBuscar.setCaretColor(Color.BLACK);
+        txtBuscar.setHorizontalAlignment(SwingConstants.CENTER);
+        pFondo.add(txtBuscar);
     }
 
     public void crearButtons() {
@@ -262,6 +271,15 @@ public class GastosVista extends JFrame {
         btnLimpiar.setFocusable(false);
         btnLimpiar.addActionListener((ActionListener) gastosControlador);
         pContenedorBotones.add(btnLimpiar);
+
+        btnBuscar = new JButton("Buscar");
+        btnBuscar.setSize(100, 35);
+        btnBuscar.setLocation(700, 75);
+        btnBuscar.setBackground(Color.WHITE);
+        btnBuscar.setForeground(Color.DARK_GRAY);
+        btnBuscar.setFocusable(false);
+        btnBuscar.addActionListener((ActionListener) gastosControlador);
+        pFondo.add(btnBuscar);
     }
 
     public void limpiar() {
@@ -303,6 +321,10 @@ public class GastosVista extends JFrame {
         return btnLimpiar;
     }
 
+    public JButton getBtnBuscar() {
+        return btnBuscar;
+    }
+
     /* OBTENER TEXTO DE LAS CAJAS DE TEXTO */
     public String getTxtGasto() {
         return txtGasto.getText();
@@ -322,6 +344,10 @@ public class GastosVista extends JFrame {
 
     public String getTxtEmpleado() {
         return txtEmpleado.getText();
+    }
+
+    public int getTxtBuscar() {
+        return Integer.parseInt(txtBuscar.getText());
     }
 
      /* ESTABLECER TEXTO EN LAS CAJAS DE TEXTO */

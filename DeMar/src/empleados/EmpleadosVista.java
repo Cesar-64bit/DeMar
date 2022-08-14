@@ -22,8 +22,10 @@ public class EmpleadosVista extends JFrame {
                     lblDireccion, lblDiasLaborados, lblFechaContrato,
                     lblFoto, lblArea;
     protected JTextField txtNumeroEmpleado, txtNombre, txtTelefono,
-                    txtDireccion, txtDiasLaborados, txtFechaContrato;
-    protected JButton btnAgregar, btnModificar, btnEliminar, btnLimpiar;
+                    txtDireccion, txtDiasLaborados, txtFechaContrato,
+                    txtBuscar;
+    protected JButton btnAgregar, btnModificar, btnEliminar, btnLimpiar,
+                    btnBuscar;
     protected JComboBox<String> txtAreas;
     protected JPanel pFondo, pContenedor, pSeparador, pContenedorBotones,
                     pNumeroEmpleado, pNombre, pTelefono, pDireccion,
@@ -50,8 +52,8 @@ public class EmpleadosVista extends JFrame {
         obtenerTabla = tabla;
         obtenerTabla.addMouseListener(eControlador);
 
-        tabla.setBounds(380,150,690,175);
-        scroll.setBounds(380,150,690,175);
+        tabla.setBounds(380,125,690,200);
+        scroll.setBounds(380,125,690,200);
         pFondo.add(scroll);
     }
 
@@ -253,6 +255,14 @@ public class EmpleadosVista extends JFrame {
         txtDiasLaborados.setBorder(null);
         txtDiasLaborados.setHorizontalAlignment(SwingConstants.CENTER);
         pContenedor.add(txtDiasLaborados);
+
+        txtBuscar = new JTextField();
+        txtBuscar.setSize(300, 35);
+        txtBuscar.setLocation(380, 75);
+        txtBuscar.setBackground(Color.WHITE);
+        txtBuscar.setCaretColor(Color.BLACK);
+        txtBuscar.setHorizontalAlignment(SwingConstants.CENTER);
+        pFondo.add(txtBuscar);
     }
 
     public void crearButtons() {
@@ -291,6 +301,15 @@ public class EmpleadosVista extends JFrame {
         btnLimpiar.setFocusable(false);
         btnLimpiar.addActionListener((ActionListener) eControlador);
         pContenedorBotones.add(btnLimpiar);
+
+        btnBuscar = new JButton("Buscar");
+        btnBuscar.setSize(100, 35);
+        btnBuscar.setLocation(700, 75);
+        btnBuscar.setBackground(Color.WHITE);
+        btnBuscar.setForeground(Color.DARK_GRAY);
+        btnBuscar.setFocusable(false);
+        btnBuscar.addActionListener((ActionListener) eControlador);
+        pFondo.add(btnBuscar);
     }
 
     public void limpiar() {
@@ -324,6 +343,10 @@ public class EmpleadosVista extends JFrame {
         return btnLimpiar;
     }
 
+    public JButton getBtnBuscar() {
+        return btnBuscar;
+    }
+
     /* OBTENER CAJAS DE TEXTO */
     public String getTxtNumeroEmpleado() {
         return txtNumeroEmpleado.getText();
@@ -351,6 +374,10 @@ public class EmpleadosVista extends JFrame {
 
     public String getTxtAreas() {
         return txtAreas.getSelectedItem().toString();
+    }
+
+    public int getTxtBuscar() {
+        return Integer.parseInt(txtBuscar.getText());
     }
 
     /* ESTABLECER TEXTO EN LAS CAJAS DE TEXTO */
