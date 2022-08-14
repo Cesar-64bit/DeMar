@@ -64,7 +64,6 @@ public class RecepcionControlador implements ActionListener, MouseListener{
         if(e.getSource() == recepcionVista.getCombo()) {
             DefaultTableModel tb = modRecepcion.nomEmpleado(recepcionVista.getCombo().getSelectedItem().toString());   
             recepcionVista.colocarID(String.valueOf(tb.getValueAt(0, 0)));
-
         }
     }
 

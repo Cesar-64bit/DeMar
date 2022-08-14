@@ -47,7 +47,7 @@ public class EmpleadosControlador implements ActionListener, MouseListener {
         if(e.getSource() == eVista.getBtnAgregar()) {
             boolean registro = modEmpleados.registrar(
                                                 eVista.getTxtNombre(), eVista.getTxtTelefono(), 
-                                                eVista.getTxtDireccion(), eVista.getTxtDiasLaborador(), 
+                                                eVista.getTxtDireccion(), eVista.getTxtDiasLaborados(), 
                                                 eVista.getTxtFechaContrato(), obtenerAreaID(eVista.getTxtAreas()));
             eVista.confirmarRegistro(registro);
         }

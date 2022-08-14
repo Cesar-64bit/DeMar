@@ -341,7 +341,7 @@ public class EmpleadosVista extends JFrame {
         return txtDireccion.getText();
     }
 
-    public float getTxtDiasLaborador() {
+    public float getTxtDiasLaborados() {
         return Float.parseFloat(txtDiasLaborados.getText());
     }
 

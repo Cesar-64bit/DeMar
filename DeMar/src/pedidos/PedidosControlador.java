@@ -2,7 +2,6 @@ package DeMar.src.pedidos;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemListener;
 import javax.swing.table.DefaultTableModel;
 import DeMar.src.Insumos.InsumosModelo;
 import DeMar.src.proveedores.ProveedoresModelo;
