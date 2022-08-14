@@ -80,6 +80,7 @@ public class PedidosVista extends JFrame {
         pFondo.setLocation(0,0);
         pFondo.setBackground(colorFondo);
         pFondo.setLayout(null);
+        pFondo.setBorder(bordeSencillo);
         this.add(pFondo);
 
         tpOpciones.setLayout(null);
@@ -244,13 +245,15 @@ public class PedidosVista extends JFrame {
 
     private void crearComboBoxs(){
         //Instanciamiento
-        cbxProveedor = new JComboBox<>(new String[]{"Proveedor1", "Proveedor2", "Proveedor3"});
-        cbxInsumos = new JComboBox<>(new String[]{"Insumo1", "Insumo2", "Insumo3"});
+        cbxProveedor = new JComboBox<>();
+        cbxInsumos = new JComboBox<>();
 
         //Contrucción
         cbxProveedor.setFont(fuenteGrande);
         cbxProveedor.setForeground(colorPrimario);
         cbxProveedor.setBackground(colorSecundario);
+        cbxProveedor.setFocusable(false);
+        ((JLabel)cbxProveedor.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
         cbxProveedor.setBounds(
             (int)(pDatosGenerales.getWidth()*.15), (int)(pDatosGenerales.getHeight()*.63),
             (int)(pDatosGenerales.getWidth()*.75), 35);
@@ -274,6 +277,7 @@ public class PedidosVista extends JFrame {
         cbxInsumos.setFont(fuenteGrande);
         cbxInsumos.setForeground(colorPrimario);
         cbxInsumos.setBackground(colorFondo);
+        cbxInsumos.setFocusable(false);
         cbxInsumos.setBounds(
             (int)(pDetalles.getWidth()*.07), 0,
             (int)(pDetalles.getWidth()*.45), 35);
