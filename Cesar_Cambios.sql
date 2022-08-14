@@ -169,6 +169,21 @@ UPDATE insumos SET nombre = nombre, proveedor = proveedor, precio = precio WHERE
 CREATE PROCEDURE eliminarInsumo(IN folioInsumo VARCHAR(11))
 UPDATE insumos SET estado = 0 WHERE folio = folioInsumo;
 
+--- Procedimiento para seleccionar los préstamos con estado = 1
+CREATE PROCEDURE selecPrestamos() SELECT *FROM prestamos WHERE estado = 1;
+
+--- Procedimiento para agregar préstamos
+CREATE PROCEDURE agregarPrestamos(IN fechaPrestamo VARCHAR(30), IN fechaPago VARCHAR(30), IN empleado VARCHAR(11), IN tipoPlazo VARCHAR(15), IN cantidad VARCHAR(11), IN plazosTotales VARCHAR(11), IN plazosPagados VARCHAR(11))
+INSERT INTO prestamos(fecha, fechaPagado, cantidad, plazosTotales, plazosPagados, tipoPlazos, idEmpleado, estado)
+VALUES(fechaPrestamo, fechaPago, cantidad, plazosTotales, plazosPagados, tipoPlazo, empleado, 1);
+
+--- Procedimiento para modificar préstamos
+CREATE PROCEDURE modificarPrestamos(IN idPrestamo VARCHAR(11), IN fechaPrestamo VARCHAR(30), IN fechaPago VARCHAR(30), IN empleado VARCHAR(11), IN tipoPlazo VARCHAR(15), IN cantidad VARCHAR(11), IN plazosTotales VARCHAR(11), IN plazosPagados VARCHAR(11))
+UPDATE prestamos set fecha = fechaPrestamo, fechaPagado = fechaPago, cantidad = cantidad, plazosTotales = plazosTotales, plazosPagados = plazosPagados, tipoPlazos = tipoPlazo, idEmpleado = empleado WHERE id = idPrestamo;
+
+--- Procedimiento para eliminar préstamos
+CREATE PROCEDURE eliminarPrestamos(IN idPrestamo VARCHAR(11)) UPDATE prestamos SET estado = 0 WHERE id = idPrestamo;
+
 --------------------------------------------------------
 
 --- PRUEBAS
@@ -191,3 +206,6 @@ CHANGE COLUMN `hora_salida` `hora_salida` TIME NULL DEFAULT NULL ;
 
 ALTER TABLE `demar`.`gastos` 
 CHANGE COLUMN `cantidad` `cantidad` DOUBLE NULL DEFAULT NULL ;
+
+ALTER TABLE `demar`.`prestamos` 
+CHANGE COLUMN `tipoPlazos` `tipoPlazos` VARCHAR(15) NOT NULL COMMENT '0: Semanales\\n1: Quinsenales\\n2: Mensuales\\n3: Libre (A como el empleado pueda pagarlo)' ;
