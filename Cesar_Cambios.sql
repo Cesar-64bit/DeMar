@@ -68,14 +68,106 @@ CREATE PROCEDURE eliminarProveedor(IN idProveedor VARCHAR(11)) UPDATE proveedore
 CREATE PROCEDURE modificarProveedores(IN idProveedor VARCHAR(11), IN nombre VARCHAR(30), IN insumo VARCHAR(10), IN telefono VARCHAR(15))
 UPDATE proveedores SET nombre = nombre, insumo = insumo, telefono = telefono WHERE id = idProveedor;
 
-
 -- Procedimiento para seleccionar todos los pagos
 CREATE PROCEDURE selecPagos() SELECT *FROM pagos;
 
 --- Procedimiento para agregar pagos
-CREATE PROCEDURE agregarPagos(IN total FLOAT, IN tipoPago VARCHAR(10), IN fecha DATETIME, IN empleado INT(11), IN detallesPedidos INT(11))
+USE `demar`;
+DROP procedure IF EXISTS `agregarPagos`;
+
+USE `demar`;
+DROP procedure IF EXISTS `demar`.`agregarPagos`;
+;
+
+DELIMITER $$
+USE `demar`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `agregarPagos`(IN total VARCHAR(11), IN tipoPago VARCHAR(10), IN fecha VARCHAR(30), IN empleado VARCHAR(11), IN detallesPedidos VARCHAR(11))
 INSERT INTO pagos(total, tipo_pago, fecha, empleado, idDetallesPedido)
-values (total, tipoPago, fecha, empleado, detallesPedidos);
+values (total, tipoPago, fecha, empleado, detallesPedidos)$$
+
+DELIMITER ;
+;
+
+--- Procedimiento para eliminar un pago
+CREATE PROCEDURE eliminarPagos(IN folioPago INT(11)) DELETE FROM pagos WHERE folio = folioPago;
+
+--- Procedimiento para modificar un pago
+CREATE PROCEDURE modificarPagos(IN folioPago VARCHAR(11), IN total VARCHAR(11), IN tipoPago VARCHAR(10), IN fecha VARCHAR(30), IN empleado VARCHAR(11), IN detallesPedidos VARCHAR(11))
+UPDATE pagos SET folio = folioPago, total = total, tipo_pago = tipoPago, fecha = fecha, empleado = empleado, idDetallesPedido = detallesPedidos WHERE folio = folioPago;
+
+--- Configuración para eliminar filas con id anidadas en otras tablas
+SET FOREIGN_KEY_CHECKS=0;
+
+--- Procedimiento para filtar los empleados
+CREATE PROCEDURE filtrarEmpleados() SELECT nombre FROM empleados;
+
+--- Procedimiento para obtener el ID del empleado
+CREATE PROCEDURE idEmpleado(IN nomEmpleado VARCHAR(50)) SELECT id FROM empleados WHERE nombre = nomEmpleado;
+
+--- Procedimiento para agregar recepciones
+CREATE PROCEDURE agregarRecepciones(IN fecha VARCHAR(30), IN cantidad varchar(11), IN idEmpleado VARCHAR(11))
+INSERT INTO recepciones(fecha, cantidad, idEmpleado, estado)
+VALUES (fecha, cantidad, idEmpleado, 1);
+
+--- Procedimiento para la eliminación lógica de una recepción
+CREATE PROCEDURE eliminarRecepcion(IN folioRec VARCHAR(11)) UPDATE recepciones SET estado = 0 WHERE folio = folioRec;
+
+
+--- Procedimiento para modificar una recepcion
+CREATE PROCEDURE modificarRecepcion(IN folioRec VARCHAR(11), IN fecha VARCHAR(30), IN cantidad varchar(11), IN idEmpleado VARCHAR(11))
+UPDATE recepciones SET fecha = fecha, cantidad = cantidad, idEmpleado = idEmpleado WHERE folio = folioRec;
+
+
+--- Procedimiento para agregar Gastos
+USE `demar`;
+DROP procedure IF EXISTS `agregarGastos`;
+
+USE `demar`;
+DROP procedure IF EXISTS `demar`.`agregarGastos`;
+;
+
+DELIMITER $$
+USE `demar`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `agregarGastos`(IN tipo VARCHAR(50), IN cantidad VARCHAR(11), IN fecha VARCHAR(30), IN idempleado VARCHAR(11))
+INSERT INTO gastos(tipo, cantidad, fecha, idempleado)
+VALUES(tipo, cantidad, fecha, idempleado)$$
+
+DELIMITER ;
+;
+
+--- Procedimiento para modificar Gastos
+CREATE PROCEDURE modificarGastos(IN idGasto VARCHAR(11), IN tipo VARCHAR(50), IN cantidad VARCHAR(11), IN fecha VARCHAR(30), IN idempleado VARCHAR(11))
+UPDATE gastos SET tipo = tipo, cantidad = cantidad, fecha = fecha, idempleado = idempleado WHERE id = idGasto;
+
+--- PProcedimiento para eliminar Gastos
+CREATE PROCEDURE eliminarGastos(IN idGasto VARCHAR(11)) DELETE FROM gastos WHERE id = idGasto;
+
+--- Procedimiento para selecctionar todos los gastos sin excepcion
+CREATE PROCEDURE selecGastos() SELECT *FROM gastos;
+
+--- Procedimiento para seleccionar los insumos con estado = 1
+CREATE PROCEDURE selectInsumos() SELECT *FROM insumos WHERE estado = 1;
+
+--- Procedimiento para filtrar los proveedores
+CREATE PROCEDURE filProveedores() SELECT NOMBRE FROM proveedores;
+
+--- Procedimiento para obtener el ID de un proveedor
+CREATE PROCEDURE idProveedor(IN nomProveedor VARCHAR(30)) SELECT id FROM proveedores WHERE nombre = nomProveedor;
+
+
+--- Procedimiento para agregar un insumos
+CREATE PROCEDURE agregarInsumos(IN nombre VARCHAR(30), IN proveedor VARCHAR(11), IN precio VARCHAR(11))
+INSERT INTO insumos(nombre, proveedor, precio, estado) 
+VALUES(nombre, proveedor, precio, 1);
+
+--- Procedimiento para modificar un insumo
+CREATE PROCEDURE modificarInsumo(IN folioInsumo VARCHAR(11), IN nombre VARCHAR(30), IN proveedor VARCHAR(11), IN precio VARCHAR(11))
+UPDATE insumos SET nombre = nombre, proveedor = proveedor, precio = precio WHERE folio = folioInsumo;
+
+
+--- Procedimiento para la eliminación lógica de un insumo
+CREATE PROCEDURE eliminarInsumo(IN folioInsumo VARCHAR(11))
+UPDATE insumos SET estado = 0 WHERE folio = folioInsumo;
 
 --------------------------------------------------------
 
@@ -97,9 +189,5 @@ CHANGE COLUMN `hora_entrada` `hora_entrada` TIME NULL DEFAULT NULL ;
 ALTER TABLE `demar`.`areas` 
 CHANGE COLUMN `hora_salida` `hora_salida` TIME NULL DEFAULT NULL ;
 
-
-
---- SE MODIFICÓ LA COLUMNA FLOAT PARA DEFINIR EL RANGO
-ALTER TABLE `demar`.`pagos` 
-CHANGE COLUMN `total` `total` DOUBLE NULL DEFAULT NULL ;
-
+ALTER TABLE `demar`.`gastos` 
+CHANGE COLUMN `cantidad` `cantidad` DOUBLE NULL DEFAULT NULL ;

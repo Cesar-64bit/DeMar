@@ -25,7 +25,19 @@ public class PagosModelo extends Modelo {
 
     // AGREGAR NUEVO PAGO
     public boolean registrar(String total, String tipoPago, String fecha, String empleado, String detallesPedidos) {
-        String consulta = "CALL agregarPagos('"+total+"', '"+tipoPago+"', '"+fecha+"', '"+empleado+"', '"+detallesPedidos+"');";
+        String consulta = "CALL agregarPagos('"+total+"','"+tipoPago+"','"+fecha+"','"+empleado+"','"+detallesPedidos+"');";
+        return consultaPersistencia(consulta);
+    }
+
+    // MODIFICAR PAGOS
+    public boolean modificar(String folio, String total, String tipoPago, String fecha, String empleado, String detallesPedidos) {
+        String consulta = "CALL modificarPagos('"+folio+"','"+total+"','"+tipoPago+"','"+fecha+"','"+empleado+"','"+detallesPedidos+"');";
+        return consultaPersistencia(consulta);
+    }
+
+    // ELIMINAR PAGOS
+    public boolean eliminar(String folioPago) {
+        String consulta = "CALL eliminarPagos('"+folioPago+"');";
         return consultaPersistencia(consulta);
     }
 }

@@ -40,7 +40,6 @@ public class PedidosVista extends JFrame {
     private Font fuenteMuyGrande = new java.awt.Font("Segoe UI", 1, 18);
     private Font fuenteGrande = new java.awt.Font("Segoe UI", 1, 16);
     private Font fuenteMediana = new java.awt.Font("Segoe UI", 0, 14);
-    private Font fuentePequeña = new java.awt.Font("Segoe UI", 0, 12);
     private Border sinBordes = BorderFactory.createLineBorder(colorFondo, 0);
     private Border bordeSencillo = BorderFactory.createLineBorder(colorPrimario, 1);
 
