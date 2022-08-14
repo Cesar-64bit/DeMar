@@ -31,6 +31,14 @@ public class PrestamosControlador implements ActionListener, MouseListener {
         this.prestamosVista.diseñarJTable(tabla, scroll);
     }
 
+    /* ESTE MÉTODO MUESTRA EL VALOR BUSCADO POR ID */
+    public void buscarID(int ID) {
+        tabla.setModel(modPrestamos.selID(ID));
+        scroll.setViewportView(tabla);
+
+        this.prestamosVista.diseñarJTable(tabla, scroll);
+    }
+
      // SE COLOCAN LOS EMPLEADOS EN UN JCOMBOBOX
      public void rellenarEmpleados() {
         prestamosVista.setCbmEmpleados(modPrestamos.filEmpleados());
@@ -38,6 +46,9 @@ public class PrestamosControlador implements ActionListener, MouseListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if(e.getSource() == prestamosVista.getBtnBuscar()) {
+            buscarID(prestamosVista.getTxtBuscar());
+        }
         if(e.getSource() == prestamosVista.getBtnAgregar()) {
             boolean registro = modPrestamos.registrar(
                                                     prestamosVista.getTxtFechaPrestamo(),

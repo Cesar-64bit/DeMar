@@ -32,6 +32,14 @@ public class RecepcionControlador implements ActionListener, MouseListener{
         this.recepcionVista.diseñarJTable(tabla, scroll);
     }
 
+    /* ESTE MÉTODO MUESTRA EL VALOR BUSCADO POR ID */
+    public void buscarID(int ID) {
+        tabla.setModel(modRecepcion.selID(ID));
+        scroll.setViewportView(tabla);
+
+        this.recepcionVista.diseñarJTable(tabla, scroll);
+    }
+
     // SE COLOCAN LOS EMPLEADOS EN UN JCOMBOBOX
     public void rellenarEmpleados() {
         recepcionVista.setCbmEmpleados(modRecepcion.filEmpleados());
@@ -39,6 +47,10 @@ public class RecepcionControlador implements ActionListener, MouseListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if(e.getSource() == recepcionVista.getBtnBuscar()) {
+            buscarID(recepcionVista.getTxtBuscar());
+
+        }
         if(e.getSource() == recepcionVista.getBtnAgregar()) {
             boolean registro = modRecepcion.registrar(
                                                     recepcionVista.getTxtFecha(),

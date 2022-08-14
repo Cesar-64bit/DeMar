@@ -22,6 +22,12 @@ public class PrestamosModelo extends Modelo {
         return consultaSeleccion(consulta);
     }
 
+    // Seleccionar un prestamo con un ID
+    public DefaultTableModel selID(int id){ 
+        String consulta = "CALL buscarUnPrestamo('"+ id +"');";
+        return consultaSeleccion(consulta);
+    }
+
      // OBTENER NOMBRE DE EMPLEADOS 
      public DefaultTableModel nomEmpleado(String nombre) {
         String consulta = "CALL idEmpleado('"+nombre+"');";
