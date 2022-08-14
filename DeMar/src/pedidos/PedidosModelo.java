@@ -17,13 +17,13 @@ public class PedidosModelo extends Modelo{
     
     //CONSULTAS
     //Seleccionar un pedido con su ID.
-    public DefaultTableModel selID(int id){
+    public DefaultTableModel selecID(int id){
         String consulta = "call demar.buscarUnPedido('" + id + "');";
         return consultaSeleccion(consulta);
     }
     
     //Seleccionar todos los pedidos sin excepciones.
-    public DefaultTableModel selTodos(){
+    public DefaultTableModel selecTodos(){
         String consulta = "call demar.seleccionarPedidos();";
         return consultaSeleccion(consulta);
     }
@@ -35,7 +35,7 @@ public class PedidosModelo extends Modelo{
     //  1: En proceso
     //  2: Pendiente
     //  3: En captura
-    public DefaultTableModel selFiltros(String fecha, String idProveedor, String idEmpleado, int estado){
+    public DefaultTableModel selecFiltros(String fecha, String idProveedor, String idEmpleado, int estado){
         String consulta = "call demar.seleccionarPedidosFiltros(";
         if(fecha == null) consulta += "'', ";
         else consulta += "'" + fecha + "', ";
@@ -48,7 +48,7 @@ public class PedidosModelo extends Modelo{
     }
     
     //Inserta un pedido con la fecha actual y en estado proceso de captura.
-    public boolean registrar(int idProveedor, int idEmpleado){
+    public boolean nuevo(int idProveedor, int idEmpleado){
         String consulta = "call demar.insertarPedido('" + idProveedor + "', '" + idEmpleado + "');";
         return consultaPersistencia(consulta);
     }
