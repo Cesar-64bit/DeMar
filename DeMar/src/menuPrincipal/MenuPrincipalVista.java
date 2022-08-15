@@ -295,6 +295,7 @@ public class MenuPrincipalVista extends JFrame {
         btnUsuarios.setFocusable(false);
       //  btnUsuarios.setBorder(null);
         btnUsuarios.setHorizontalAlignment(SwingConstants.CENTER);
+        btnUsuarios.addActionListener(mnControlador);
         pUsuario.add(btnUsuarios);
 
         // BOTON PERFILES -----------------------------------------------------------------------
@@ -354,5 +355,9 @@ public class MenuPrincipalVista extends JFrame {
 
     public JButton getBtnInsumos() {
         return btnInsumo;
+    }
+
+    public JButton getBtnUsuarios() {
+        return btnUsuarios;
     }
 }
