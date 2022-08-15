@@ -258,19 +258,19 @@ DELIMITER ;
 -- DELIMITER ;
 -- -----------------------------------------------------------------
 -- Procedimiento almacenado para SELECCIONAR INSUMOS DE UN PROVEEDOR
--- USE `demar`;
--- DROP procedure IF EXISTS `insumos_selecPorProveedor`;
--- DELIMITER $$
--- USE `demar`$$
--- CREATE PROCEDURE `insumos_selecPorProveedor` (IN proveedorIn INT(11), IN estadoIn VARCHAR(1)) 
--- BEGIN
--- 	IF(estadoIn != '') THEN
--- 		SELECT * FROM demar.insumos WHERE proveedor = proveedorIn and estado = estadoIn;
--- 	ELSE
--- 		SELECT * FROM demar.insumos WHERE proveedor = proveedorIn;
--- 	END IF;
--- END$$
--- DELIMITER ;
+USE `demar`;
+DROP procedure IF EXISTS `insumos_selecPorProveedor`;
+DELIMITER $$
+USE `demar`$$
+CREATE PROCEDURE `insumos_selecPorProveedor` (IN proveedorIn INT(11), IN estadoIn VARCHAR(1)) 
+BEGIN
+	IF(estadoIn != '') THEN
+		SELECT * FROM demar.insumos WHERE proveedor = proveedorIn and estado = estadoIn;
+	ELSE
+ 		SELECT * FROM demar.insumos WHERE proveedor = proveedorIn;
+ 	END IF;
+ END$$
+DELIMITER ;
 -- ---------------------------------------------------------------------
 -- Procedimiento almacenado para SELECCIONAR EL ULTIMO INSUMO registrado
 -- USE `demar`;

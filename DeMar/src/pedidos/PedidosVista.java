@@ -5,16 +5,17 @@ import java.util.Locale;
 import java.awt.*;
 import java.text.SimpleDateFormat;
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicComboBoxUI;
-import javax.swing.plaf.basic.BasicTabbedPaneUI;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.plaf.DimensionUIResource;
+import javax.swing.plaf.basic.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.JTableHeader;
 import javax.swing.border.Border;
 
 
 public class PedidosVista extends JFrame {
     //COMPONENTES GRAFICOS
     protected JTabbedPane tpOpciones;
-    protected JPanel pFondo, pInfo, pInformacion, pBus, pBusqueda, pBotones, pDatosGenerales, pDetalles;
+    protected JPanel pFondo, pInfo, pInformacion, pBus, pBusqueda, pBotones, pDatosGenerales, pDetalles, pTablaDetalles;
     protected JScrollPane psTablaDetalles;
     protected JSeparator sBusqueda1, sBusqueda2, sInformacion1, sInformacion2, sEmpleado;
     protected JLabel lblFecha, lblNomEmpleado, lblEmpleado, lblProveedor;
@@ -22,6 +23,7 @@ public class PedidosVista extends JFrame {
     protected JButton btnGuardar, btnLimpiar, btnCerrar, btnAgregar, btnEliminar;
     protected JTextField txtCantidad;
     protected JTable tbInsumos;
+    protected JTableHeader tbhInsumos;
 
     //CLASES USADAS
     protected PedidosControlador pedidosControlador;
@@ -36,10 +38,11 @@ public class PedidosVista extends JFrame {
     private Color colorFondo = Color.WHITE;
     private Color colorPrimario = new Color(51, 62, 80);
     private Color colorPrimario2 =  new Color(70, 85, 110);
+    private Color colorPrimario3 = new Color(172, 179, 188);
     private Color colorSecundario = new Color(197, 223, 183);
-    private Font fuenteMuyGrande = new java.awt.Font("Segoe UI", 1, 18);
-    private Font fuenteGrande = new java.awt.Font("Segoe UI", 1, 16);
-    private Font fuenteMediana = new java.awt.Font("Segoe UI", 0, 14);
+    private Font fuenteMuyGrande = new Font("Segoe UI", 1, 18);
+    private Font fuenteGrande = new Font("Segoe UI", 1, 16);
+    private Font fuenteMediana = new Font("Segoe UI", 0, 14);
     private Border sinBordes = BorderFactory.createLineBorder(colorFondo, 0);
     private Border bordeSencillo = BorderFactory.createLineBorder(colorPrimario, 1);
 
@@ -47,6 +50,7 @@ public class PedidosVista extends JFrame {
         this.pedidosControlador = pedidosControlador;
 
         this.crearPanels();
+        this.crearTablas();
         this.crearSeparadores();
         this.crearEtiquetas();
         this.crearComboBoxs();
@@ -72,6 +76,7 @@ public class PedidosVista extends JFrame {
         pDatosGenerales = new JPanel();
         pDetalles = new JPanel();
         psTablaDetalles = new JScrollPane();
+        pTablaDetalles = new JPanel();
         
         
         //Construcción
@@ -127,13 +132,17 @@ public class PedidosVista extends JFrame {
             (int)(pInformacion.getWidth()*.8f), (int)(pInformacion.getHeight()*.4f));
         pInformacion.add(pDetalles);
 
-        psTablaDetalles.setBackground(colorFondo);
-        psTablaDetalles.setLayout(null);
+        psTablaDetalles.setBackground(colorPrimario2);
         psTablaDetalles.setBounds(
             0, 50,
             (int)(pDetalles.getWidth()*.81f), pDetalles.getHeight() - 50);
-        psTablaDetalles.setBorder(bordeSencillo);
+        psTablaDetalles.setBorder(sinBordes);
+        psTablaDetalles.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         pDetalles.add(psTablaDetalles);
+
+        pTablaDetalles.setBackground(colorPrimario3);
+        pTablaDetalles.setLayout(null);
+        psTablaDetalles.setViewportView(pTablaDetalles);
 
         pBus.setBackground(colorFondo);
         pBus.setLayout(null);
@@ -391,15 +400,37 @@ public class PedidosVista extends JFrame {
     public void crearTablas(){
         //Instanciamiento
         tbInsumos = new JTable();
+        tbhInsumos = new JTableHeader();
 
         //Construcción
-        tbInsumos.setModel(new DefaultTableModel(
-            new Object [][] { },
-            new String [] { }
-        ));
-        psTablaDetalles.setViewportView(tbInsumos);
+        tbInsumos.setBounds(
+            0, 30,
+            pTablaDetalles.getWidth(), 0);
+        tbInsumos.setBorder(bordeSencillo);
+        tbInsumos.setBackground(colorFondo);
+        tbInsumos.setForeground(colorPrimario);
+        tbInsumos.setFont(fuenteMediana);
+        tbInsumos.setRowHeight(25);
+        diseñarTbhInsumos();
 
         //Mostrar
-        psTablaDetalles.add(tbInsumos);
+        pTablaDetalles.add(tbhInsumos);
+        pTablaDetalles.add(tbInsumos);
+    }
+
+    public void diseñarTbhInsumos(){
+        tbhInsumos = tbInsumos.getTableHeader();
+        tbhInsumos.setBounds(
+            0, 0,
+            pTablaDetalles.getWidth(), 30);
+        tbhInsumos.setBorder(bordeSencillo);
+        tbhInsumos.setBackground(colorPrimario);
+        tbhInsumos.setForeground(colorFondo);
+        tbhInsumos.setFont(fuenteGrande);
+
+        tbInsumos.setSize(psTablaDetalles.getWidth(), tbInsumos.getRowCount()*25);
+
+        pTablaDetalles.setPreferredSize(
+            new Dimension(0, tbhInsumos.getHeight() + tbInsumos.getHeight()));
     }
 }
