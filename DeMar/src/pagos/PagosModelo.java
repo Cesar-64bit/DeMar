@@ -23,6 +23,12 @@ public class PagosModelo extends Modelo {
         return consultaSeleccion(consulta);
     }
 
+     // Seleccionar un proveedor con un ID
+     public DefaultTableModel selID(int id){ 
+        String consulta = "CALL buscarUnPago('"+ id +"');";
+        return consultaSeleccion(consulta);
+    }
+
     // AGREGAR NUEVO PAGO
     public boolean registrar(String total, String tipoPago, String fecha, String empleado, String detallesPedidos) {
         String consulta = "CALL agregarPagos('"+total+"','"+tipoPago+"','"+fecha+"','"+empleado+"','"+detallesPedidos+"');";

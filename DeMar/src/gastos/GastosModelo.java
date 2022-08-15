@@ -22,6 +22,12 @@ public class GastosModelo extends Modelo {
         return consultaSeleccion(consulta);
     }
 
+    // Seleccionar un gasto con un ID
+    public DefaultTableModel selID(int id){ 
+        String consulta = "CALL buscarUnGasto('"+ id +"');";
+        return consultaSeleccion(consulta);
+    }
+
      // FILTRAR NOMBRES DE EMPLEADOS PARA COMBOBOX
      public DefaultTableModel filEmpleados() {
         String consulta = "CALL filtrarEmpleados();";

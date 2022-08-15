@@ -30,8 +30,19 @@ public class PagosControlador implements ActionListener, MouseListener {
         this.pagosVista.diseñarJTable(tabla, scroll);
     }
 
+     /* ESTE MÉTODO MUESTRA EL VALOR BUSCADO POR ID */
+     public void buscarID(int ID) {
+        tabla.setModel(modPagos.selID(ID));
+        scroll.setViewportView(tabla);
+
+        this.pagosVista.diseñarJTable(tabla, scroll);
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
+        if(e.getSource() == pagosVista.getBtnBuscar()) {
+            buscarID(pagosVista.getTxtBuscar());
+        }
         if(e.getSource() == pagosVista.getBtnAgregar()) {
             boolean registro = modPagos.registrar(
                                                 pagosVista.getTxtTotal(), 

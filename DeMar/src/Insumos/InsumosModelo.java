@@ -22,6 +22,12 @@ public class InsumosModelo extends Modelo {
         return consultaSeleccion(consulta);
     }
 
+    // Seleccionar un insumo con un ID
+    public DefaultTableModel selID(int id){ 
+        String consulta = "CALL buscarUnInsumo('"+ id +"');";
+        return consultaSeleccion(consulta);
+    }
+
     public DefaultTableModel filProveedores() {
         String consulta = "CALL filProveedores();";
         return consultaSeleccion(consulta);

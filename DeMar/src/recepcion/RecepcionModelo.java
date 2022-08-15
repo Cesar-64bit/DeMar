@@ -22,6 +22,12 @@ public class RecepcionModelo extends Modelo {
         return consultaSeleccion(consulta); 
     }
 
+    // Seleccionar un proveedor con un ID
+    public DefaultTableModel selID(int id){ 
+        String consulta = "CALL buscarUnaRecepcion('"+ id +"');";
+        return consultaSeleccion(consulta);
+    }
+
     // OBTENER NOMBRE DE EMPLEADOS
     public DefaultTableModel nomEmpleado(String nombre) {
         String consulta = "CALL idEmpleado('"+nombre+"');";

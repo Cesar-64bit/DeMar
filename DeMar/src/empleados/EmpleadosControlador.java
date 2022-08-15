@@ -3,7 +3,10 @@ package DeMar.src.empleados;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
+import java.io.File;
 import java.awt.event.MouseEvent;
+
+import javax.swing.JFileChooser;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -30,29 +33,54 @@ public class EmpleadosControlador implements ActionListener, MouseListener {
         this.eVista.diseñarJTable(tabla, scroll);
     }
 
+    /* ESTE MÉTODO MUESTRA EL VALOR BUSCADO POR ID */
+    public void buscarID(int ID) {
+        tabla.setModel(modEmpleados.selID(ID));
+        scroll.setViewportView(tabla);
+
+        this.eVista.diseñarJTable(tabla, scroll);
+    }
+
     // SE OBTIENE EL ID DEL AREA
-    public int obtenerAreaID(String nombre) {
+    public String obtenerAreaID(String nombre) {
         DefaultTableModel id = modEmpleados.obtenerIDArea(nombre);
-        return Integer.parseInt(id.getValueAt(0, 0).toString());
+        return id.getValueAt(0, 0).toString();
     }
 
     // SE COLOCAN LAS ÁREAS EN UN JCOMBOBOX
     public void rellenarAreas() {
-        eVista.setTxtAreas(modEmpleados.filAreas());
+        eVista.setCmbAreas(modEmpleados.filAreas());
     }
 
     // EVENTOS DE LOS BOTONES
     @Override
     public void actionPerformed(ActionEvent e) {
+        if(e.getSource() == eVista.getBtnBuscar()) {
+            buscarID(eVista.getTxtBuscar());
+        }
         if(e.getSource() == eVista.getBtnAgregar()) {
             boolean registro = modEmpleados.registrar(
-                                                eVista.getTxtNombre(), eVista.getTxtTelefono(), 
-                                                eVista.getTxtDireccion(), eVista.getTxtDiasLaborados(), 
-                                                eVista.getTxtFechaContrato(), obtenerAreaID(eVista.getTxtAreas()));
+                                                eVista.getTxtNombre(),
+                                                eVista.getTxtTelefono(), 
+                                                eVista.getTxtDireccion(),
+                                                eVista.getTxtDiasLaborados(), 
+                                                eVista.getTxtFechaContrato(),
+                                                eVista.getTxtAreas(),
+                                                eVista.getTxtRutaImagen());
             eVista.confirmarRegistro(registro);
         }
         if(e.getSource() == eVista.getBtnModificar()) {
-            // Pendiente
+            if(eVista.confirmarAccion(eVista.getBtnModificar().getText()) == 0) {
+                modEmpleados.modificar(
+                                        eVista.getTxtNumeroEmpleado(),
+                                        eVista.getTxtNombre(),
+                                        eVista.getTxtTelefono(), 
+                                        eVista.getTxtDireccion(),
+                                        eVista.getTxtDiasLaborados(), 
+                                        eVista.getTxtFechaContrato(),
+                                        eVista.getTxtAreas(),
+                                        eVista.getTxtRutaImagen());
+            }
         }
 
         if(e.getSource() == eVista.getBtnEliminar()) {
@@ -62,6 +90,19 @@ public class EmpleadosControlador implements ActionListener, MouseListener {
 
         if(e.getSource() == eVista.getBtnLimpiar()) {
             eVista.limpiar();
+        }
+        if(e.getSource() == eVista.getBtnCargarFoto()) {
+            // Cargar ruta de una imagen
+            JFileChooser choose = new JFileChooser();
+            choose.showOpenDialog(choose);
+
+            File ruta = choose.getSelectedFile();
+            String rutas = ruta.getAbsolutePath();
+
+            eVista.setTxtRuta(rutas.replace("\\", "/"));
+        }
+        if(e.getSource() == eVista.getCombo()) {
+            eVista.colocarID(obtenerAreaID(eVista.getCmbAreas()));
         }
     }
 
@@ -77,7 +118,7 @@ public class EmpleadosControlador implements ActionListener, MouseListener {
                 eVista.setTxtAreas(eVista.getTabla(), filas);
                 eVista.setTxtFechaContrato(eVista.getTabla(), filas);
                 eVista.setTxtDiasLaborados(eVista.getTabla(), filas);
-                //eVista.setAuxNombre(eVista.getTxtNombre());
+                eVista.setTxtRuta(eVista.getTabla(), filas);
             }
         }
     }

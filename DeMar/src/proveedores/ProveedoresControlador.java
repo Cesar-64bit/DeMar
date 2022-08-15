@@ -28,8 +28,19 @@ public class ProveedoresControlador implements ActionListener, MouseListener {
         this.pVista.diseñarJTable(tabla, scroll);
     }
 
+     /* ESTE MÉTODO MUESTRA EL VALOR BUSCADO POR ID */
+     public void buscarID(int ID) {
+        tabla.setModel(modProveedores.selID(ID));
+        scroll.setViewportView(tabla);
+
+        this.pVista.diseñarJTable(tabla, scroll);
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
+        if(e.getSource() == pVista.getBtnBuscar()) {
+            buscarID(pVista.getTxtBuscar());
+        }
         if(e.getSource() == pVista.getBtnAgregar()) {
             boolean registro = modProveedores.registrar(
                                                         pVista.getTxtNombre(),

@@ -23,6 +23,12 @@ public class EmpleadosModelo extends Modelo {
         return consultaSeleccion(consulta);
     }
 
+    // Seleccionar un empleado con un ID
+    public DefaultTableModel selID(int id){ 
+        String consulta = "CALL buscarUnEmpleado('"+ id +"');";
+        return consultaSeleccion(consulta);
+    }
+
     // Consulta para filtrarAreas
     public DefaultTableModel filAreas() {
         String consulta = "CALL filtrarAreas();";
@@ -36,8 +42,14 @@ public class EmpleadosModelo extends Modelo {
     }
 
     // Agregar nuevos empleados
-    public boolean registrar(String nombre, String telefono, String direccion, Float dias, String fechaContrato, int idAreas) {
-        String consulta = "CALL agregarEmpleado('"+nombre+"', '"+telefono+"', '"+direccion+"', '"+dias+"', '"+fechaContrato+"', '"+idAreas+"');";
+    public boolean registrar(String nombre, String telefono, String direccion, Float dias, String fechaContrato, String idAreas, String rutaImagen) {
+        String consulta = "CALL agregarEmpleado('"+nombre+"', '"+telefono+"', '"+direccion+"', '"+dias+"', '"+fechaContrato+"', '"+idAreas+"', '"+rutaImagen+"');";
+        return consultaPersistencia(consulta);
+    }
+
+    // Modificar empleados
+    public boolean modificar(String idEmpleado, String nombre, String telefono, String direccion, Float dias, String fechaContrato, String idAreas, String rutaImagen) {
+        String consulta = "CALL modificarEmpleados('"+idEmpleado+"','"+nombre+"','"+telefono+"','"+direccion+"','"+dias+"','"+fechaContrato+"','"+idAreas+"','"+rutaImagen+"');";
         return consultaPersistencia(consulta);
     }
 

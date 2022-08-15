@@ -47,6 +47,10 @@ CREATE PROCEDURE agregarEmpleado(IN nombre VARCHAR(50), IN telefono VARCHAR(15),
 INSERT INTO empleados(nombre, telefono, direccion, dias_laborados, fecha_contrato, idareas, estado)
 VALUES (nombre, telefono, direccion, dias, fechaContrato, area, 1);
 
+--- Procedimiento para modificar ewmpleados
+CREATE PROCEDURE modificarEmpleados(IN idEmpleado VARCHAR(11), IN nombre VARCHAR(50), IN telefono VARCHAR(15), IN direccion VARCHAR(50), IN dias VARCHAR(11), IN fechaContrato VARCHAR(10), IN area VARCHAR(10), IN rutaImagen VARCHAR(100))
+UPDATE empleados SET nombre = nombre, telefono = telefono, direccion = direccion, dias_laborados = dias, fecha_contrato = fechaContrato, imagen = rutaImagen, idareas = area WHERE id = idEmpleado;
+
 -- Procedimiento para optener el ID de una Area
 CREATE PROCEDURE obtenerIDArea(IN nombreArea VARCHAR(30)) SELECT id FROM areas WHERE nombre=nombreArea;
 
@@ -184,6 +188,25 @@ UPDATE prestamos set fecha = fechaPrestamo, fechaPagado = fechaPago, cantidad = 
 --- Procedimiento para eliminar préstamos
 CREATE PROCEDURE eliminarPrestamos(IN idPrestamo VARCHAR(11)) UPDATE prestamos SET estado = 0 WHERE id = idPrestamo;
 
+--- Procedimiento para buscar un empleado con el ID
+CREATE PROCEDURE buscarUnEmpleado(IN idEmpleado VARCHAR(11)) SELECT *FROM empleados WHERE id = idEmpleado;
+
+--- Procedimiento para buscar un pago con el ID
+CREATE PROCEDURE buscarUnPago(IN folioPago VARCHAR(11)) SELECT *FROM pagos WHERE folio = folioPago;
+
+--- Procedimiento para buscar un préstamo con el ID
+CREATE PROCEDURE buscarUnPrestamo(IN idPrestamo VARCHAR(11)) SELECT *FROM prestamos WHERE id = idPrestamo;
+
+--- Procedimiento para buscar una recepción con el ID
+CREATE PROCEDURE buscarUnaRecepcion(IN folioRecepcion VARCHAR(11)) SELECT *FROM recepciones WHERE folio = folioRecepcion;
+
+--- Procedimiento para buscar un gasto con el ID
+CREATE PROCEDURE buscarUnGasto(IN idGasto VARCHAR(11)) SELECT *FROM gastos WHERE id = idGasto;
+
+--- Procedimiento para buscar un insumo con el ID
+CREATE PROCEDURE buscarUnInsumo(IN folioInsumo VARCHAR(11)) SELECT *FROM insumos WHERE folio = folioInsumo;
+
+
 --------------------------------------------------------
 
 --- PRUEBAS
@@ -209,3 +232,21 @@ CHANGE COLUMN `cantidad` `cantidad` DOUBLE NULL DEFAULT NULL ;
 
 ALTER TABLE `demar`.`prestamos` 
 CHANGE COLUMN `tipoPlazos` `tipoPlazos` VARCHAR(15) NOT NULL COMMENT '0: Semanales\\n1: Quinsenales\\n2: Mensuales\\n3: Libre (A como el empleado pueda pagarlo)' ;
+
+
+--- SE MODIFICO agregarEmpelados
+USE `demar`;
+DROP procedure IF EXISTS `agregarEmpleado`;
+
+USE `demar`;
+DROP procedure IF EXISTS `demar`.`agregarEmpleado`;
+;
+
+DELIMITER $$
+USE `demar`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `agregarEmpleado`(IN nombre VARCHAR(50), IN telefono VARCHAR(15), IN direccion VARCHAR(50), IN dias VARCHAR(11), IN fechaContrato VARCHAR(10), IN area VARCHAR(10), IN rutaImagen VARCHAR(100))
+INSERT INTO empleados(nombre, telefono, direccion, dias_laborados, fecha_contrato, imagen, idareas, estado)
+VALUES (nombre, telefono, direccion, dias, fechaContrato, rutaImagen, area, 1)$$
+
+DELIMITER ;
+;
