@@ -17,8 +17,6 @@ public class MenuPrincipalModelo extends Modelo{
     }
 
     // CONSULTAS
-    // CONSULTAS
-    // CONSULTA PARA MOSTRAR TODOS LOS EMPLEAODS SIN EXCEPCIÓN
     public DefaultTableModel selecImagen(String nombre) {
         String consulta  = "CALL selecImagen('"+nombre+"');";
         return consultaSeleccion(consulta);

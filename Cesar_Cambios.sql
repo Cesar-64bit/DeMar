@@ -206,6 +206,14 @@ CREATE PROCEDURE buscarUnGasto(IN idGasto VARCHAR(11)) SELECT *FROM gastos WHERE
 --- Procedimiento para buscar un insumo con el ID
 CREATE PROCEDURE buscarUnInsumo(IN folioInsumo VARCHAR(11)) SELECT *FROM insumos WHERE folio = folioInsumo;
 
+--- Procedimiento para buscar un usuario
+CREATE PROCEDURE buscarUnUsuario(IN id VARCHAR(11)) SELECT *FROM usuarios WHERE identificador =  id;
+
+--- Procedimiento para mostrar los usuarios
+CREATE PROCEDURE selecUsuariosActivos() SELECT *FROM usuarios WHERE estado = 1;
+
+--- Procedimiento para filtar perfiles
+CREATE PROCEDURE filtrarPerfiles() SELECT nombre FROM perfiles;
 
 --------------------------------------------------------
 

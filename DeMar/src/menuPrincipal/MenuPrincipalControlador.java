@@ -15,6 +15,7 @@ import DeMar.src.pedidos.PedidosControlador;
 import DeMar.src.prestamos.PrestamosControlador;
 import DeMar.src.proveedores.ProveedoresControlador;
 import DeMar.src.recepcion.RecepcionControlador;
+import DeMar.src.usuarios.UsuariosControlador;
 
 public class MenuPrincipalControlador extends MouseAdapter implements ActionListener {
     MenuPrincipalModelo modMenu = new MenuPrincipalModelo();
@@ -67,6 +68,10 @@ public class MenuPrincipalControlador extends MouseAdapter implements ActionList
         if(e.getSource() == mnPrincipalVista.getBtnInsumos()) {
             InsumosControlador insumosVista = new InsumosControlador();
             insumosVista.getClass();
+        }
+        if(e.getSource() == mnPrincipalVista.getBtnUsuarios()) {
+            UsuariosControlador usuariosVista = new UsuariosControlador();
+            usuariosVista.getClass();
         }
     }
 }
