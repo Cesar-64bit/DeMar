@@ -32,6 +32,12 @@ public class InsumosModelo extends Modelo {
         return consultaSeleccion(consulta);
     }
 
+    //Seleccionar los insumos de un proveedor y dependiendo el estado.
+    public DefaultTableModel selecPorProveedor(int idProveedor, int estado) {
+        String consulta = "CALL insumos_selecPorProveedor('"+idProveedor+"', '"+estado+"');";
+        return consultaSeleccion(consulta);
+    }
+
     // AGREGAR INSUMOS
     public boolean registrar(String nombre, String proveedor, String precio) {
         String consulta = "CALL agregarInsumos('"+nombre+"','"+proveedor+"','"+precio+"');";
