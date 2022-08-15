@@ -47,9 +47,28 @@ public class PedidosModelo extends Modelo{
         return consultaSeleccion(consulta);
     }
     
-    //Inserta un pedido con la fecha actual y en estado proceso de captura.
-    public boolean nuevo(int idProveedor, int idEmpleado){
-        String consulta = "call demar.insertarPedido('" + idProveedor + "', '" + idEmpleado + "');";
+    // Inserta un pedido con la fecha actual y en estado proceso de captura.
+    public boolean agregarPedido(int idProveedor, String nombreEmpleado){
+        String consulta = "call demar.agregarPedido('" + idProveedor + "', '" + nombreEmpleado + "');";
+        return consultaPersistencia(consulta);
+    }
+
+    // Inserta un detalle para un pedido.
+    // Si no existe ni un pedido con estado en 3 y el insumo no es congruente, no se realizara la inserción.
+    public boolean agregarDetalle(int idInsumo, Double cantidad){
+        String consulta = "call demar.agregarDetallesPedido('" + idInsumo + "', '" + cantidad + "');";
+        return consultaPersistencia(consulta);
+    }
+
+    // Finalizar la captura de una pedido (Muy importante).
+    public boolean finalizarCaptura(){
+        String consulta = "call demar.pedidos_finalizarCaptura();";
+        return consultaPersistencia(consulta);
+    }
+
+    // Modificar el estado de un pedido.
+    public boolean modificarEstado(int idPedido, int estado){
+        String consulta = "call demar.modificarEstadoPedido('" + idPedido + "', '" + estado + "');";
         return consultaPersistencia(consulta);
     }
 }

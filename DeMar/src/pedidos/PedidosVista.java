@@ -5,25 +5,25 @@ import java.util.Locale;
 import java.awt.*;
 import java.text.SimpleDateFormat;
 import javax.swing.*;
-import javax.swing.plaf.DimensionUIResource;
 import javax.swing.plaf.basic.*;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
 
 
 public class PedidosVista extends JFrame {
     //COMPONENTES GRAFICOS
     protected JTabbedPane tpOpciones;
-    protected JPanel pFondo, pInfo, pInformacion, pBus, pBusqueda, pBotones, pDatosGenerales, pDetalles, pTablaDetalles;
-    protected JScrollPane psTablaDetalles;
+    protected JPanel pFondo, pInfo, pInformacion, pBus, pBusqueda, pBotones, pDatosGenerales, pDetalles, pTablaDetalles, pFiltros, pColores, pPeriodos, pTablaPedidos;
+    protected JScrollPane psTablaDetalles, psTablaPedidos;
     protected JSeparator sBusqueda1, sBusqueda2, sInformacion1, sInformacion2, sEmpleado;
-    protected JLabel lblFecha, lblNomEmpleado, lblEmpleado, lblProveedor;
-    protected JComboBox<String> cbxProveedor, cbxInsumos;
+    protected JLabel lblFecha, lblNomEmpleado, lblEmpleado, lblProveedor, lbFolio, lbPeriodo, lbProveedor, lbEmpleado;
+    protected JComboBox<String> cbxProveedor, cbxInsumos, cbxProveedor2, cbxEmpleado;
     protected JButton btnGuardar, btnLimpiar, btnCerrar, btnAgregar, btnEliminar;
-    protected JTextField txtCantidad;
-    protected JTable tbInsumos;
-    protected JTableHeader tbhInsumos;
+    protected JRadioButton rbHoy, rbEstaSemana, rbEsteMes, rbEsteAño, rbTodos;
+    protected JTextField txtCantidad, txtFolio;
+    protected JTable tbInsumos, tbPedidos;
+    protected JTableHeader tbhInsumos, tbhPedidos;
 
     //CLASES USADAS
     protected PedidosControlador pedidosControlador;
@@ -41,6 +41,7 @@ public class PedidosVista extends JFrame {
     private Color colorPrimario3 = new Color(172, 179, 188);
     private Color colorSecundario = new Color(197, 223, 183);
     private Font fuenteMuyGrande = new Font("Segoe UI", 1, 18);
+    private Font fuenteMuyGrande2 = new Font("Segoe UI", 0, 18);
     private Font fuenteGrande = new Font("Segoe UI", 1, 16);
     private Font fuenteMediana = new Font("Segoe UI", 0, 14);
     private Border sinBordes = BorderFactory.createLineBorder(colorFondo, 0);
@@ -52,10 +53,11 @@ public class PedidosVista extends JFrame {
         this.crearPanels();
         this.crearTablas();
         this.crearSeparadores();
-        this.crearEtiquetas();
         this.crearComboBoxs();
         this.crearTextField();
+        this.crearEtiquetas();
         this.crearBotones();
+        this.crearRadioButtons();
 
         this.setUndecorated(true);
         this.setSize(anchoPan, altoPan);
@@ -77,7 +79,11 @@ public class PedidosVista extends JFrame {
         pDetalles = new JPanel();
         psTablaDetalles = new JScrollPane();
         pTablaDetalles = new JPanel();
-        
+        pFiltros = new JPanel();
+        psTablaPedidos = new JScrollPane();
+        pColores = new JPanel();
+        pPeriodos = new JPanel();
+        pTablaPedidos = new JPanel();
         
         //Construcción
         pFondo.setSize(anchoPan,altoPan);
@@ -113,23 +119,23 @@ public class PedidosVista extends JFrame {
         pBotones.setBackground(colorFondo);
         pBotones.setLayout(null);
         pBotones.setBounds(
-            (int)(anchoJTP*.34f), (int)(altoJTP-ejeyJTP*.92f),
-            (int)(anchoJTP*.3f), (int)(ejeyJTP*.45f));
+            (int)(anchoJTP*.34), (int)(altoJTP-ejeyJTP*.92),
+            (int)(anchoJTP*.3), (int)(ejeyJTP*.45));
         pBotones.setLayout(null);
         pInformacion.add(pBotones);
 
         pDatosGenerales.setBackground(colorSecundario);
         pDatosGenerales.setLayout(null);
         pDatosGenerales.setBounds(
-            (int)(pInformacion.getWidth()*.25f), (int)(pInformacion.getHeight()*.06f),
-            (int)(pInformacion.getWidth()*.5f), (int)(pInformacion.getHeight()*.3f));
+            (int)(pInformacion.getWidth()*.25), (int)(pInformacion.getHeight()*.06),
+            (int)(pInformacion.getWidth()*.5), (int)(pInformacion.getHeight()*.3));
         pInformacion.add(pDatosGenerales);
 
         pDetalles.setBackground(colorFondo);
         pDetalles.setLayout(null);
         pDetalles.setBounds(
-            (int)(pInformacion.getWidth()*.1f), (int)(pInformacion.getHeight()*.42f),
-            (int)(pInformacion.getWidth()*.8f), (int)(pInformacion.getHeight()*.4f));
+            (int)(pInformacion.getWidth()*.1), (int)(pInformacion.getHeight()*.42),
+            (int)(pInformacion.getWidth()*.8), (int)(pInformacion.getHeight()*.4));
         pInformacion.add(pDetalles);
 
         psTablaDetalles.setBackground(colorPrimario2);
@@ -143,7 +149,7 @@ public class PedidosVista extends JFrame {
         pTablaDetalles.setBackground(colorPrimario3);
         pTablaDetalles.setLayout(null);
         psTablaDetalles.setViewportView(pTablaDetalles);
-
+        
         pBus.setBackground(colorFondo);
         pBus.setLayout(null);
         pBus.setSize(anchoJTP, altoJTP);
@@ -151,11 +157,52 @@ public class PedidosVista extends JFrame {
         pBusqueda.setBounds(ejexJTP, 0, anchoJTP - ejexJTP, altoJTP);
         pBusqueda.setLayout(null);
         pBus.add(pBusqueda);
+
+        pFiltros.setBounds(
+            (int)(pBusqueda.getWidth()*.02), (int)(pBusqueda.getHeight()*.063),
+            (int)(pBusqueda.getWidth()*.31), (int)(pBusqueda.getHeight()*.72));
+        pFiltros.setBackground(colorFondo);
+        pFiltros.setBorder(sinBordes);
+        pFiltros.setLayout(null);
+        pBusqueda.add(pFiltros);
+
+        pPeriodos.setBorder(BorderFactory.createTitledBorder(
+            bordeSencillo, 
+            "Periodo",
+            TitledBorder.DEFAULT_JUSTIFICATION,
+            TitledBorder.DEFAULT_POSITION,
+            fuenteMediana));
+        pPeriodos.setBounds(
+            0, (int)(pFiltros.getHeight()*.04 + 50),
+            pFiltros.getWidth(), 210);
+        pPeriodos.setLayout(null);
+        pPeriodos.setBackground(colorFondo);
+        pFiltros.add(pPeriodos);
+
+        psTablaPedidos.setBounds(
+            (int)(anchoJTP*.38), (int)(pBusqueda.getHeight()*.08),
+            (int)(pBusqueda.getWidth()*.6), (int)(pBusqueda.getHeight()*.72));
+        psTablaPedidos.setBackground(colorFondo);
+        psTablaPedidos.setBorder(sinBordes);
+        psTablaPedidos.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        pBusqueda.add(psTablaPedidos);
+
+        pTablaPedidos.setBackground(colorPrimario3);
+        pTablaPedidos.setLayout(null);
+        psTablaPedidos.setViewportView(pTablaPedidos);
+        
+        pColores.setBounds(
+            (int)(pBusqueda.getWidth()*.25), (int)(altoJTP-ejeyJTP*.92),
+            (int)(pBusqueda.getWidth()*.5), (int)(ejeyJTP*.45));
+        pColores.setBackground(colorFondo);
+        pColores.setBorder(bordeSencillo);
+        pColores.setLayout(null);
+        pBusqueda.add(pColores);
     }
 
     private void crearSeparadores(){
-        int anchoSep = (int)((anchoJTP - ejexJTP)*.92f);     //Ancho separador.
-        int disIzq = (int)((anchoJTP - ejexJTP)*.04f);      //Distancia izquierda.
+        int anchoSep = (int)((anchoJTP - ejexJTP)*.92);     //Ancho separador.
+        int disIzq = (int)((anchoJTP - ejexJTP)*.04);      //Distancia izquierda.
 
         //Instanciamiento
         sInformacion1 = new JSeparator();
@@ -206,6 +253,10 @@ public class PedidosVista extends JFrame {
         lblNomEmpleado = new JLabel();
         lblEmpleado = new JLabel();
         lblProveedor = new JLabel();
+        lbFolio = new JLabel();
+        lbPeriodo = new JLabel();
+        lbProveedor = new JLabel();
+        lblEmpleado = new JLabel();
 
         //Construccion
         lblFecha.setLayout(null);
@@ -255,13 +306,10 @@ public class PedidosVista extends JFrame {
         //Instanciamiento
         cbxProveedor = new JComboBox<>();
         cbxInsumos = new JComboBox<>();
+        cbxProveedor2 = new JComboBox<>();
+        cbxEmpleado = new JComboBox<>();
 
         //Contrucción
-        cbxProveedor.setFont(fuenteGrande);
-        cbxProveedor.setForeground(colorPrimario);
-        cbxProveedor.setBackground(colorSecundario);
-        cbxProveedor.setFocusable(false);
-        ((JLabel)cbxProveedor.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
         cbxProveedor.setBounds(
             (int)(pDatosGenerales.getWidth()*.15), (int)(pDatosGenerales.getHeight()*.63),
             (int)(pDatosGenerales.getWidth()*.75), 35);
@@ -280,12 +328,13 @@ public class PedidosVista extends JFrame {
                 arrowButton.setForeground(colorFondo);
             }
         });
+        cbxProveedor.setFont(fuenteGrande);
+        cbxProveedor.setForeground(colorPrimario);
+        cbxProveedor.setBackground(colorSecundario);
+        cbxProveedor.setFocusable(false);
         cbxProveedor.setBorder(bordeSencillo);
+        ((JLabel)cbxProveedor.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
 
-        cbxInsumos.setFont(fuenteGrande);
-        cbxInsumos.setForeground(colorPrimario);
-        cbxInsumos.setBackground(colorFondo);
-        cbxInsumos.setFocusable(false);
         cbxInsumos.setBounds(
             (int)(pDetalles.getWidth()*.07), 0,
             (int)(pDetalles.getWidth()*.45), 35);
@@ -304,11 +353,78 @@ public class PedidosVista extends JFrame {
                 arrowButton.setForeground(colorFondo);
             }
         });
+        cbxInsumos.setFont(fuenteGrande);
+        cbxInsumos.setForeground(colorPrimario);
+        cbxInsumos.setBackground(colorFondo);
+        cbxInsumos.setFocusable(false);
         cbxInsumos.setBorder(bordeSencillo);
+        ((JLabel)cbxInsumos.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
+
+        cbxProveedor2.setBorder(BorderFactory.createTitledBorder(
+            bordeSencillo, 
+            "Proveedor",
+            TitledBorder.DEFAULT_JUSTIFICATION,
+            TitledBorder.DEFAULT_POSITION,
+            fuenteMediana));
+        cbxProveedor2.setBounds(
+            0, (int)(pFiltros.getHeight()*.10 + 250),
+            pFiltros.getWidth(), 60);
+            cbxProveedor2.setUI(new BasicComboBoxUI(){
+            protected JButton createArrowButton() {
+                final JButton button = new JButton("▼");
+                button.setName("ComboBox.arrowButton");
+                button.setFocusPainted(false);
+                button.setBorder(sinBordes);
+                button.setFont(fuenteGrande);
+                return button;
+            }
+            public void configureArrowButton() {
+                super.configureArrowButton();
+                arrowButton.setBackground(colorFondo);
+                arrowButton.setForeground(colorPrimario);
+            }
+        });
+        cbxProveedor2.setFont(fuenteGrande);
+        cbxProveedor2.setForeground(colorPrimario);
+        cbxProveedor2.setBackground(colorFondo);
+        cbxProveedor2.setFocusable(false);
+        ((JLabel)cbxProveedor2.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
+
+        cbxEmpleado.setBorder(BorderFactory.createTitledBorder(
+            bordeSencillo, 
+            "Empleado",
+            TitledBorder.DEFAULT_JUSTIFICATION,
+            TitledBorder.DEFAULT_POSITION,
+            fuenteMediana));
+        cbxEmpleado.setBounds(
+            0, (int)(pFiltros.getHeight()*.14 + 310),
+            pFiltros.getWidth(), 60);
+            cbxEmpleado.setUI(new BasicComboBoxUI(){
+            protected JButton createArrowButton() {
+                final JButton button = new JButton("▼");
+                button.setName("ComboBox.arrowButton");
+                button.setFocusPainted(false);
+                button.setBorder(sinBordes);
+                button.setFont(fuenteGrande);
+                return button;
+            }
+            public void configureArrowButton() {
+                super.configureArrowButton();
+                arrowButton.setBackground(colorFondo);
+                arrowButton.setForeground(colorPrimario);
+            }
+        });
+        cbxEmpleado.setFont(fuenteGrande);
+        cbxEmpleado.setForeground(colorPrimario);
+        cbxEmpleado.setBackground(colorFondo);
+        cbxEmpleado.setFocusable(false);
+        ((JLabel)cbxEmpleado.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
 
         //Mostrar
         pDatosGenerales.add(cbxProveedor);
         pDetalles.add(cbxInsumos);
+        pFiltros.add(cbxEmpleado);
+        pFiltros.add(cbxProveedor2);
     }
 
     private void crearBotones(){
@@ -355,8 +471,8 @@ public class PedidosVista extends JFrame {
         btnAgregar.setToolTipText("Agregar un insumo a la lista.");
         btnAgregar.setFocusPainted(false);
         btnAgregar.setBounds(
-            (int)(pDetalles.getWidth()*.85f), (int)(pDetalles.getHeight()*.14f),
-            (int)(pDetalles.getWidth()*.15f), 40);
+            (int)(pDetalles.getWidth()*.85), (int)(pDetalles.getHeight()*.14),
+            (int)(pDetalles.getWidth()*.15), 40);
         btnAgregar.setBorder(sinBordes);
 
         btnEliminar.setBackground(colorPrimario2);
@@ -366,8 +482,8 @@ public class PedidosVista extends JFrame {
         btnEliminar.setToolTipText("Eliminar un insumo a la lista.");
         btnEliminar.setFocusPainted(false);
         btnEliminar.setBounds(
-            (int)(pDetalles.getWidth()*.85f), (int)(pDetalles.getHeight()*.14f + 50),
-            (int)(pDetalles.getWidth()*.15f), 40);
+            (int)(pDetalles.getWidth()*.85), (int)(pDetalles.getHeight()*.14 + 50),
+            (int)(pDetalles.getWidth()*.15), 40);
         btnEliminar.setBorder(sinBordes);
 
         //Mostrar
@@ -378,29 +494,116 @@ public class PedidosVista extends JFrame {
         pDetalles.add(btnEliminar);
     }
 
+    public void crearRadioButtons(){
+        //Instanciamiento
+        rbHoy = new JRadioButton();
+        rbEstaSemana = new JRadioButton();
+        rbEsteMes = new JRadioButton();
+        rbEsteAño = new JRadioButton();
+        rbTodos = new JRadioButton();
+
+        //Construcción
+        rbHoy.setBounds(
+            (int)(pPeriodos.getWidth()*0.12), 25,
+            (int)(pPeriodos.getWidth()*0.8), 25);
+        rbHoy.setLayout(null);
+        rbHoy.setBackground(colorFondo);
+        rbHoy.setForeground(colorPrimario);
+        rbHoy.setFont(fuenteMuyGrande2);
+        rbHoy.setFocusPainted(false);
+        rbHoy.setText("Hoy");
+
+        rbEstaSemana.setBounds(
+            (int)(pPeriodos.getWidth()*0.12), 60,
+            (int)(pPeriodos.getWidth()*0.8), 25);
+        rbEstaSemana.setLayout(null);
+        rbEstaSemana.setBackground(colorFondo);
+        rbEstaSemana.setForeground(colorPrimario);
+        rbEstaSemana.setFont(fuenteMuyGrande2);
+        rbEstaSemana.setFocusPainted(false);
+        rbEstaSemana.setText("Esta semana");
+
+        rbEsteMes.setBounds(
+            (int)(pPeriodos.getWidth()*0.12), 95,
+            (int)(pPeriodos.getWidth()*0.8), 25);
+        rbEsteMes.setLayout(null);
+        rbEsteMes.setBackground(colorFondo);
+        rbEsteMes.setForeground(colorPrimario);
+        rbEsteMes.setFont(fuenteMuyGrande2);
+        rbEsteMes.setFocusPainted(false);
+        rbEsteMes.setText("Este mes");
+
+        rbEsteAño.setBounds(
+            (int)(pPeriodos.getWidth()*0.12), 130,
+            (int)(pPeriodos.getWidth()*0.8), 25);
+        rbEsteAño.setLayout(null);
+        rbEsteAño.setBackground(colorFondo);
+        rbEsteAño.setForeground(colorPrimario);
+        rbEsteAño.setFont(fuenteMuyGrande2);
+        rbEsteAño.setFocusPainted(false);
+        rbEsteAño.setText("Este mes");
+
+        rbTodos.setBounds(
+            (int)(pPeriodos.getWidth()*0.12), 165,
+            (int)(pPeriodos.getWidth()*0.8), 25);
+        rbTodos.setLayout(null);
+        rbTodos.setBackground(colorFondo);
+        rbTodos.setForeground(colorPrimario);
+        rbTodos.setFont(fuenteMuyGrande2);
+        rbTodos.setFocusPainted(false);
+        rbTodos.setSelected(true);
+        rbTodos.setText("Todos");
+
+        //Mostrar
+        pPeriodos.add(rbHoy);
+        pPeriodos.add(rbEstaSemana);
+        pPeriodos.add(rbEsteMes);
+        pPeriodos.add(rbEsteAño);
+        pPeriodos.add((rbTodos));
+    }
+
     public void crearTextField(){
         //Instanciamiento
         txtCantidad = new JTextField();
-
+        txtFolio = new JTextField();
+        
         //Construcción
+        txtCantidad.setBounds(
+            (int)(pDetalles.getWidth()*.55), 0,
+            (int)(pDetalles.getWidth()*.17), 35);
         txtCantidad.setFont(fuenteGrande);
         txtCantidad.setHorizontalAlignment(0);
         txtCantidad.setBorder(bordeSencillo);
         txtCantidad.setBackground(colorFondo);
         txtCantidad.setForeground(colorPrimario);
-        txtCantidad.setBounds(
-            (int)(pDetalles.getWidth()*.55), 0,
-            (int)(pDetalles.getWidth()*.17), 35);
         txtCantidad.setText("Cantidad");
+        
+        txtFolio.setBorder(BorderFactory.createTitledBorder(
+            bordeSencillo, 
+            "Folio",
+            TitledBorder.DEFAULT_JUSTIFICATION,
+            TitledBorder.DEFAULT_POSITION,
+            fuenteMediana));
+        txtFolio.setBounds(
+            0, 0,
+            (int)(pFiltros.getWidth()*.65), 50);
+        txtFolio.setFont(fuenteGrande);
+        txtFolio.setHorizontalAlignment(2);
+        txtFolio.setBackground(colorFondo);
+        txtFolio.setForeground(colorPrimario);
+        txtFolio.setHorizontalAlignment(0);
         
         //Mostrar
         pDetalles.add(txtCantidad);
+        pFiltros.add(txtFolio);
     }
 
     public void crearTablas(){
         //Instanciamiento
         tbInsumos = new JTable();
         tbhInsumos = new JTableHeader();
+        tbPedidos = new JTable();
+        tbhPedidos = new JTableHeader();
 
         //Construcción
         tbInsumos.setBounds(
@@ -413,9 +616,21 @@ public class PedidosVista extends JFrame {
         tbInsumos.setRowHeight(25);
         diseñarTbhInsumos();
 
+        tbPedidos.setBounds(
+            0, 30,
+            pTablaPedidos.getWidth(), 0);
+        tbPedidos.setBorder(bordeSencillo);
+        tbPedidos.setBackground(colorFondo);
+        tbPedidos.setForeground(colorPrimario);
+        tbPedidos.setFont(fuenteMediana);
+        tbPedidos.setRowHeight(25);
+        diseñarTbhPedidos();
+
         //Mostrar
         pTablaDetalles.add(tbhInsumos);
         pTablaDetalles.add(tbInsumos);
+        pTablaPedidos.add(tbPedidos);
+        pTablaPedidos.add(tbhPedidos);
     }
 
     public void diseñarTbhInsumos(){
@@ -432,5 +647,21 @@ public class PedidosVista extends JFrame {
 
         pTablaDetalles.setPreferredSize(
             new Dimension(0, tbhInsumos.getHeight() + tbInsumos.getHeight()));
+    }
+
+    public void diseñarTbhPedidos(){
+        tbhPedidos = tbPedidos.getTableHeader();
+        tbhPedidos.setBounds(
+            0, 0,
+            pTablaPedidos.getWidth(), 30);
+        tbhPedidos.setBorder(bordeSencillo);
+        tbhPedidos.setBackground(colorPrimario);
+        tbhPedidos.setForeground(colorFondo);
+        tbhPedidos.setFont(fuenteGrande);
+
+        tbPedidos.setSize(psTablaPedidos.getWidth(), tbPedidos.getRowCount()*25);
+
+        pTablaPedidos.setPreferredSize(
+            new Dimension(0, tbhPedidos.getHeight() + tbPedidos.getHeight()));
     }
 }
