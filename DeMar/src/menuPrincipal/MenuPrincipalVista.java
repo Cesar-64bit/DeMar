@@ -28,14 +28,14 @@ public class MenuPrincipalVista extends JFrame {
     Color colorContenedor = new Color(255, 255,255);
     Color sombraBotones = new Color(206,212,218);
     
-    public MenuPrincipalVista(String nombreUsuario, String tipoUsuario, MenuPrincipalControlador mnControlador) {
+    public MenuPrincipalVista(String nombreUsuario, String tipoUsuario, String fotoPerfil, MenuPrincipalControlador mnControlador) {
         super("Menu Principal");
 
         this.nombreUsuario = nombreUsuario;
         this.tipoUsuario = tipoUsuario;
         this.mnControlador = mnControlador;
 
-        this.agregarImagenes();
+        this.agregarImagenes(fotoPerfil);
         this.crearPanels();
         this.crearLabels();
         this.crearButtons();
@@ -46,7 +46,7 @@ public class MenuPrincipalVista extends JFrame {
         setVisible(true); 
     }
 
-    public void agregarImagenes() {
+    public void agregarImagenes(String fotoPerfil) {
         imgAreas = new ImageIcon("DeMar/resources/images/areas.png");
         imgEmpleados = new ImageIcon("DeMar/resources/images/empleados.png");
         imgProveedor = new ImageIcon("DeMar/resources/images/proveedores.png");
@@ -55,8 +55,8 @@ public class MenuPrincipalVista extends JFrame {
         imgPrestamos = new ImageIcon("DeMar/resources/images/prestamos.png");
         imgRecepcion = new ImageIcon("DeMar/resources/images/recepcion.png");
         imgGastos = new ImageIcon("DeMar/resources/images/gastos.png");
-        imgFotoPerfil = new ImageIcon("DeMar/resources/images/perfil3.png");
         imgInsumo = new ImageIcon("DeMar/resources/images/insumo.png");
+        imgFotoPerfil = new ImageIcon(fotoPerfil);
     }
 
     public void crearPanels(){
