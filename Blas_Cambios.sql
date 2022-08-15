@@ -284,18 +284,99 @@ DELIMITER ;
 -- DELIMITER ;
 
 
--- PRUEBAS DE LOS PROCESOS ALMACENADOS --
+
+-- Blas_14/08/2022
+-- ELIMINACIÓN del procedimiento almacenado 'insertarPedido'
+USE `demar`;
+DROP procedure IF EXISTS `demar`.`insertarPedido`;
+-- --------------------------------------------------------
+-- Nuevo procedimiento almacenado para AGREGAR NUEVO PEDIDO
+USE `demar`;
+DROP procedure IF EXISTS `demar`.`agregarPedido`;
+DELIMITER $$
+USE `demar`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `agregarPedido`(IN idProveedorP INT(11), IN nombreEmpleadoP VARCHAR(50))
+BEGIN
+	SET @pendiente = (SELECT id FROM demar.pedidos WHERE estado = '3');
+    SET @idEmpleadoP =  (SELECT id FROM demar.empleados WHERE nombre = nombreEmpleadoP);
+    IF(@pendiente is null)
+    THEN INSERT INTO `demar`.`pedidos` (`fecha_pedido`, `idproveedor`, `idempleado`) VALUES (now(), idProveedorP, @idEmpleadoP);
+    END IF;
+END$$
+DELIMITER ;
+-- --------------------------------------------------------------
+-- Modificación de NO NULL en los atributos de 'detalles_pedidos'
+ALTER TABLE `demar`.`detalles_pedidos` 
+DROP FOREIGN KEY `detalles_pedidos_ibfk_3`;
+ALTER TABLE `demar`.`detalles_pedidos` 
+CHANGE COLUMN `cantidad` `cantidad` FLOAT NOT NULL ,
+CHANGE COLUMN `total` `total` FLOAT NOT NULL ,
+CHANGE COLUMN `recepcion` `recepcion` INT(11) NULL ;
+ALTER TABLE `demar`.`detalles_pedidos` 
+ADD CONSTRAINT `detalles_pedidos_ibfk_3`
+  FOREIGN KEY (`recepcion`)
+  REFERENCES `demar`.`recepciones` (`folio`);
+-- -------------------------------------------------------------------------
+-- MODIFICACIÓN DEL TIPO DE DATO para total y cantidad en 'detalles_pedidos'
+ALTER TABLE `demar`.`detalles_pedidos` 
+CHANGE COLUMN `cantidad` `cantidad` DOUBLE NOT NULL ,
+CHANGE COLUMN `total` `total` DOUBLE NOT NULL ;
+-- ----------------------------------------------------------------
+-- Procedimiento almacenado para AGREGAR UN NUEVO DETALLE DE PEDIDO
+USE `demar`;
+DROP procedure IF EXISTS `agregarDetallesPedido`;
+DELIMITER $$
+USE `demar`$$
+CREATE PROCEDURE `agregarDetallesPedido` (IN insumoDP int(11), IN cantidadDP DOUBLE)
+BEGIN
+	SET @idPedido = (SELECT `id` FROM demar.pedidos WHERE estado = '3');
+    SET @precioInsumo = (SELECT `precio` FROM `demar`.`insumos` WHERE `folio` = insumoDP);
+    SET @idProveedor1 = (SELECT `idproveedor` FROM `demar`.`pedidos` WHERE `id` = @idPedido);
+    SET @idProveedor2 = (SELECT  `proveedor` FROM `demar`.`insumos` WHERE `folio` = insumoDP);
+    
+    IF(@idProveedor1 = @idProveedor2 and @idPedido is not null) THEN
+	INSERT INTO `demar`.`detalles_pedidos` (`insumo`, `cantidad`, `pedido`, `total`)
+    VALUES (insumoDP, cantidadDP, @idPedido, cantidadDP*@precioInsumo);
+    END IF;
+END$$
+DELIMITER ;
+-- ------------------------------------------------------------------
+-- Procedimiento almacenado de la 'pedidos' para MODIFICAR EL ESTADO.
+USE `demar`;
+DROP procedure IF EXISTS `modificarEstadoPedido`;
+DELIMITER $$
+USE `demar`$$
+CREATE PROCEDURE `modificarEstadoPedido` (IN idPedidoP INT(11), IN estadoP INT(1))
+BEGIN
+	UPDATE `demar`.`pedidos` SET `estado` = estadoP WHERE (`id` = idPedidoP);
+END$$
+DELIMITER ;
+-- ----------------------------------------------------------
+-- FINALIZAR LA CAPTURA DE UN PEDIDO pasando de estado 3 a 2.
+USE `demar`;
+DROP procedure IF EXISTS `pedidos_finalizarCaptura`;
+DELIMITER $$
+USE `demar`$$
+CREATE PROCEDURE `pedidos_finalizarCaptura` ()
+BEGIN
+	SET @idPedido = (SELECT `id` FROM demar.pedidos WHERE estado = '3');
+    IF(@idPedido is NOT NULL) THEN
+		UPDATE `demar`.`pedidos` SET `estado` = '2' WHERE (`id` = @idPedido);
+	END IF;
+END$$
+DELIMITER ;
+
+
+
+-- PRUEBAS DE LOS PROCESOS ALMACENADOS -- Ignorar --
 call demar.buscarUnPedido('1');
 call demar.seleccionarPedidos();
 call demar.seleccionarPedidosPen('0');
 call demar.seleccionarPedidosPen('1');
 call demar.seleccionarPedidosFiltros('', '4', '', '1');
-call demar.insertarPedido('3', '1');
--- call demar.insumos_agregar('Insumo Prueba', '4', '1245', '');
--- call demar.insumos_actualizar('Insumo Pruebaaaaa', '5', '12451', '', '7');
--- call demar.insumos_deshabilitar('1');
--- call demar.insumos_habilitar('1');
--- call demar.insumos_selecTodos('');
--- call demar.insumos_selecPorFolio('1', '1');
--- call demar.insumos_selecPorProveedor('2', '');
--- call demar.insumos_selecUltimo();
+call demar.agregarPedido('3', 'Nadia Gomez Perez');
+call demar.insumos_selecPorProveedor('2', '');
+call demar.agregarDetallesPedido('6', '5');
+call demar.agregarDetallesPedido('1', '5');
+call demar.modificarEstadoPedido('28', '1');
+call demar.pedidos_finalizarCaptura();

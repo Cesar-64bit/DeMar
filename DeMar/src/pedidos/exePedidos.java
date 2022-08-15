@@ -6,7 +6,7 @@ public class exePedidos {
     public static void main(String[] args) {
         Runnable runApplication = new Runnable() {
             public void run() {
-                PedidosControlador login = new PedidosControlador("Fulanito Fulan de los Grandes Fulanos");
+                PedidosControlador login = new PedidosControlador("Cesar Oswaldo Bernal Sanchez");
                 login.getClass();
             }
         };
