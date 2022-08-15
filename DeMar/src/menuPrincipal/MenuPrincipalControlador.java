@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 
+import javax.swing.table.DefaultTableModel;
+
 import DeMar.src.Insumos.InsumosControlador;
 import DeMar.src.areas.AreasControlador;
 import DeMar.src.empleados.EmpleadosControlador;
@@ -15,15 +17,19 @@ import DeMar.src.proveedores.ProveedoresControlador;
 import DeMar.src.recepcion.RecepcionControlador;
 
 public class MenuPrincipalControlador extends MouseAdapter implements ActionListener {
+    MenuPrincipalModelo modMenu = new MenuPrincipalModelo();
 
     private MenuPrincipalVista mnPrincipalVista;
-    private String nombreUsuario;
+    private String nombreUsuario, fotoPerfil;
 
     public MenuPrincipalControlador(String nombreUsuario, String tipoUsuario) {
-        this.mnPrincipalVista = new MenuPrincipalVista(nombreUsuario, tipoUsuario, this);   
+        DefaultTableModel tb = modMenu.selecImagen(nombreUsuario);
+        fotoPerfil = String.valueOf(tb.getValueAt(0, 0));
+
+        this.mnPrincipalVista = new MenuPrincipalVista(nombreUsuario, tipoUsuario, fotoPerfil, this);   
         this.nombreUsuario = nombreUsuario;
     }
-
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == mnPrincipalVista.getBtnAreas()) {

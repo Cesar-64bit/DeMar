@@ -9,6 +9,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
+
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -23,13 +24,13 @@ public class EmpleadosVista extends JFrame {
                     lblFoto, lblArea;
     protected JTextField txtNumeroEmpleado, txtNombre, txtTelefono,
                     txtDireccion, txtDiasLaborados, txtFechaContrato,
-                    txtBuscar;
+                    txtAreas, txtBuscar, txtRuta;
     protected JButton btnAgregar, btnModificar, btnEliminar, btnLimpiar,
-                    btnBuscar;
-    protected JComboBox<String> txtAreas;
+                    btnBuscar, btnCargarFoto;
+    protected JComboBox<String> cmbAreas;
     protected JPanel pFondo, pContenedor, pSeparador, pContenedorBotones,
                     pNumeroEmpleado, pNombre, pTelefono, pDireccion,
-                    pFechaContrato, pDiasLaborados;
+                    pFechaContrato, pDiasLaborados, pEmpleado;
     protected JTable obtenerTabla;
     protected EmpleadosControlador eControlador;
 
@@ -42,7 +43,7 @@ public class EmpleadosVista extends JFrame {
         this.crearTextField();
         this.crearButtons();
 
-        setSize(1115, 575);
+        setSize(1115, 700);
         setLocationRelativeTo(this);
         setLayout(null);
         setVisible(true);
@@ -59,14 +60,14 @@ public class EmpleadosVista extends JFrame {
 
     public void crearPanels() {
         pFondo = new JPanel();
-        pFondo.setSize(1100,550);
+        pFondo.setSize(1100,675);
         pFondo.setLocation(0,0);
         pFondo.setBackground(Color.WHITE);
         pFondo.setLayout(null);
         this.add(pFondo);
 
         pContenedor = new JPanel();
-        pContenedor.setSize(349,550);
+        pContenedor.setSize(349,675);
         pContenedor.setLocation(0,0);
         pContenedor.setBackground(Color.WHITE);
         pContenedor.setLayout(null);
@@ -82,7 +83,7 @@ public class EmpleadosVista extends JFrame {
         pFondo.add(pContenedorBotones);
 
         pSeparador = new JPanel();
-        pSeparador.setSize(3,550);
+        pSeparador.setSize(3,675);
         pSeparador.setLocation(350,0);
         pSeparador.setBackground(Color.DARK_GRAY);
         pSeparador.setLayout(null);
@@ -121,9 +122,17 @@ public class EmpleadosVista extends JFrame {
         this.add(pDireccion);
         pContenedor.add(pDireccion);
 
+        pEmpleado = new JPanel();
+        pEmpleado.setSize(300,1);
+        pEmpleado.setLocation((pContenedor.getWidth() - pEmpleado.getWidth()) / 2,425);
+        pEmpleado.setBackground(Color.BLACK);
+        pEmpleado.setLayout(null);
+        this.add(pEmpleado);
+        pContenedor.add(pEmpleado);
+
         pFechaContrato = new JPanel();
         pFechaContrato.setSize(300,1);
-        pFechaContrato.setLocation((pContenedor.getWidth() - pFechaContrato.getWidth()) / 2,425);
+        pFechaContrato.setLocation((pContenedor.getWidth() - pFechaContrato.getWidth()) / 2,495);
         pFechaContrato.setBackground(Color.BLACK);
         pFechaContrato.setLayout(null);
         this.add(pFechaContrato);
@@ -131,7 +140,7 @@ public class EmpleadosVista extends JFrame {
 
         pDiasLaborados = new JPanel();
         pDiasLaborados.setSize(300,1);
-        pDiasLaborados.setLocation((pContenedor.getWidth() - pDiasLaborados.getWidth()) / 2,495);
+        pDiasLaborados.setLocation((pContenedor.getWidth() - pDiasLaborados.getWidth()) / 2,565);
         pDiasLaborados.setBackground(Color.BLACK);
         pDiasLaborados.setLayout(null);
         this.add(pDiasLaborados);
@@ -169,23 +178,23 @@ public class EmpleadosVista extends JFrame {
         lblDireccion.setFont(tipo);
         pContenedor.add(lblDireccion);
 
-        lblArea = new JLabel("Areas");
+        lblArea = new JLabel("Áreas:");
         lblArea.setSize(150,50);
         lblArea.setLocation(20,285);
         lblArea.setForeground(Color.BLACK);
         lblArea.setFont(tipo);
         pContenedor.add(lblArea);
 
-        lblFechaContrato = new JLabel("Fecha contrato");
+        lblFechaContrato = new JLabel("Fecha contrato:");
         lblFechaContrato.setSize(150,50);
-        lblFechaContrato.setLocation(20,355);
+        lblFechaContrato.setLocation(20,425);
         lblFechaContrato.setForeground(Color.BLACK);
         lblFechaContrato.setFont(tipo);
         pContenedor.add(lblFechaContrato);
 
-        lblDiasLaborados = new JLabel("Días laborados");
+        lblDiasLaborados = new JLabel("Días laborados:");
         lblDiasLaborados.setSize(150,50);
-        lblDiasLaborados.setLocation(20,425);
+        lblDiasLaborados.setLocation(20,495);
         lblDiasLaborados.setForeground(Color.BLACK);
         lblDiasLaborados.setFont(tipo);
         pContenedor.add(lblDiasLaborados);
@@ -229,18 +238,29 @@ public class EmpleadosVista extends JFrame {
         txtDireccion.setHorizontalAlignment(SwingConstants.CENTER);
         pContenedor.add(txtDireccion);
         
-        txtAreas = new JComboBox<>();
+        cmbAreas = new JComboBox<>();
+        cmbAreas.setSize(300, 35);
+        cmbAreas.setLocation((pContenedor.getWidth() - cmbAreas.getWidth()) / 2, 320);
+        cmbAreas.setBackground(Color.WHITE);
+        cmbAreas.setForeground(Color.BLACK);
+        cmbAreas.setBorder(null);
+        ((JLabel) cmbAreas.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
+        cmbAreas.addActionListener((ActionListener) eControlador);
+        pContenedor.add(cmbAreas);
+
+        txtAreas = new JTextField();
         txtAreas.setSize(300, 35);
-        txtAreas.setLocation((pContenedor.getWidth() - txtAreas.getWidth()) / 2, 320);
+        txtAreas.setLocation((pContenedor.getWidth() - txtAreas.getWidth()) / 2, 390);
         txtAreas.setBackground(Color.WHITE);
-        txtAreas.setForeground(Color.BLACK);
+        txtAreas.setCaretColor(Color.BLACK);
         txtAreas.setBorder(null);
-        ((JLabel) txtAreas.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
+        txtAreas.setEnabled(false);
+        txtAreas.setHorizontalAlignment(SwingConstants.CENTER);
         pContenedor.add(txtAreas);
 
         txtFechaContrato = new JTextField();
         txtFechaContrato.setSize(300, 35);
-        txtFechaContrato.setLocation((pContenedor.getWidth() - txtFechaContrato.getWidth()) / 2, 390);
+        txtFechaContrato.setLocation((pContenedor.getWidth() - txtFechaContrato.getWidth()) / 2, 460);
         txtFechaContrato.setBackground(Color.WHITE);
         txtFechaContrato.setCaretColor(Color.BLACK);
         txtFechaContrato.setBorder(null);
@@ -249,7 +269,7 @@ public class EmpleadosVista extends JFrame {
 
         txtDiasLaborados = new JTextField();
         txtDiasLaborados.setSize(300, 35);
-        txtDiasLaborados.setLocation((pContenedor.getWidth() - txtDiasLaborados.getWidth()) / 2, 460);
+        txtDiasLaborados.setLocation((pContenedor.getWidth() - txtDiasLaborados.getWidth()) / 2, 530);
         txtDiasLaborados.setBackground(Color.WHITE);
         txtDiasLaborados.setCaretColor(Color.BLACK);
         txtDiasLaborados.setBorder(null);
@@ -263,6 +283,15 @@ public class EmpleadosVista extends JFrame {
         txtBuscar.setCaretColor(Color.BLACK);
         txtBuscar.setHorizontalAlignment(SwingConstants.CENTER);
         pFondo.add(txtBuscar);
+
+        txtRuta = new JTextField();
+        txtRuta.setSize(300, 35);
+        txtRuta.setLocation(380, 15);
+        txtRuta.setBackground(Color.WHITE);
+        txtRuta.setCaretColor(Color.BLACK);
+        txtRuta.setEnabled(false);
+        txtRuta.setHorizontalAlignment(SwingConstants.CENTER);
+        pFondo.add(txtRuta);
     }
 
     public void crearButtons() {
@@ -310,6 +339,15 @@ public class EmpleadosVista extends JFrame {
         btnBuscar.setFocusable(false);
         btnBuscar.addActionListener((ActionListener) eControlador);
         pFondo.add(btnBuscar);
+
+        btnCargarFoto = new JButton("Cargar Foto");
+        btnCargarFoto.setSize(200, 35);
+        btnCargarFoto.setLocation(850, 75);
+        btnCargarFoto.setBackground(Color.WHITE);
+        btnCargarFoto.setForeground(Color.DARK_GRAY);
+        btnCargarFoto.setFocusable(false);
+        btnCargarFoto.addActionListener((ActionListener) eControlador);
+        pFondo.add(btnCargarFoto);
     }
 
     public void limpiar() {
@@ -321,9 +359,18 @@ public class EmpleadosVista extends JFrame {
         txtDiasLaborados.setText("");
     }
 
+    public void colocarID(String c) {
+        txtAreas.setText(c);
+    }
+
     /* OBTENER TABLA */
     public JTable getTabla() {
         return obtenerTabla;
+    }
+
+    /* OBTENER COMBO */
+    public JComboBox<String> getCombo() {
+        return cmbAreas;
     }
 
     /* OBTENER EVENTO DE LOS BOTONES*/
@@ -345,6 +392,10 @@ public class EmpleadosVista extends JFrame {
 
     public JButton getBtnBuscar() {
         return btnBuscar;
+    }
+
+    public JButton getBtnCargarFoto() {
+        return btnCargarFoto;
     }
 
     /* OBTENER CAJAS DE TEXTO */
@@ -372,12 +423,20 @@ public class EmpleadosVista extends JFrame {
         return txtFechaContrato.getText();
     }
 
+    public String getCmbAreas() {
+        return cmbAreas.getSelectedItem().toString();
+    }
+
     public String getTxtAreas() {
-        return txtAreas.getSelectedItem().toString();
+        return txtAreas.getText();
     }
 
     public int getTxtBuscar() {
         return Integer.parseInt(txtBuscar.getText());
+    }
+
+    public String getTxtRutaImagen() {
+        return txtRuta.getText();
     }
 
     /* ESTABLECER TEXTO EN LAS CAJAS DE TEXTO */
@@ -398,7 +457,7 @@ public class EmpleadosVista extends JFrame {
     }
 
     public void setTxtAreas(JTable jtabla, int filas) {
-        txtAreas.setSelectedItem(String.valueOf(jtabla.getValueAt(filas, 7)));
+        txtAreas.setText(String.valueOf(jtabla.getValueAt(filas, 7)));
     }
 
     public void setTxtFechaContrato(JTable jtabla, int filas) {
@@ -409,12 +468,20 @@ public class EmpleadosVista extends JFrame {
         txtDiasLaborados.setText(String.valueOf(jtabla.getValueAt(filas, 4)));
     }
 
+    public void setTxtRuta(JTable jtabla, int filas) {
+        txtRuta.setText(String.valueOf(jtabla.getValueAt(filas, 6)));
+    }
+
+    public void setTxtRuta(String ruta) {
+        txtRuta.setText(ruta);
+    }
+
     /* ESTABLECER DATOS EN JCOMBOBOX*/
-    public void setTxtAreas(DefaultTableModel areas) {
+    public void setCmbAreas(DefaultTableModel areas) {
         int filas = areas.getRowCount();
 
         for(int indice = 0; indice < filas; indice++)
-            txtAreas.addItem(areas.getValueAt(indice, 0).toString());
+            cmbAreas.addItem(areas.getValueAt(indice, 0).toString());
     }
     
     /* MENSAJES */

@@ -42,8 +42,14 @@ public class EmpleadosModelo extends Modelo {
     }
 
     // Agregar nuevos empleados
-    public boolean registrar(String nombre, String telefono, String direccion, Float dias, String fechaContrato, int idAreas) {
-        String consulta = "CALL agregarEmpleado('"+nombre+"', '"+telefono+"', '"+direccion+"', '"+dias+"', '"+fechaContrato+"', '"+idAreas+"');";
+    public boolean registrar(String nombre, String telefono, String direccion, Float dias, String fechaContrato, String idAreas, String rutaImagen) {
+        String consulta = "CALL agregarEmpleado('"+nombre+"', '"+telefono+"', '"+direccion+"', '"+dias+"', '"+fechaContrato+"', '"+idAreas+"', '"+rutaImagen+"');";
+        return consultaPersistencia(consulta);
+    }
+
+    // Modificar empleados
+    public boolean modificar(String idEmpleado, String nombre, String telefono, String direccion, Float dias, String fechaContrato, String idAreas, String rutaImagen) {
+        String consulta = "CALL modificarEmpleados('"+idEmpleado+"','"+nombre+"','"+telefono+"','"+direccion+"','"+dias+"','"+fechaContrato+"','"+idAreas+"','"+rutaImagen+"');";
         return consultaPersistencia(consulta);
     }
 
