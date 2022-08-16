@@ -2,14 +2,21 @@ package DeMar.src.areas;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.RowFilter;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
-public class AreasControlador implements ActionListener, MouseListener {
+public class AreasControlador implements ActionListener, MouseListener, KeyListener {
     AreasModelo modAreas = new AreasModelo();
+    
+    TableRowSorter<DefaultTableModel> filtro;
     JScrollPane scroll = new JScrollPane();
     JTable tabla = new JTable();
 
@@ -18,12 +25,20 @@ public class AreasControlador implements ActionListener, MouseListener {
 
     public AreasControlador() {
         this.aVista = new AreasVista(this);
+        
         mostrarDatosIniciales();
     }
 
     /* ESTE MÉTODO MUESTRA LOS VALORES ACTUALES Y SE CARGAN AL ABRIR LA VENTA */
     public void mostrarDatosIniciales() {
-        tabla.setModel(modAreas.selTodos());
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo = modAreas.selTodos();
+
+        tabla.setModel(modelo);
+        tabla.setAutoCreateRowSorter(true);
+        filtro = new TableRowSorter<>(modelo);
+        tabla.setRowSorter(filtro);
+
         scroll.setViewportView(tabla);
 
         this.aVista.diseñarJTable(tabla, scroll);
@@ -37,11 +52,20 @@ public class AreasControlador implements ActionListener, MouseListener {
         this.aVista.diseñarJTable(tabla, scroll);
     }
 
+    public void filtrar() {
+        try {
+            filtro.setRowFilter(RowFilter.regexFilter(aVista.getTxtBuscar()));
+        }
+        catch(Exception e) {
+
+        }
+    }
+
     /* MÉTODO PARA OBTENER LOS EVENTOS DE LOS BOTONES SELECCIONADOS*/
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == aVista.getBtnBuscar()) {
-            buscarID(aVista.getTxtBuscar());
+            buscarID(Integer.parseInt(aVista.getTxtBuscar()));
         }
         if(e.getSource() == aVista.getBtnAgregar()) {
             boolean registro = modAreas.registrar(
@@ -49,6 +73,7 @@ public class AreasControlador implements ActionListener, MouseListener {
                                                 aVista.getTxtEmpleados(), aVista.getTxtSueldo(), 
                                                 aVista.getTxtEntrada(), aVista.getTxtSalida());
             aVista.confirmarRegistro(registro);
+            mostrarDatosIniciales();
         }
         if(e.getSource() == aVista.getBtnModificar()) {
             if(aVista.confirmarAccion(aVista.getBtnModificar().getText()) == 0) {
@@ -58,15 +83,18 @@ public class AreasControlador implements ActionListener, MouseListener {
                                                     aVista.getTxtEntrada(), aVista.getTxtSalida(),
                                                     aVista.getAuxNombre());
                 aVista.confirmarRegistro(modificar);
+                mostrarDatosIniciales();
             }
         }
         if(e.getSource() == aVista.getBtnEliminar()) {
-            if(aVista.confirmarAccion(aVista.getBtnEliminar().getText()) == 0)
+            if(aVista.confirmarAccion(aVista.getBtnEliminar().getText()) == 0) {
                 modAreas.eliminar(aVista.getTxtNombre());
+                mostrarDatosIniciales();
+            }
         }
         if(e.getSource() == aVista.getBtnLimpiar()) {
             aVista.limpiar();
-        }   
+        }
     }
 
     @Override
@@ -97,4 +125,17 @@ public class AreasControlador implements ActionListener, MouseListener {
 
     @Override
     public void mouseExited(MouseEvent e) { }
+
+    @Override
+    public void keyTyped(KeyEvent e) { }
+
+    @Override
+    public void keyPressed(KeyEvent e) { }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        if(e.getSource() == aVista.getTxtFiltrar()) {
+            filtrar();
+        }
+    }
 }

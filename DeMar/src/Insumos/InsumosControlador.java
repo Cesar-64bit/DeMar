@@ -4,13 +4,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
-public class InsumosControlador implements ActionListener, MouseListener {
+public class InsumosControlador implements ActionListener, MouseListener, KeyListener{
     InsumosModelo modInsumo = new InsumosModelo();
+    
+    TableRowSorter<DefaultTableModel> filtro;
     JScrollPane scroll = new JScrollPane();
     JTable tabla = new JTable();
 
@@ -26,7 +32,14 @@ public class InsumosControlador implements ActionListener, MouseListener {
 
     // INICIALIZAR DATOS EN EL JFRAME
     public void mostrarDatosIniciales() {
-        tabla.setModel(modInsumo.selecInsumos());
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo = modInsumo.selecInsumos();
+
+        tabla.setModel(modelo);
+        tabla.setAutoCreateRowSorter(true);
+        filtro = new TableRowSorter<>(modelo);
+        tabla.setRowSorter(filtro);
+
         scroll.setViewportView(tabla);
 
         this.insumosVista.diseñarJTable(tabla, scroll);
@@ -45,10 +58,19 @@ public class InsumosControlador implements ActionListener, MouseListener {
         insumosVista.setCbmProveedor(modInsumo.filProveedores());
     }
 
+    public void filtrar() {
+        try {
+            filtro.setRowFilter(RowFilter.regexFilter(insumosVista.getTxtBuscar()));
+        }
+        catch(Exception e) {
+
+        }
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == insumosVista.getBtnBuscar()) {
-            buscarID(insumosVista.getTxtBuscar());
+            buscarID(Integer.parseInt(insumosVista.getTxtBuscar()));
 
         }
         if(e.getSource() == insumosVista.getBtnAgregar()) {
@@ -57,6 +79,7 @@ public class InsumosControlador implements ActionListener, MouseListener {
                                                     insumosVista.getTxtProveedor(),
                                                     insumosVista.getTxtPrecio());
             insumosVista.confirmarRegistro(registro);
+            mostrarDatosIniciales();
         }
         if(e.getSource() == insumosVista.getBtnModificar()) {
             if(insumosVista.confirmarAccion(insumosVista.getBtnModificar().getText()) == 0)
@@ -110,5 +133,22 @@ public class InsumosControlador implements ActionListener, MouseListener {
     @Override
     public void mouseExited(MouseEvent e) {
         
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        if(e.getSource() == insumosVista.getTxtFiltrar()) {
+            filtrar();
+        }   
     }
 }

@@ -14,6 +14,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 public class CrearUsuariosVista extends JFrame {
     protected JPanel pFondo, pGrupo;
@@ -22,6 +23,7 @@ public class CrearUsuariosVista extends JFrame {
     protected JTextField txtNombreUsuario, txtContraseña;
     protected JComboBox<String> cmbEmpleado, cmbRol;
     protected JButton btnAceptar;
+    protected String nombreEmpleado, nombreRol;
 
     protected CrearUsuariosControlador crearUsuariosControlador;
 
@@ -122,6 +124,7 @@ public class CrearUsuariosVista extends JFrame {
         cmbRol.setBackground(Color.WHITE);
         cmbRol.setForeground(Color.BLACK);
         ((JLabel) cmbRol.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
+        cmbRol.addActionListener((ActionListener) crearUsuariosControlador);;
         pGrupo.add(cmbRol);
     }
 
@@ -140,11 +143,35 @@ public class CrearUsuariosVista extends JFrame {
         return cmbEmpleado;
     }
 
+    public JComboBox<String> getCombo2() {
+        return cmbRol;
+    }
+
     /* OBTENER COMBOBOX*/
     public String getCmbEmpleados() {
         return cmbEmpleado.getSelectedItem().toString();
     }
 
+    public JButton getBtnAceptar() {
+        return btnAceptar;
+    }
+
+    public String getTxtNombreUsuario() {
+        return txtNombreUsuario.getText();
+    }
+
+    public String getTxtContraseña() {
+        return txtContraseña.getText();
+    }
+
+    public String getTxtIDEmpleado() {
+        return nombreEmpleado;
+    }
+
+    public String getTxtIDRol() {
+        return nombreRol;
+    }
+    
     public void setTxtNombreUsuario(String nombreUsuario) {
         txtNombreUsuario.setText(nombreUsuario);
     }
@@ -162,5 +189,20 @@ public class CrearUsuariosVista extends JFrame {
 
         for(int indice = 0; indice < filas; indice++)
             cmbRol.addItem(roles.getValueAt(indice, 0).toString());
+    }
+
+    public void setTxtNombreEmpleado(String nombre) {
+        nombreEmpleado = nombre;
+    }
+
+    public void setTxtRol(String rol) {
+        nombreRol = rol;
+    }
+
+    public void confirmarRegistro(boolean registro) {
+        if(registro == true)
+            JOptionPane.showMessageDialog(null, "Se agregó correctamente");
+        else
+            JOptionPane.showMessageDialog(null, "Ocurrió un error");
     }
 }
