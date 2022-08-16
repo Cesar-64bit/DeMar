@@ -3,6 +3,7 @@ package DeMar.src.prestamos;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
 
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -302,6 +303,7 @@ public class PrestamosVista extends JFrame {
         txtBuscar.setBackground(Color.WHITE);
         txtBuscar.setCaretColor(Color.BLACK);
         txtBuscar.setHorizontalAlignment(SwingConstants.CENTER);
+        txtBuscar.addKeyListener((KeyListener) prestamosControlador);
         pFondo.add(txtBuscar);
     }
 
@@ -430,10 +432,14 @@ public class PrestamosVista extends JFrame {
         return txtPlazosPagados.getText();
     }
 
-    public int getTxtBuscar() {
-        return Integer.parseInt(txtBuscar.getText());
+    public String getTxtBuscar() {
+        return txtBuscar.getText();
     }
 
+    public JTextField getTxtFiltrar() {
+        return txtBuscar;
+    }
+    
     /* ESTABLECER TEXTO EN LAS CAJAS DE TEXTO */
     public void setTxtFolio(JTable jtabla, int filas) {
         txtFolio.setText(String.valueOf(jtabla.getValueAt(filas, 0)));

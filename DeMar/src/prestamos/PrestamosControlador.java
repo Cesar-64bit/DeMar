@@ -3,15 +3,21 @@ package DeMar.src.prestamos;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 import java.awt.event.MouseEvent;
 
-public class PrestamosControlador implements ActionListener, MouseListener {
+public class PrestamosControlador implements ActionListener, MouseListener, KeyListener {
     PrestamosModelo modPrestamos = new PrestamosModelo();
+
+    TableRowSorter<DefaultTableModel> filtro;
     JScrollPane scroll = new JScrollPane();
     JTable tabla = new JTable();
     
@@ -25,7 +31,14 @@ public class PrestamosControlador implements ActionListener, MouseListener {
     }
 
     public void mostrarDatosIniciales() {
-        tabla.setModel(modPrestamos.selecPrestamos());
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo = modPrestamos.selecPrestamos();
+
+        tabla.setModel(modelo);
+        tabla.setAutoCreateRowSorter(true);
+        filtro = new TableRowSorter<>(modelo);
+        tabla.setRowSorter(filtro);
+
         scroll.setViewportView(tabla);
 
         this.prestamosVista.diseñarJTable(tabla, scroll);
@@ -44,10 +57,19 @@ public class PrestamosControlador implements ActionListener, MouseListener {
         prestamosVista.setCbmEmpleados(modPrestamos.filEmpleados());
     }
 
+    public void filtrar() {
+        try {
+            filtro.setRowFilter(RowFilter.regexFilter(prestamosVista.getTxtBuscar()));
+        }
+        catch(Exception e) {
+
+        }
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == prestamosVista.getBtnBuscar()) {
-            buscarID(prestamosVista.getTxtBuscar());
+            buscarID(Integer.parseInt(prestamosVista.getTxtBuscar()));
         }
         if(e.getSource() == prestamosVista.getBtnAgregar()) {
             boolean registro = modPrestamos.registrar(
@@ -59,6 +81,7 @@ public class PrestamosControlador implements ActionListener, MouseListener {
                                                     prestamosVista.getTxtPlazosTotales(),
                                                     prestamosVista.getTxtPlazosPagados());
             prestamosVista.confirmarRegistro(registro);
+            mostrarDatosIniciales();
         }
         if(e.getSource() == prestamosVista.getBtnModificar()) {
             if(prestamosVista.confirmarAccion(prestamosVista.getBtnModificar().getText()) == 0)
@@ -119,5 +142,22 @@ public class PrestamosControlador implements ActionListener, MouseListener {
     @Override
     public void mouseExited(MouseEvent e) {
         
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        if(e.getSource() == prestamosVista.getTxtFiltrar()) {
+            filtrar();
+        } 
     }
 }

@@ -3,16 +3,22 @@ package DeMar.src.empleados;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.File;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JFileChooser;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
-public class EmpleadosControlador implements ActionListener, MouseListener {
+public class EmpleadosControlador implements ActionListener, MouseListener, KeyListener {
     EmpleadosModelo modEmpleados = new EmpleadosModelo();
+
+    TableRowSorter<DefaultTableModel> filtro;
     JScrollPane scroll = new JScrollPane();
     JTable tabla = new JTable();
 
@@ -27,7 +33,14 @@ public class EmpleadosControlador implements ActionListener, MouseListener {
 
     /* ESTE MÉTODO MUESTRA LOS VALORES ACTUALES Y SE CARGAN AL ABRIR LA VENTA */
     public void mostrarDatosIniciales() {
-        tabla.setModel(modEmpleados.selecEmpleadosActivos());
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo = modEmpleados.selecEmpleadosActivos();
+
+        tabla.setModel(modelo);
+        tabla.setAutoCreateRowSorter(true);
+        filtro = new TableRowSorter<>(modelo);
+        tabla.setRowSorter(filtro);
+
         scroll.setViewportView(tabla);
 
         this.eVista.diseñarJTable(tabla, scroll);
@@ -52,11 +65,20 @@ public class EmpleadosControlador implements ActionListener, MouseListener {
         eVista.setCmbAreas(modEmpleados.filAreas());
     }
 
+    public void filtrar() {
+        try {
+            filtro.setRowFilter(RowFilter.regexFilter(eVista.getTxtBuscar()));
+        }
+        catch(Exception e) {
+
+        }
+    }
+
     // EVENTOS DE LOS BOTONES
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == eVista.getBtnBuscar()) {
-            buscarID(eVista.getTxtBuscar());
+            buscarID(Integer.parseInt(eVista.getTxtBuscar()));
         }
         if(e.getSource() == eVista.getBtnAgregar()) {
             boolean registro = modEmpleados.registrar(
@@ -68,6 +90,7 @@ public class EmpleadosControlador implements ActionListener, MouseListener {
                                                 eVista.getTxtAreas(),
                                                 eVista.getTxtRutaImagen());
             eVista.confirmarRegistro(registro);
+            mostrarDatosIniciales();
         }
         if(e.getSource() == eVista.getBtnModificar()) {
             if(eVista.confirmarAccion(eVista.getBtnModificar().getText()) == 0) {
@@ -84,8 +107,9 @@ public class EmpleadosControlador implements ActionListener, MouseListener {
         }
 
         if(e.getSource() == eVista.getBtnEliminar()) {
-            if(eVista.confirmarAccion(eVista.getBtnEliminar().getText()) == 0)
+            if(eVista.confirmarAccion(eVista.getBtnEliminar().getText()) == 0) {
                 modEmpleados.eliminar(eVista.getTxtNumeroEmpleado());
+            }
         }
 
         if(e.getSource() == eVista.getBtnLimpiar()) {
@@ -130,7 +154,7 @@ public class EmpleadosControlador implements ActionListener, MouseListener {
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        
+
     }
 
     @Override
@@ -141,5 +165,18 @@ public class EmpleadosControlador implements ActionListener, MouseListener {
     @Override
     public void mouseExited(MouseEvent e) {
         
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) { }
+
+    @Override
+    public void keyPressed(KeyEvent e) { }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        if(e.getSource() == eVista.getTxtFiltrar()) {
+            filtrar();
+        }
     }
 }

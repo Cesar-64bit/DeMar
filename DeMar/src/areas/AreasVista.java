@@ -247,6 +247,7 @@ public class AreasVista extends JFrame {
         txtBuscar.setCaretColor(Color.BLACK);
         txtBuscar.setBorder(null);
         txtBuscar.setHorizontalAlignment(SwingConstants.CENTER);
+        txtBuscar.addKeyListener(aControlador);
         pFondo.add(txtBuscar);
     }
 
@@ -343,9 +344,13 @@ public class AreasVista extends JFrame {
         return btnLimpiar;
     }
 
+    public JTextField getTxtFiltrar() {
+        return txtBuscar;
+    }
+
     /* OBTENER CONTENIDO DE LAS CAJAS DE TEXTO */
-    public int getTxtBuscar() {
-        return Integer.parseInt(txtBuscar.getText());
+    public String getTxtBuscar() {
+        return txtBuscar.getText();
     }
 
     public String getTxtNombre() {
@@ -389,6 +394,9 @@ public class AreasVista extends JFrame {
     }
     public void setTxtSalida(JTable jtabla, int filas) {
         txtHoraSalida.setText(String.valueOf(jtabla.getValueAt(filas, 6)));
+    }
+    public void setTxtBuscar(String vaciar) {
+        txtBuscar.setText(vaciar);
     }
 
     public String getAuxNombre() {

@@ -4,12 +4,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.RowFilter;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
-public class UsuariosControlador implements ActionListener, MouseListener {
+public class UsuariosControlador implements ActionListener, MouseListener, KeyListener {
     UsuariosModelo modUsuarios = new UsuariosModelo();
+
+    TableRowSorter<DefaultTableModel> filtro;
     JScrollPane scroll = new JScrollPane();
     JTable tabla = new JTable();
 
@@ -22,7 +29,14 @@ public class UsuariosControlador implements ActionListener, MouseListener {
     }
 
     public void mostrarDatosIniciales() {
-        tabla.setModel(modUsuarios.selecUsuariosActivos());
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo = modUsuarios.selecUsuariosActivos();
+
+        tabla.setModel(modelo);
+        tabla.setAutoCreateRowSorter(true);
+        filtro = new TableRowSorter<>(modelo);
+        tabla.setRowSorter(filtro);
+
         scroll.setViewportView(tabla);
 
         this.usuariosVista.diseñarJTable(tabla, scroll);
@@ -35,10 +49,19 @@ public class UsuariosControlador implements ActionListener, MouseListener {
         this.usuariosVista.diseñarJTable(tabla, scroll);
     }
 
+    public void filtrar() {
+        try {
+            filtro.setRowFilter(RowFilter.regexFilter(usuariosVista.getTxtBuscar()));
+        }
+        catch(Exception e) {
+
+        }
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == usuariosVista.getBtnBuscar()) {
-            buscarID(usuariosVista.getTxtBuscar());
+            buscarID(Integer.parseInt(usuariosVista.getTxtBuscar()));
         }
         if(e.getSource() == usuariosVista.getBtnCrearUsuario()) {
             CrearUsuariosControlador cuVista = new CrearUsuariosControlador();
@@ -69,5 +92,22 @@ public class UsuariosControlador implements ActionListener, MouseListener {
     @Override
     public void mouseExited(MouseEvent e) {
         
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        if(e.getSource() == usuariosVista.getTxtFiltrar()) {
+            filtrar();
+        } 
     }    
 }

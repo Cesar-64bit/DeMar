@@ -2,6 +2,7 @@ package DeMar.src.usuarios;
 
 import java.awt.Color;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -70,6 +71,7 @@ public class UsuariosVista extends JFrame{
         txtBuscar.setBackground(Color.WHITE);
         txtBuscar.setCaretColor(Color.BLACK);
         txtBuscar.setHorizontalAlignment(SwingConstants.CENTER);
+        txtBuscar.addKeyListener((KeyListener) usuariosControlador);
         pGrupo.add(txtBuscar);
     }
 
@@ -108,7 +110,11 @@ public class UsuariosVista extends JFrame{
     }
 
     /* OBTENER CAJAS DE TEXTO */
-    public int getTxtBuscar() {
-        return Integer.parseInt(txtBuscar.getText());
+    public String getTxtBuscar() {
+        return txtBuscar.getText();
+    }
+
+    public JTextField getTxtFiltrar() {
+        return txtBuscar;
     }
 }

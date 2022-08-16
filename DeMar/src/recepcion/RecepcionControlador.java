@@ -4,13 +4,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
-public class RecepcionControlador implements ActionListener, MouseListener{
+public class RecepcionControlador implements ActionListener, MouseListener, KeyListener{
     RecepcionModelo modRecepcion = new RecepcionModelo();
+
+    TableRowSorter<DefaultTableModel> filtro;
     JScrollPane scroll = new JScrollPane();
     JTable tabla = new JTable();
 
@@ -26,7 +32,14 @@ public class RecepcionControlador implements ActionListener, MouseListener{
 
      /* ESTE MÉTODO MUESTRA LOS VALORES ACTUALES Y SE CARGAN AL ABRIR LA VENTA */
      public void mostrarDatosIniciales() {
-        tabla.setModel(modRecepcion.selecRecepciones());
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo = modRecepcion.selecRecepciones();
+
+        tabla.setModel(modelo);
+        tabla.setAutoCreateRowSorter(true);
+        filtro = new TableRowSorter<>(modelo);
+        tabla.setRowSorter(filtro);
+
         scroll.setViewportView(tabla);
 
         this.recepcionVista.diseñarJTable(tabla, scroll);
@@ -45,10 +58,19 @@ public class RecepcionControlador implements ActionListener, MouseListener{
         recepcionVista.setCbmEmpleados(modRecepcion.filEmpleados());
     }
 
+    public void filtrar() {
+        try {
+            filtro.setRowFilter(RowFilter.regexFilter(recepcionVista.getTxtBuscar()));
+        }
+        catch(Exception e) {
+
+        }
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == recepcionVista.getBtnBuscar()) {
-            buscarID(recepcionVista.getTxtBuscar());
+            buscarID(Integer.parseInt(recepcionVista.getTxtBuscar()));
 
         }
         if(e.getSource() == recepcionVista.getBtnAgregar()) {
@@ -57,6 +79,7 @@ public class RecepcionControlador implements ActionListener, MouseListener{
                                                     recepcionVista.getTxtCantidad(), 
                                                     recepcionVista.getTxtEmpleado());
             recepcionVista.confirmarRegistro(registro);
+            mostrarDatosIniciales();
         }
         if(e.getSource() == recepcionVista.getBtnModificar()) {
             if(recepcionVista.confirmarAccion(recepcionVista.getBtnEliminar().getText()) == 0)
@@ -110,5 +133,22 @@ public class RecepcionControlador implements ActionListener, MouseListener{
     @Override
     public void mouseExited(MouseEvent e) {
         
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        if(e.getSource() == recepcionVista.getTxtFiltrar()) {
+            filtrar();
+        } 
     }
 }
