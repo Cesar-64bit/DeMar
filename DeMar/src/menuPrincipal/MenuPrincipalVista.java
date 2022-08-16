@@ -39,6 +39,7 @@ public class MenuPrincipalVista extends JFrame {
         this.crearPanels();
         this.crearLabels();
         this.crearButtons();
+        this.otorgarAcceso(tipoUsuario);
 
         setSize(1200, 600);
         setLocationRelativeTo(this);
@@ -319,6 +320,35 @@ public class MenuPrincipalVista extends JFrame {
         //btnPerfiles.setBorder(null);
         btnCerrarSesion.setHorizontalAlignment(SwingConstants.CENTER);
         pUsuario.add(btnCerrarSesion);
+    }
+
+    public void otorgarAcceso(String tipoAcceso) {
+        if(tipoAcceso.equals("Administrador")) {
+            btnArea.setEnabled(true);
+            btnEmpleados.setEnabled(true);
+            btnProveedores.setEnabled(true);
+            btnPedidos.setEnabled(true);
+            btnPagos.setEnabled(true);
+            btnPrestamos.setEnabled(true);
+            btnRecepcion.setEnabled(true);
+            btnGastos.setEnabled(true);
+            btnInsumo.setEnabled(true);
+            btnUsuarios.setEnabled(true);
+            btnPerfiles.setEnabled(true);
+        }
+        else if(tipoAcceso.equals("Recepcionista")) {
+            btnArea.setEnabled(false);
+            btnEmpleados.setEnabled(false);
+            btnProveedores.setEnabled(false);
+            btnPedidos.setEnabled(false);
+            btnPagos.setEnabled(false);
+            btnPrestamos.setEnabled(false);
+            btnRecepcion.setEnabled(true);
+            btnGastos.setEnabled(false);
+            btnInsumo.setEnabled(false);
+            btnUsuarios.setEnabled(false);
+            btnPerfiles.setEnabled(false);
+        }
     }
 
     public JButton getBtnAreas() {
