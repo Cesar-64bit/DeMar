@@ -3,8 +3,10 @@ package DeMar.src.pedidos;
 import java.util.Date;
 import java.util.Locale;
 import java.awt.*;
+import java.awt.Graphics;
 import java.text.SimpleDateFormat;
 import javax.swing.*;
+import javax.swing.plaf.PanelUI;
 import javax.swing.plaf.basic.*;
 import javax.swing.table.JTableHeader;
 import javax.swing.border.Border;
@@ -14,10 +16,10 @@ import javax.swing.border.TitledBorder;
 public class PedidosVista extends JFrame {
     //COMPONENTES GRAFICOS
     protected JTabbedPane tpOpciones;
-    protected JPanel pFondo, pInfo, pInformacion, pBus, pBusqueda, pBotones, pDatosGenerales, pDetalles, pTablaDetalles, pFiltros, pColores, pPeriodos, pTablaPedidos;
+    protected JPanel pFondo, pInfo, pInformacion, pBus, pBusqueda, pBotones, pDatosGenerales, pDetalles, pTablaDetalles, pFiltros, pColores, pPeriodos, pTablaPedidos, pCPendiente, pCProceso, pCCancelar, pCFinalizado;
     protected JScrollPane psTablaDetalles, psTablaPedidos;
     protected JSeparator sBusqueda1, sBusqueda2, sInformacion1, sInformacion2, sEmpleado;
-    protected JLabel lblFecha, lblNomEmpleado, lblEmpleado, lblProveedor, lbFolio, lbPeriodo, lbProveedor, lbEmpleado;
+    protected JLabel lblFecha, lblNomEmpleado, lblEmpleado, lblProveedor, lbFolio, lbPeriodo, lbProveedor, lbEmpleado, lblCPendiente, lblCProceso, lblCCancelar, lblCFinalizado;
     protected JComboBox<String> cbxProveedor, cbxInsumos, cbxProveedor2, cbxEmpleado;
     protected JButton btnGuardar, btnLimpiar, btnCerrar, btnAgregar, btnEliminar;
     protected JRadioButton rbHoy, rbEstaSemana, rbEsteMes, rbEsteAño, rbTodos;
@@ -40,6 +42,10 @@ public class PedidosVista extends JFrame {
     private Color colorPrimario2 =  new Color(70, 85, 110);
     private Color colorPrimario3 = new Color(172, 179, 188);
     private Color colorSecundario = new Color(197, 223, 183);
+    protected Color color_Pendiente = new Color(255, 230, 153);
+    protected Color color_EnProceso = new Color(248, 203, 173);
+    protected Color color_Cancelar = Color.WHITE;
+    protected Color color_Finalizado = new Color(197, 224, 180);
     private Font fuenteMuyGrande = new Font("Segoe UI", 1, 18);
     private Font fuenteMuyGrande2 = new Font("Segoe UI", 0, 18);
     private Font fuenteGrande = new Font("Segoe UI", 1, 16);
@@ -84,6 +90,10 @@ public class PedidosVista extends JFrame {
         pColores = new JPanel();
         pPeriodos = new JPanel();
         pTablaPedidos = new JPanel();
+        pCFinalizado = new JPanel();
+        pCPendiente = new JPanel();
+        pCProceso = new JPanel();
+        pCCancelar = new JPanel();
         
         //Construcción
         pFondo.setSize(anchoPan,altoPan);
@@ -159,7 +169,7 @@ public class PedidosVista extends JFrame {
         pBus.add(pBusqueda);
 
         pFiltros.setBounds(
-            (int)(pBusqueda.getWidth()*.02), (int)(pBusqueda.getHeight()*.063),
+            (int)(pBusqueda.getWidth()*.02), (int)(pBusqueda.getHeight()*.062),
             (int)(pBusqueda.getWidth()*.31), (int)(pBusqueda.getHeight()*.72));
         pFiltros.setBackground(colorFondo);
         pFiltros.setBorder(sinBordes);
@@ -195,9 +205,41 @@ public class PedidosVista extends JFrame {
             (int)(pBusqueda.getWidth()*.25), (int)(altoJTP-ejeyJTP*.92),
             (int)(pBusqueda.getWidth()*.5), (int)(ejeyJTP*.45));
         pColores.setBackground(colorFondo);
-        pColores.setBorder(bordeSencillo);
+        pColores.setBorder(sinBordes);
         pColores.setLayout(null);
         pBusqueda.add(pColores);
+
+        pCFinalizado.setBounds(
+            (int)(pColores.getWidth()*.04)-17, 9,
+            15, 15);
+        pCFinalizado.setBackground(color_Finalizado);
+        pCFinalizado.setLayout(null);
+        pCFinalizado.setBorder(sinBordes);
+        pColores.add(pCFinalizado);
+
+        pCPendiente.setBounds(
+            (int)(pColores.getWidth()*.29)-17, 9,
+            15, 15);
+        pCPendiente.setBackground(color_Pendiente);
+        pCPendiente.setLayout(null);
+        pCPendiente.setBorder(sinBordes);
+        pColores.add(pCPendiente);
+
+        pCProceso.setBounds(
+            (int)(pColores.getWidth()*.54)-17, 9,
+            15, 15);
+        pCProceso.setBackground(color_EnProceso);
+        pCProceso.setLayout(null);
+        pCProceso.setBorder(sinBordes);
+        pColores.add(pCProceso);
+
+        pCCancelar.setBounds(
+            (int)(pColores.getWidth()*.79)-17, 9,
+            15, 15);
+        pCCancelar.setBackground(color_Cancelar);
+        pCCancelar.setLayout(null);
+        pCCancelar.setBorder(bordeSencillo);
+        pColores.add(pCCancelar);
     }
 
     private void crearSeparadores(){
@@ -257,6 +299,10 @@ public class PedidosVista extends JFrame {
         lbPeriodo = new JLabel();
         lbProveedor = new JLabel();
         lblEmpleado = new JLabel();
+        lblCFinalizado = new JLabel();
+        lblCPendiente = new JLabel();
+        lblCProceso = new JLabel();
+        lblCCancelar = new JLabel();
 
         //Construccion
         lblFecha.setLayout(null);
@@ -277,29 +323,61 @@ public class PedidosVista extends JFrame {
             (int)(pDatosGenerales.getWidth()*.7), 25);
         lblNomEmpleado.setForeground(colorPrimario);
 
+        lblEmpleado.setBounds(
+            (int)(pDatosGenerales.getWidth()*.12), (int)(pDatosGenerales.getHeight()*.30 - 25),
+            (int)(pDatosGenerales.getWidth()*.2), 25);
         lblEmpleado.setLayout(null);
         lblEmpleado.setFont(fuenteMediana);
         lblEmpleado.setHorizontalAlignment(2);
         lblEmpleado.setText("Empleado");
-        lblEmpleado.setBounds(
-            (int)(pDatosGenerales.getWidth()*.12), (int)(pDatosGenerales.getHeight()*.30 - 25),
-            (int)(pDatosGenerales.getWidth()*.2), 25);
         lblEmpleado.setForeground(colorPrimario);
 
+        lblProveedor.setBounds(
+            (int)(pDatosGenerales.getWidth()*.12), (int)(pDatosGenerales.getHeight()*.63 - 25),
+            (int)(pDatosGenerales.getWidth()*.2), 25);
         lblProveedor.setLayout(null);
         lblProveedor.setFont(fuenteMediana);
         lblProveedor.setHorizontalAlignment(2);
         lblProveedor.setText("Proveedor");
-        lblProveedor.setBounds(
-            (int)(pDatosGenerales.getWidth()*.12), (int)(pDatosGenerales.getHeight()*.63 - 25),
-            (int)(pDatosGenerales.getWidth()*.2), 25);
         lblProveedor.setForeground(colorPrimario);
+
+        lblCFinalizado.setBounds(
+            (int)(pColores.getWidth()*.04), 3,
+            (int)(pColores.getWidth()*.2), 25);
+        lblCFinalizado.setText("Finalizado");
+        lblCFinalizado.setFont(fuenteGrande);
+        lblCFinalizado.setHorizontalAlignment(2);
+
+        lblCPendiente.setBounds(
+            (int)(pColores.getWidth()*.29), 3,
+            (int)(pColores.getWidth()*.2), 25);
+        lblCPendiente.setText("Pendientes");
+        lblCPendiente.setFont(fuenteGrande);
+        lblCPendiente.setHorizontalAlignment(2);
+
+        lblCProceso.setBounds(
+            (int)(pColores.getWidth()*.54), 3,
+            (int)(pColores.getWidth()*.2), 25);
+        lblCProceso.setText("En Proceso");
+        lblCProceso.setFont(fuenteGrande);
+        lblCProceso.setHorizontalAlignment(2);
+
+        lblCCancelar.setBounds(
+            (int)(pColores.getWidth()*.79), 3,
+            (int)(pColores.getWidth()*.2), 25);
+        lblCCancelar.setText("Cancelados");
+        lblCCancelar.setFont(fuenteGrande);
+        lblCCancelar.setHorizontalAlignment(2);
 
         //Mostrar
         pFondo.add(lblFecha);
         pDatosGenerales.add(lblNomEmpleado);
         pDatosGenerales.add(lblEmpleado);
         pDatosGenerales.add(lblProveedor);
+        pColores.add(lblCFinalizado);
+        pColores.add(lblCPendiente);
+        pColores.add(lblCProceso);
+        pColores.add(lblCCancelar);
     }
 
     private void crearComboBoxs(){
@@ -541,7 +619,7 @@ public class PedidosVista extends JFrame {
         rbEsteAño.setForeground(colorPrimario);
         rbEsteAño.setFont(fuenteMuyGrande2);
         rbEsteAño.setFocusPainted(false);
-        rbEsteAño.setText("Este mes");
+        rbEsteAño.setText("Este año");
 
         rbTodos.setBounds(
             (int)(pPeriodos.getWidth()*0.12), 165,

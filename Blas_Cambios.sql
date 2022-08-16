@@ -368,6 +368,19 @@ DELIMITER ;
 
 
 
+-- Cesar_15/08/2022 (Cuidado)
+UPDATE `demar`.`empleados` SET `imagen` = '\\DeMar\\resources\\FotoEmpleados' WHERE (`id` = '6');
+UPDATE `demar`.`empleados` SET `imagen` = '\\DeMar\\resources\\FotoEmpleados' WHERE (`id` = '7');
+
+
+
+-- Blas_15/08/2022
+-- NUEVO ESTADO PARA LOS PEDIDOS: -1 (Cancelado)
+ALTER TABLE `demar`.`pedidos` 
+CHANGE COLUMN `estado` `estado` INT(1) NOT NULL DEFAULT 3 COMMENT '-1: Cancelado\\n0 : entregado\\n1 : en proceso\\n2: pendiente\\n3: en captura' ;
+
+
+
 -- PRUEBAS DE LOS PROCESOS ALMACENADOS -- Ignorar --
 call demar.buscarUnPedido('1');
 call demar.seleccionarPedidos();
