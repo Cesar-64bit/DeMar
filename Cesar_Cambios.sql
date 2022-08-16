@@ -215,6 +215,8 @@ CREATE PROCEDURE selecUsuariosActivos() SELECT *FROM usuarios WHERE estado = 1;
 --- Procedimiento para filtar perfiles
 CREATE PROCEDURE filtrarPerfiles() SELECT nombre FROM perfiles;
 
+CREATE PROCEDURE idRol(IN nomRol VARCHAR(50)) SELECT id FROM perfiles WHERE nombre = nomRol;
+
 --------------------------------------------------------
 
 --- PRUEBAS
@@ -258,3 +260,20 @@ VALUES (nombre, telefono, direccion, dias, fechaContrato, rutaImagen, area, 1)$$
 
 DELIMITER ;
 ;
+
+
+USE `demar`;
+DROP procedure IF EXISTS `filtrarEmpleados`;
+
+USE `demar`;
+DROP procedure IF EXISTS `demar`.`filtrarEmpleados`;
+;
+
+DELIMITER $$
+USE `demar`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `filtrarEmpleados`()
+SELECT nombre FROM empleados WHERE estado = 1;$$
+
+DELIMITER ;
+;
+

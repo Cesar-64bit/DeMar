@@ -4,13 +4,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
-public class GastosControlador implements ActionListener, MouseListener{
+public class GastosControlador implements ActionListener, MouseListener, KeyListener{
     GastosModelo modGastos = new GastosModelo();
+
+    TableRowSorter<DefaultTableModel> filtro;
     JScrollPane scroll = new JScrollPane();
     JTable tabla = new JTable();
 
@@ -24,7 +30,14 @@ public class GastosControlador implements ActionListener, MouseListener{
     }
 
     public void mostrarDatosIniciales() {
-        tabla.setModel(modGastos.selecGastos());
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo = modGastos.selecGastos();
+
+        tabla.setModel(modelo);
+        tabla.setAutoCreateRowSorter(true);
+        filtro = new TableRowSorter<>(modelo);
+        tabla.setRowSorter(filtro);
+
         scroll.setViewportView(tabla);
 
         this.gastosVista.diseñarJTable(tabla, scroll);
@@ -43,10 +56,19 @@ public class GastosControlador implements ActionListener, MouseListener{
         gastosVista.setCbmEmpleados(modGastos.filEmpleados());
     }
 
+    public void filtrar() {
+        try {
+            filtro.setRowFilter(RowFilter.regexFilter(gastosVista.getTxtBuscar()));
+        }
+        catch(Exception e) {
+
+        }
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == gastosVista.getBtnBuscar()) {
-            buscarID(gastosVista.getTxtBuscar());
+            buscarID(Integer.parseInt(gastosVista.getTxtBuscar()));
 
         }
         if(e.getSource() == gastosVista.getBtnAgregar()) {
@@ -56,6 +78,7 @@ public class GastosControlador implements ActionListener, MouseListener{
                                                     gastosVista.getTxtFecha(),
                                                     gastosVista.getTxtEmpleado());
             gastosVista.confirmarRegistro(registro);
+            mostrarDatosIniciales();
         }
         if(e.getSource() == gastosVista.getBtnModificar()) {
             if(gastosVista.confirmarAccion(gastosVista.getBtnModificar().getText()) == 0)
@@ -112,5 +135,22 @@ public class GastosControlador implements ActionListener, MouseListener{
     @Override
     public void mouseExited(MouseEvent e) {
         
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        if(e.getSource() == gastosVista.getTxtFiltrar()) {
+            filtrar();
+        }
     }
 }

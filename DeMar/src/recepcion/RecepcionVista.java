@@ -3,6 +3,7 @@ package DeMar.src.recepcion;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
 
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -204,6 +205,7 @@ public class RecepcionVista extends JFrame {
         txtBuscar.setBackground(Color.WHITE);
         txtBuscar.setCaretColor(Color.BLACK);
         txtBuscar.setHorizontalAlignment(SwingConstants.CENTER);
+        txtBuscar.addKeyListener((KeyListener) recepcionControlador);
         pFondo.add(txtBuscar);
 
     }
@@ -314,8 +316,12 @@ public class RecepcionVista extends JFrame {
         return txtEmpleado.getText();
     }
 
-    public int getTxtBuscar() {
-        return Integer.parseInt(txtBuscar.getText());
+    public String getTxtBuscar() {
+        return txtBuscar.getText();
+    }
+
+    public JTextField getTxtFiltrar() {
+        return txtBuscar;
     }
 
     /* ESTABLECER TETXTO EN LAS CAJAS DE TEXTO */

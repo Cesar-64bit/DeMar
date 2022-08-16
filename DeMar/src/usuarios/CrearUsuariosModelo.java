@@ -27,4 +27,21 @@ public class CrearUsuariosModelo extends Modelo {
         String consulta = "CALL filtrarPerfiles();";
         return consultaSeleccion(consulta);
     }
+
+    // OBTENER ID DE EMPLEADOS 
+    public DefaultTableModel nomEmpleado(String nombre) {
+        String consulta = "CALL idEmpleado('"+nombre+"');";
+        return consultaSeleccion(consulta);
+    }
+
+    public DefaultTableModel nomRol(String nombre) {
+        String consulta = "CALL idRol('"+nombre+"');";
+        return consultaSeleccion(consulta);
+    }
+
+    // AGREGAR USUARIOS
+    public boolean agregarUsuarios(String nomUsuario, String conUsuario, String idEmpleado, String idPerfiles) {
+        String consulta = "CALL agregarUsuarios('"+nomUsuario+"','"+conUsuario+"', '"+idEmpleado+"','"+idPerfiles+"');";
+        return consultaPersistencia(consulta);
+    }
 }
