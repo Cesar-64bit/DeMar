@@ -185,5 +185,10 @@ public class LoginVista extends JFrame {
         return claveUsuario;
     }
 
+    public void limpiar() {
+        txtNombreUsuario.setText("");
+        txtClaveUsuario.setText("");
+    }
+
     public String getCbxTipoUsuario() { return cbxTipoUsuario.getSelectedItem().toString(); }
 }

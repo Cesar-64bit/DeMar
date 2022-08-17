@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -19,6 +21,8 @@ import javax.swing.JButton;
 
 
 public class PrestamosVista extends JFrame {
+    DateTimeFormatter dft = DateTimeFormatter.ofPattern("yyy/MM/dd HH:mm:ss");
+
     protected JPanel pFondo, pContenedor, pSeparador, pContenedorBotones,
                     pFolio, pFechaPrestamo, pFechaPagado, pCantidad,
                     pPlazosTotales, pPlazosPagados, pTipoPlazos, pEmpleado;
@@ -29,9 +33,7 @@ public class PrestamosVista extends JFrame {
     protected JButton btnAgregar, btnModificar, btnEliminar, btnLimpiar,
                     btnBuscar;
     protected JTable obtenerTabla;
-
     protected JComboBox<String> cmbEmpleado, cmbTipoPago;
-
 
     protected PrestamosControlador prestamosControlador;
 
@@ -208,7 +210,7 @@ public class PrestamosVista extends JFrame {
         pContenedor.add(lblPlazosPagados);
     }
 
-    public void crearTextField() {
+    public void crearTextField() {        
         txtFolio = new JTextField();
         txtFolio.setSize(300, 35);
         txtFolio.setLocation((pContenedor.getWidth() - txtFolio.getWidth()) / 2, 40);
@@ -226,6 +228,8 @@ public class PrestamosVista extends JFrame {
         txtFechaPrestamo.setCaretColor(Color.BLACK);
         txtFechaPrestamo.setBorder(null);
         txtFechaPrestamo.setHorizontalAlignment(SwingConstants.CENTER);
+        txtFechaPrestamo.setEnabled(false);
+        txtFechaPrestamo.setText(dft.format(LocalDateTime.now()));
         pContenedor.add(txtFechaPrestamo);
 
         txtFechaPago = new JTextField();
@@ -235,6 +239,7 @@ public class PrestamosVista extends JFrame {
         txtFechaPago.setCaretColor(Color.BLACK);
         txtFechaPago.setBorder(null);
         txtFechaPago.setHorizontalAlignment(SwingConstants.CENTER);
+        txtFechaPago.setText("0000-00-00 00:00:00");
         pContenedor.add(txtFechaPago);
 
         cmbEmpleado = new JComboBox<>();
@@ -356,8 +361,8 @@ public class PrestamosVista extends JFrame {
 
     public void limpiar() {
         txtFolio.setText("");
-        txtFechaPrestamo.setText("");
-        txtFechaPago.setText("");
+        txtFechaPrestamo.setText(dft.format(LocalDateTime.now()));
+        txtFechaPago.setText("0000-00-00 00:00:00");
         txtEmpleado.setText("");
         txtCantidad.setText("");
         txtplazosTotales.setText("");
@@ -438,6 +443,22 @@ public class PrestamosVista extends JFrame {
 
     public JTextField getTxtFiltrar() {
         return txtBuscar;
+    }
+
+    public JTextField getComponentTxtEmpleado() {
+        return txtEmpleado;
+    }
+
+    public JTextField getComponentTxtCantidad() {
+        return txtCantidad;
+    }
+
+    public JTextField getComponentTxtPlazosTotales(){
+        return txtplazosTotales;
+    }
+
+    public JTextField getComponentTxtPlazosPagados(){
+        return txtPlazosPagados;
     }
     
     /* ESTABLECER TEXTO EN LAS CAJAS DE TEXTO */

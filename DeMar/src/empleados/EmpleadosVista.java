@@ -17,6 +17,7 @@ import javax.swing.JOptionPane;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
+import java.time.LocalDate;
 
 public class EmpleadosVista extends JFrame {
     protected JLabel lblNumeroEmpleado, lblNombre, lblTelefono,
@@ -266,6 +267,8 @@ public class EmpleadosVista extends JFrame {
         txtFechaContrato.setCaretColor(Color.BLACK);
         txtFechaContrato.setBorder(null);
         txtFechaContrato.setHorizontalAlignment(SwingConstants.CENTER);
+        txtFechaContrato.setText(LocalDate.now().toString());
+        txtFechaContrato.setEnabled(false);
         pContenedor.add(txtFechaContrato);
 
         txtDiasLaborados = new JTextField();
@@ -293,6 +296,7 @@ public class EmpleadosVista extends JFrame {
         txtRuta.setCaretColor(Color.BLACK);
         txtRuta.setEnabled(false);
         txtRuta.setHorizontalAlignment(SwingConstants.CENTER);
+        txtRuta.setText("null");
         pFondo.add(txtRuta);
     }
 
@@ -357,7 +361,6 @@ public class EmpleadosVista extends JFrame {
         txtNombre.setText("");
         txtTelefono.setText("");
         txtDireccion.setText("");
-        txtFechaContrato.setText("");
         txtDiasLaborados.setText("");
     }
 
@@ -443,6 +446,22 @@ public class EmpleadosVista extends JFrame {
 
     public String getTxtRutaImagen() {
         return txtRuta.getText();
+    }
+
+    /* OBTENER COMPONENTE JTEXTFIELD*/
+    public JTextField getComponentTxtNombre() {
+        return txtNombre;
+    }
+
+    public JTextField getComponentTxtTelefono() {
+        return txtTelefono;
+    }
+
+    public JTextField getComponentTxtDireccion() {
+        return txtDireccion;
+    }
+    public JTextField getComponentTxtDiasLaborados() {
+        return txtDiasLaborados;
     }
 
     /* ESTABLECER TEXTO EN LAS CAJAS DE TEXTO */

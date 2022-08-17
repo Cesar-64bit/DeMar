@@ -1,19 +1,27 @@
 package DeMar.src.recepcion;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
-public class RecepcionControlador implements ActionListener, MouseListener, KeyListener{
+import DeMar.src.resaltarCampo;
+
+public class RecepcionControlador implements ActionListener, MouseListener, KeyListener {
+    ArrayList<JComponent> arregloComponent = new ArrayList<JComponent>();
+    private resaltarCampo resaltado;
+
     RecepcionModelo modRecepcion = new RecepcionModelo();
 
     TableRowSorter<DefaultTableModel> filtro;
@@ -74,12 +82,14 @@ public class RecepcionControlador implements ActionListener, MouseListener, KeyL
 
         }
         if(e.getSource() == recepcionVista.getBtnAgregar()) {
-            boolean registro = modRecepcion.registrar(
-                                                    recepcionVista.getTxtFecha(),
-                                                    recepcionVista.getTxtCantidad(), 
-                                                    recepcionVista.getTxtEmpleado());
-            recepcionVista.confirmarRegistro(registro);
-            mostrarDatosIniciales();
+            if(verificarCampos() == 0) {
+                boolean registro = modRecepcion.registrar(
+                                                        recepcionVista.getTxtFecha(),
+                                                        recepcionVista.getTxtCantidad(), 
+                                                        recepcionVista.getTxtEmpleado());
+                recepcionVista.confirmarRegistro(registro);
+                mostrarDatosIniciales();
+            }
         }
         if(e.getSource() == recepcionVista.getBtnModificar()) {
             if(recepcionVista.confirmarAccion(recepcionVista.getBtnEliminar().getText()) == 0)
@@ -150,5 +160,30 @@ public class RecepcionControlador implements ActionListener, MouseListener, KeyL
         if(e.getSource() == recepcionVista.getTxtFiltrar()) {
             filtrar();
         } 
+    }
+
+    /*  Verifica la cantidad de campos vacíos y los almacena en un arrelo
+     * de tipo JComponent para posteriormente recorrer el arreglo y
+     * pintar el fondo de los campos que no tienen datos
+    */
+    public int verificarCampos() {
+        if(recepcionVista.txtCantidad.getText().length() == 0)
+            arregloComponent.add(recepcionVista.getComponentTxtCantidad());
+        if(recepcionVista.txtEmpleado.getText().length() == 0)
+            arregloComponent.add(recepcionVista.getComponentTxtEmpleado());
+
+        int camposVacios = arregloComponent.size();
+        
+        resaltar();
+
+        return camposVacios;
+    }
+
+     public void resaltar() {
+        for(int indice = 0; indice < arregloComponent.size(); indice++) {
+            resaltado = new resaltarCampo(arregloComponent.get(indice), new Color(214, 181, 178), 4);
+            resaltado.start();
+        }
+        arregloComponent.clear();
     }
 }

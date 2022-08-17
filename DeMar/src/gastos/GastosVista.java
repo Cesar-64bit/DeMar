@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -18,6 +20,8 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 
 public class GastosVista extends JFrame {
+    DateTimeFormatter dft = DateTimeFormatter.ofPattern("yyy/MM/dd HH:mm:ss");
+
     protected JPanel pFondo, pContenedor, pSeparador, pContenedorBotones,
                     pIDGasto, pTipoGasto, pCantidad,
                     pFecha, pEmpleado;
@@ -205,6 +209,7 @@ public class GastosVista extends JFrame {
         txtFecha.setCaretColor(Color.BLACK);
         txtFecha.setBorder(null);
         txtFecha.setHorizontalAlignment(SwingConstants.CENTER);
+        txtFecha.setText(dft.format(LocalDateTime.now()));
         pContenedor.add(txtFecha);
         
         cmbEmpleado = new JComboBox<>();
@@ -288,7 +293,7 @@ public class GastosVista extends JFrame {
         txtGasto.setText("");
         txtTipo.setText("");
         txtCantidad.setText("");
-        txtFecha.setText("");
+        txtFecha.setText(dft.format(LocalDateTime.now()));
         txtEmpleado.setText("");
     }
 
@@ -354,6 +359,18 @@ public class GastosVista extends JFrame {
 
     public JTextField getTxtFiltrar() {
         return txtBuscar;
+    }
+
+    public JTextField getComponentTxtGasto() {
+        return txtTipo;
+    }
+
+    public JTextField getComponentTxtCantidad() {
+        return txtCantidad;
+    }
+
+    public JTextField getComponentTxtEmpleado() {
+        return txtEmpleado;
     }
 
      /* ESTABLECER TEXTO EN LAS CAJAS DE TEXTO */

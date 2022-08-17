@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -18,6 +20,8 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
 public class RecepcionVista extends JFrame {
+    DateTimeFormatter dft = DateTimeFormatter.ofPattern("yyy/MM/dd HH:mm:ss");
+
     protected JPanel pFondo, pContenedor, pSeparador, pContenedorBotones,
                     pFolio, pFecha, pCantida, pEmpleado;
     protected JLabel lblFolio, lblFecha, lblCantidad,
@@ -170,6 +174,7 @@ public class RecepcionVista extends JFrame {
         txtFecha.setCaretColor(Color.BLACK);
         txtFecha.setBorder(null);
         txtFecha.setHorizontalAlignment(SwingConstants.CENTER);
+        txtFecha.setText(dft.format(LocalDateTime.now()));
         pContenedor.add(txtFecha);
 
         txtCantidad = new JTextField();
@@ -259,7 +264,7 @@ public class RecepcionVista extends JFrame {
 
     public void limpiar() {
         txtFolio.setText("");
-        txtFecha.setText("");
+        txtFecha.setText(dft.format(LocalDateTime.now()));
         txtCantidad.setText("");
         txtEmpleado.setText("");
     }
@@ -322,6 +327,14 @@ public class RecepcionVista extends JFrame {
 
     public JTextField getTxtFiltrar() {
         return txtBuscar;
+    }
+
+    public JTextField getComponentTxtCantidad() {
+        return txtCantidad;
+    }
+
+    public JTextField getComponentTxtEmpleado(){
+        return txtEmpleado;
     }
 
     /* ESTABLECER TETXTO EN LAS CAJAS DE TEXTO */
