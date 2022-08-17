@@ -80,7 +80,7 @@ public class PrestamosControlador implements ActionListener, MouseListener, KeyL
             buscarID(Integer.parseInt(prestamosVista.getTxtBuscar()));
         }
         if(e.getSource() == prestamosVista.getBtnAgregar()) {
-           // if(verificarCampos() == 0) {
+            if(verificarCampos() == 0) {
                 boolean registro = modPrestamos.registrar(
                                                         prestamosVista.getTxtFechaPrestamo(),
                                                         prestamosVista.getTxtFechaPago(),
@@ -91,7 +91,7 @@ public class PrestamosControlador implements ActionListener, MouseListener, KeyL
                                                         prestamosVista.getTxtPlazosPagados());
                 prestamosVista.confirmarRegistro(registro);
                 mostrarDatosIniciales();
-            //}
+            }
         }
         if(e.getSource() == prestamosVista.getBtnModificar()) {
             if(prestamosVista.confirmarAccion(prestamosVista.getBtnModificar().getText()) == 0)

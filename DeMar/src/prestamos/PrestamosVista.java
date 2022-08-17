@@ -21,7 +21,7 @@ import javax.swing.JButton;
 
 
 public class PrestamosVista extends JFrame {
-    DateTimeFormatter dft = DateTimeFormatter.ofPattern("yyy/MM/dd HH:mm:ss");
+    DateTimeFormatter dft = DateTimeFormatter.ofPattern("yyy-MM-dd HH:mm:ss");
 
     protected JPanel pFondo, pContenedor, pSeparador, pContenedorBotones,
                     pFolio, pFechaPrestamo, pFechaPagado, pCantidad,
@@ -239,7 +239,7 @@ public class PrestamosVista extends JFrame {
         txtFechaPago.setCaretColor(Color.BLACK);
         txtFechaPago.setBorder(null);
         txtFechaPago.setHorizontalAlignment(SwingConstants.CENTER);
-        txtFechaPago.setText("0000-00-00 00:00:00");
+        txtFechaPago.setText(dft.format(LocalDateTime.now()));
         pContenedor.add(txtFechaPago);
 
         cmbEmpleado = new JComboBox<>();
@@ -362,7 +362,7 @@ public class PrestamosVista extends JFrame {
     public void limpiar() {
         txtFolio.setText("");
         txtFechaPrestamo.setText(dft.format(LocalDateTime.now()));
-        txtFechaPago.setText("0000-00-00 00:00:00");
+        txtFechaPago.setText(dft.format(LocalDateTime.now()));
         txtEmpleado.setText("");
         txtCantidad.setText("");
         txtplazosTotales.setText("");
