@@ -28,22 +28,10 @@ public class PedidosModelo extends Modelo{
         return consultaSeleccion(consulta);
     }
     
-    //Selecciona los pedidos dependiendo la fecha, el proveedor, el empleado y el estado del pedido.
-    //Si no se quiere tomar en cuenta un parametro, enviarlo como null (a excepción del estado).
-    //Valores validos del estado:
-    //  0: Entregado
-    //  1: En proceso
-    //  2: Pendiente
-    //  3: En captura
-    public DefaultTableModel selecFiltros(String fecha, String idProveedor, String idEmpleado, int estado){
-        String consulta = "call demar.seleccionarPedidosFiltros(";
-        if(fecha == null) consulta += "'', ";
-        else consulta += "'" + fecha + "', ";
-        if(idProveedor == null) consulta += "'', ";
-        else consulta += "'" + idProveedor + "', ";
-        if(idEmpleado == null) consulta += "'', ";
-        else consulta += "'" + idEmpleado + "', ";
-        consulta += "'" + estado + "');";
+    //Selecciona los pedidos dependiendo la fecha, el proveedor y el empleado.
+    //Si no se quiere tomar en cuenta un parametro, enviar un string vacio ("").
+    public DefaultTableModel selecFiltros(String periodo, String idProveedor, String idEmpleado){
+        String consulta = "call demar.seleccionarPedidosFiltros('"+periodo+"', '"+idProveedor+"', '"+idEmpleado+"');";
         return consultaSeleccion(consulta);
     }
     
