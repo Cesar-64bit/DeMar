@@ -378,6 +378,57 @@ UPDATE `demar`.`empleados` SET `imagen` = '\\DeMar\\resources\\FotoEmpleados' WH
 -- NUEVO ESTADO PARA LOS PEDIDOS: -1 (Cancelado)
 ALTER TABLE `demar`.`pedidos` 
 CHANGE COLUMN `estado` `estado` INT(1) NOT NULL DEFAULT 3 COMMENT '-1: Cancelado\\n0 : entregado\\n1 : en proceso\\n2: pendiente\\n3: en captura' ;
+-- --------------------------------------------------------
+-- Se corrigio el nombre del metodo 'selecEmpleadosActivos'
+USE `demar`;
+DROP procedure IF EXISTS `demar`.`selecEmpleadosActivos`;
+DELIMITER $$
+USE `demar`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `selecEmpleadosActivos`()
+SELECT *FROM empleados WHERE estado = 1$$
+DELIMITER ;
+
+
+
+-- Blas_16/08/2022
+-- Corrección procedimiento almacenado 'seleccionarPedidos'
+DROP procedure IF EXISTS `demar`.`seleccionarPedidos`;
+DELIMITER $$
+USE `demar`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `seleccionarPedidos`()
+BEGIN
+	SELECT * FROM demar.pedidos
+    ORDER BY id DESC;
+END$$
+DELIMITER ;
+-- ------------------------------------------------------------------------
+-- Proceso almacenado para seleccionar pedidos con los filtros (modificado)
+USE `demar`;
+DROP procedure IF EXISTS `seleccionarPedidosFiltros`;
+DELIMITER $$
+USE `demar`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `seleccionarPedidosFiltros`
+(IN fechaPedidoP VARCHAR(30), IN idProveedorP VARCHAR(11), IN idEmpleadoP VARCHAR(11))
+BEGIN
+	IF(fechaPedidoP!='' and idProveedorP!='' and idEmpleadoP!='')
+    THEN SELECT * FROM demar.pedidos
+    WHERE fecha_pedido>=fechaPedidoP and idproveedor=idProveedorP and idempleado=idEmpleadoP ORDER BY id DESC;
+    ELSEIF(fechaPedidoP!='' and idProveedorP='' and idEmpleadoP='')
+    THEN SELECT * FROM demar.pedidos WHERE fecha_pedido >= fechaPedidoP ORDER BY id DESC;
+    ELSEIF(fechaPedidoP='' and idProveedorP!='' and idEmpleadoP='')
+    THEN SELECT * FROM demar.pedidos WHERE idproveedor = idProveedorP ORDER BY id DESC;
+    ELSEIF(fechaPedidoP='' and idProveedorP='' and idEmpleadoP!='')
+    THEN SELECT * FROM demar.pedidos WHERE idempleado = idEmpleadoP ORDER BY id DESC;
+    ELSEIF(fechaPedidoP!='' and idProveedorP!='' and idEmpleadoP='')
+    THEN SELECT * FROM demar.pedidos WHERE fecha_pedido>=fechaPedidoP and idproveedor=idProveedorP ORDER BY id DESC;
+    ELSEIF(fechaPedidoP!='' and idProveedorP='' and idEmpleadoP!='')
+    THEN SELECT * FROM demar.pedidos WHERE fecha_pedido>=fechaPedidoP and idempleado=idEmpleadoP ORDER BY id DESC;
+    ELSEIF(fechaPedidoP='' and idProveedorP!='' and idEmpleadoP!='')
+    THEN SELECT * FROM demar.pedidos WHERE idproveedor=idProveedorP and idempleado=idEmpleadoP ORDER BY id DESC;
+    ELSE SELECT * FROM demar.pedidos ORDER BY id DESC;
+    END IF;
+END$$
+DELIMITER ;
 
 
 
@@ -386,7 +437,8 @@ call demar.buscarUnPedido('1');
 call demar.seleccionarPedidos();
 call demar.seleccionarPedidosPen('0');
 call demar.seleccionarPedidosPen('1');
-call demar.seleccionarPedidosFiltros('', '4', '', '1');
+call demar.seleccionarPedidosFiltros('2022-08-15 16:40:46', '', '');
+call demar.seleccionarPedidosFiltros('2021-08-16 00:00:00', '2', '');
 call demar.agregarPedido('3', 'Nadia Gomez Perez');
 call demar.insumos_selecPorProveedor('2', '');
 call demar.agregarDetallesPedido('6', '5');

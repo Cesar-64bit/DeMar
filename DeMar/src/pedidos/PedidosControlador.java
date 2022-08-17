@@ -7,12 +7,10 @@ import java.text.*;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-
 import DeMar.src.resaltarCampo;
 import DeMar.src.Insumos.InsumosModelo;
 import DeMar.src.empleados.EmpleadosModelo;
 import DeMar.src.proveedores.ProveedoresModelo;
-import java.awt.Component;
 
 public class PedidosControlador{
     protected PedidosVista pedidosVista;
@@ -21,7 +19,9 @@ public class PedidosControlador{
     private ProveedoresModelo modeloProveedores;
     private resaltarCampo resaltado;
     private InsumosModelo modeloInsumos;
-    private DefaultTableModel tablaProveedores, tablaInsumos, tablaDetalles, idTDetalles, tablaPedidos, estadoTPedidos, tablaEmpleados;
+    private DefaultTableModel tablaProveedores, tablaInsumos, tablaDetalles, idTDetalles, tablaPedidos, estadoTPedidos, tablaCPedidos, tablaEmpleados;
+
+    private Color colorError = new Color(214, 181, 178);
 
     public PedidosControlador(String nombreUsuario) {
         this.pedidosVista = new PedidosVista(this);
@@ -30,13 +30,14 @@ public class PedidosControlador{
         this.modeloEmpleados = new EmpleadosModelo();
         this.modeloInsumos = new InsumosModelo();
         pedidosVista.lblNomEmpleado.setText(nombreUsuario);
+        this.resaltado = new resaltarCampo(pedidosVista.cbxProveedor, colorError, 0);
 
-        this.asignarEventos();
         this.actualizarProveedores();
         this.actualizarEmpleados();
         this.reiniciarTDetalles();
         this.reiniciarTPedidos();
         this.obtenerPedidos();
+        this.asignarEventos();
     }
 
     //Obtener proveedores y agregarlos al ComboBox.
@@ -97,9 +98,15 @@ public class PedidosControlador{
 
     // Reinicia el contenido de Tabla Detalles
     public void reiniciarTDetalles(){
-        tablaDetalles = new DefaultTableModel();
         idTDetalles = new DefaultTableModel();
-
+        tablaDetalles = new DefaultTableModel(){
+            @Override
+            public boolean isCellEditable(int filas, int columnas){
+                // Deshabilito la edición de celdas
+                return false;
+            }
+        };
+        
         tablaDetalles.setColumnIdentifiers(new String[] {"Nombre", "Precio", "Cantidad", "Total"});
         idTDetalles.setColumnIdentifiers(new String[] {"id"});
 
@@ -208,8 +215,14 @@ public class PedidosControlador{
 
     // Reinicia el contenido de Tabla Detalles
     public void reiniciarTPedidos(){
-        tablaPedidos = new DefaultTableModel();
         estadoTPedidos = new DefaultTableModel();
+        tablaPedidos = new DefaultTableModel(){
+            @Override
+            public boolean isCellEditable(int filas, int columnas){
+                // Deshabilito la edición de celdas
+                return false;
+            }
+        };
 
         tablaPedidos.setColumnIdentifiers(new String[] {"Folio", "Fecha", "Proveedor", "Total"});
         estadoTPedidos.setColumnIdentifiers(new String[] {"estado"});
@@ -221,12 +234,13 @@ public class PedidosControlador{
         try{
             reiniciarTPedidos();
 
-            for(int j=consultaPedidos.getRowCount()-1; j>=0; j--){
+            int cantPedidos = consultaPedidos.getRowCount();
+            for(int j=0; j<cantPedidos; j++){
                 // Obtiene el "folio"
                 int id = Integer.parseInt(consultaPedidos.getValueAt(j, 0).toString());
 
                 // Obtiene y le da formato a la fecha
-                SimpleDateFormat formato = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss");
+                SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 Date fecha = formato.parse(consultaPedidos.getValueAt(j, 1).toString());
                 Locale lenguaje = new Locale("es");
                 formato = new SimpleDateFormat("d 'de' MMMMM 'del' y", lenguaje);
@@ -261,27 +275,140 @@ public class PedidosControlador{
         }
     }
 
-    //Consultar todos los pedidos
+    // Consultar todos los pedidos
     public void obtenerPedidos(){
-        DefaultTableModel consulta = modeloPedidos.selecTodos();
-        construirNuevaTPedidos(consulta);
+        tablaCPedidos = modeloPedidos.selecTodos();
+        construirNuevaTPedidos(tablaCPedidos);
         actualizarTPedidos(tablaPedidos);
     }
 
-    // Consultar pedidos con los filtros
-    // En caso de querer descartar un campo se manda -1, a escepción del estado.
-    // VALORES PERIODOS:
-    //      0: Todos
-    //      1: Hoy
-    //      2: Esta semana
-    //      3: Este mes
-    //      4: Este año
-    //
-    public void obtenerPedidos_Filtros(int periodo, int idProveedor, int idEmpleado, int estado){
-        
+    // Mostrar un pedido en espesifico con el folio
+    public void filtrarPorFolio(int folio){
+
+        DefaultTableModel tabla = new DefaultTableModel();
+        tabla.addColumn("id");
+        tabla.addColumn("fecha");
+        tabla.addColumn("proveedor");
+        tabla.addColumn("empleado");
+        tabla.addColumn("estado");
+
+        int cantPedidos = tablaCPedidos.getRowCount();
+        for(int j=0; j<cantPedidos; j++){
+
+            int folioActual = Integer.parseInt(tablaCPedidos.getValueAt(j, 0).toString());
+            if(folio == folioActual){
+
+                String fecha = tablaCPedidos.getValueAt(j, 1).toString();
+                int proveedor = Integer.parseInt(tablaCPedidos.getValueAt(j, 2).toString());
+                int empleado = Integer.parseInt(tablaCPedidos.getValueAt(j, 3).toString());
+                int estado = Integer.parseInt(tablaCPedidos.getValueAt(j, 4).toString());
+                
+                tabla.addRow(new Object[] {folioActual, fecha, proveedor, empleado, estado});
+                break;
+            }
+        }
+                
+        construirNuevaTPedidos(tabla);
+        actualizarTPedidos(tablaPedidos);
     }
 
+    // Obtiene el periodo seleccionado
+    public Date obtenerPeriodo(){
+        Date fecha = new Date();
+        fecha.setHours(0);
+        fecha.setMinutes(0);
+        fecha.setSeconds(0);
 
+        Calendar periodo = Calendar.getInstance();
+        periodo.setTime(fecha);
+
+        if(pedidosVista.rbEstaSemana.isSelected())
+            periodo.add(Calendar.DAY_OF_YEAR, -7);
+        else if(pedidosVista.rbEsteMes.isSelected())
+            periodo.add(Calendar.MONTH, -1);
+        else if(pedidosVista.rbEsteAño.isSelected())
+            periodo.add(Calendar.YEAR, -1);
+        else if(pedidosVista.rbTodos.isSelected())
+            return null;
+
+        return periodo.getTime();
+    }
+
+    // Actualiza la tabla de pedidos segun los filtros
+    public void pedidosConFiltros(){
+
+        //Se compruba que no haya busquedas por folio
+        int folio = 0;
+        try {
+            folio = Integer.parseInt(pedidosVista.txtFolio.getText());
+        } catch (Exception e){
+            //Acciones pendientes
+        }
+        
+        if(folio == 0){
+            try{
+
+                // Se optiene el periodo
+                String periodo = "";
+                Date fecha = obtenerPeriodo();
+                if(fecha != null){
+                    SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    periodo = formato.format(fecha);
+                }
+
+                // Se optiene el proveedor
+                String prooveedor = "";
+                int selecProveedor = pedidosVista.cbxProveedor2.getSelectedIndex();
+                if(selecProveedor != 0)
+                    prooveedor = tablaProveedores.getValueAt(selecProveedor-1, 0).toString();
+                
+                // Se optiene el empleado
+                String empleado = "";
+                int selectEmpleado = pedidosVista.cbxEmpleado.getSelectedIndex();
+                if(selectEmpleado != 0)
+                    empleado = tablaEmpleados.getValueAt(selectEmpleado-1, 0).toString();
+
+                // Se realiza la consulta
+                DefaultTableModel consulta = modeloPedidos.selecFiltros(periodo, prooveedor, empleado);
+
+                // Se muestra la tabla resultante
+                construirNuevaTPedidos(consulta);
+                actualizarTPedidos(tablaPedidos);
+                
+            } catch(Exception exception){
+                //Acciónes pendientes
+            }
+
+        } else filtrarPorFolio(folio);
+    }
+
+    // Señalar al usuario que hay un detalle con algun componente
+    public void resaltarProveedores(){
+        if(!resaltado.isAlive()){
+            resaltado = new resaltarCampo( pedidosVista.cbxProveedor, colorError, 2);
+            resaltado.start();
+        }
+    }
+    public void resaltarInsumos(){
+        if(!resaltado.isAlive()){
+            resaltado = new resaltarCampo( pedidosVista.cbxInsumos, colorError, 2);
+            resaltado.start();
+        }
+    }
+    public void resaltarCantidad(){
+        if(!resaltado.isAlive()){
+            resaltado = new resaltarCampo( pedidosVista.txtCantidad, colorError, 2);
+            resaltado.start();
+        }
+    }
+    public void resaltarFolio(){
+        if(!resaltado.isAlive()){
+            resaltado = new resaltarCampo( pedidosVista.txtFolio, colorError, 2);
+            resaltado.start();
+        }
+    }
+
+    
     // - - - - - - - - - - - - - - - EVENTOS de COMPONENTES GRAFICOS - - - - - - - - - - - - - - - - - - - - 
 
 
@@ -302,6 +429,43 @@ public class PedidosControlador{
             }
         });
 
+        //Filtrar pedidos
+        pedidosVista.cbxProveedor2.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent evento){
+                pedidosConFiltros();
+            }
+        });
+        pedidosVista.cbxEmpleado.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent evento){
+                pedidosConFiltros();
+            }
+        });
+        pedidosVista.rbHoy.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent evento){
+                pedidosConFiltros();
+            }
+        });
+        pedidosVista.rbEstaSemana.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent evento){
+                pedidosConFiltros();
+            }
+        });
+        pedidosVista.rbEsteMes.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent evento){
+                pedidosConFiltros();
+            }
+        });
+        pedidosVista.rbEsteAño.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent evento){
+                pedidosConFiltros();
+            }
+        });
+        pedidosVista.rbTodos.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent evento){
+                pedidosConFiltros();
+            }
+        });
+
         //Clic al boton Agregar
         pedidosVista.btnAgregar.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent evento){
@@ -310,36 +474,37 @@ public class PedidosControlador{
                 double precio = 0.0, total = 0.0, cantidadSelec = 0.0;
                 
                 try{
-                    selecInsumo = pedidosVista.cbxInsumos.getSelectedIndex();
-                    posicionInsumo = insumoExistente(selecInsumo);
+                    if(pedidosVista.cbxProveedor.getSelectedIndex() > 0){
+                        selecInsumo = pedidosVista.cbxInsumos.getSelectedIndex();
+                        if(selecInsumo > 0){
+                            posicionInsumo = insumoExistente(selecInsumo);
 
-                    cantidadSelec = Double.parseDouble(pedidosVista.txtCantidad.getText());
-                    precio = Double.parseDouble(tablaInsumos.getValueAt(selecInsumo-1, 3).toString());
-                    
-                    if(posicionInsumo > -1)
-                    {
-                        double cantidadFilaAct =  Double.parseDouble(tablaDetalles.getValueAt(posicionInsumo, 2).toString());
+                            cantidadSelec = Double.parseDouble(pedidosVista.txtCantidad.getText());
+                            precio = Double.parseDouble(tablaInsumos.getValueAt(selecInsumo-1, 3).toString());
 
-                        tablaDetalles.setValueAt(cantidadFilaAct+cantidadSelec, posicionInsumo, 2);
-                        tablaDetalles.setValueAt((cantidadFilaAct+cantidadSelec)*precio, posicionInsumo, 3);
-                        actualizarTDetalles(tablaDetalles);
+                            if(posicionInsumo > -1)
+                            {
+                                double cantidadFilaAct =  Double.parseDouble(tablaDetalles.getValueAt(posicionInsumo,   2).toString());
+
+                                tablaDetalles.setValueAt(cantidadFilaAct+cantidadSelec, posicionInsumo, 2);
+                                tablaDetalles.setValueAt((cantidadFilaAct+cantidadSelec)*precio, posicionInsumo, 3);
+                                actualizarTDetalles(tablaDetalles);
+                            }
+                            else if(selecInsumo > 0){
+                                id = Integer.parseInt(tablaInsumos.getValueAt(selecInsumo-1, 0).toString());
+                                nombre = tablaInsumos.getValueAt(selecInsumo-1, 1).toString();
+                                total = precio*cantidadSelec;
+
+                                agregarFilaTDetalles(id, nombre, precio, cantidadSelec, total);
+                            }
+
+                            limpiarCDetalles();
+                        }
+                        else resaltarInsumos();
                     }
-                    else if(selecInsumo > 0){
-                        id = Integer.parseInt(tablaInsumos.getValueAt(selecInsumo-1, 0).toString());
-                        nombre = tablaInsumos.getValueAt(selecInsumo-1, 1).toString();
-                        total = precio*cantidadSelec;
-
-                        agregarFilaTDetalles(id, nombre, precio, cantidadSelec, total);
-                    }
-
-                    limpiarCDetalles();
+                    else resaltarProveedores();
                 } catch(NumberFormatException exception){
-                    resaltado = new resaltarCampo(
-                        pedidosVista.txtCantidad,
-                        new Color(214, 181, 178),
-                        2);
-                    resaltado.start();
-
+                    resaltarCantidad();
                     System.out.println("Excepcion de formato numerico");
                 } catch(Exception exception){
                     // Acción pendiente
@@ -355,8 +520,8 @@ public class PedidosControlador{
                 try{
                     int selecInsumo = pedidosVista.cbxInsumos.getSelectedIndex();
                     int posicionInsumo = insumoExistente(selecInsumo);
-
                     if(posicionInsumo > -1){
+                        
                         double cantidadSelec = Double.parseDouble(pedidosVista.txtCantidad.getText());
                         double cantidadFilaAct =  Double.parseDouble(tablaDetalles.getValueAt(posicionInsumo, 2).toString());
                         
@@ -375,8 +540,7 @@ public class PedidosControlador{
                         limpiarCDetalles();
                     }
                 } catch(NumberFormatException exception){
-                    // Acción pendiente
-                    System.out.println("Excepcion de formato numerico");
+                    resaltarCantidad();
                 } catch(Exception exception){
                     // Acción pendiente
                     System.out.println("Excepcion general");
@@ -420,6 +584,32 @@ public class PedidosControlador{
                     // Acción pendiente
                     System.out.println("Excepcion general");
                 }
+            }
+        });
+
+        // Presionar y soltar una tecla en 'txtFolio'
+        pedidosVista.txtFolio.addKeyListener(new KeyAdapter(){
+            //Si se preciona Enter
+            public void keyReleased(KeyEvent evento){
+                if(evento.getKeyCode() == KeyEvent.VK_ENTER){
+                    try{
+                        if(!pedidosVista.txtFolio.getText().equals("")){
+                            int folio = Integer.parseInt(pedidosVista.txtFolio.getText());
+                            filtrarPorFolio(folio);
+                        }
+                        else {
+                            construirNuevaTPedidos(tablaCPedidos);
+                            actualizarTPedidos(tablaPedidos);
+                        }
+                    } catch(NumberFormatException exception){
+                        resaltarFolio();
+                    } catch(Exception excepcion){
+                        // Acciones pendientes
+                        System.out.println("Excepción general");
+                    }
+                    
+                }
+                
             }
         });
     }

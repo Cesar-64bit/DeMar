@@ -26,6 +26,7 @@ public class PedidosVista extends JFrame {
     protected JTextField txtCantidad, txtFolio;
     protected JTable tbInsumos, tbPedidos;
     protected JTableHeader tbhInsumos, tbhPedidos;
+    protected ButtonGroup bgPeridos;
 
     //CLASES USADAS
     protected PedidosControlador pedidosControlador;
@@ -574,6 +575,7 @@ public class PedidosVista extends JFrame {
 
     public void crearRadioButtons(){
         //Instanciamiento
+        bgPeridos = new ButtonGroup();
         rbHoy = new JRadioButton();
         rbEstaSemana = new JRadioButton();
         rbEsteMes = new JRadioButton();
@@ -589,6 +591,7 @@ public class PedidosVista extends JFrame {
         rbHoy.setForeground(colorPrimario);
         rbHoy.setFont(fuenteMuyGrande2);
         rbHoy.setFocusPainted(false);
+        rbHoy.setName("Hoy");
         rbHoy.setText("Hoy");
 
         rbEstaSemana.setBounds(
@@ -599,6 +602,7 @@ public class PedidosVista extends JFrame {
         rbEstaSemana.setForeground(colorPrimario);
         rbEstaSemana.setFont(fuenteMuyGrande2);
         rbEstaSemana.setFocusPainted(false);
+        rbEstaSemana.setName("Esta semana");
         rbEstaSemana.setText("Esta semana");
 
         rbEsteMes.setBounds(
@@ -609,6 +613,7 @@ public class PedidosVista extends JFrame {
         rbEsteMes.setForeground(colorPrimario);
         rbEsteMes.setFont(fuenteMuyGrande2);
         rbEsteMes.setFocusPainted(false);
+        rbEsteMes.setName("Este mes");
         rbEsteMes.setText("Este mes");
 
         rbEsteAño.setBounds(
@@ -619,6 +624,8 @@ public class PedidosVista extends JFrame {
         rbEsteAño.setForeground(colorPrimario);
         rbEsteAño.setFont(fuenteMuyGrande2);
         rbEsteAño.setFocusPainted(false);
+        rbEsteAño.setSelected(true);
+        rbEsteAño.setName("Este año");
         rbEsteAño.setText("Este año");
 
         rbTodos.setBounds(
@@ -629,7 +636,7 @@ public class PedidosVista extends JFrame {
         rbTodos.setForeground(colorPrimario);
         rbTodos.setFont(fuenteMuyGrande2);
         rbTodos.setFocusPainted(false);
-        rbTodos.setSelected(true);
+        rbTodos.setName("Todos");
         rbTodos.setText("Todos");
 
         //Mostrar
@@ -638,6 +645,13 @@ public class PedidosVista extends JFrame {
         pPeriodos.add(rbEsteMes);
         pPeriodos.add(rbEsteAño);
         pPeriodos.add((rbTodos));
+
+        //Agrupar
+        bgPeridos.add(rbHoy);
+        bgPeridos.add(rbEstaSemana);
+        bgPeridos.add(rbEsteMes);
+        bgPeridos.add(rbEsteAño);
+        bgPeridos.add(rbTodos);
     }
 
     public void crearTextField(){
