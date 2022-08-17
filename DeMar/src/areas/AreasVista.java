@@ -377,6 +377,30 @@ public class AreasVista extends JFrame {
         return txtHoraSalida.getText();
     }
 
+    public JTextField getComponentTxtNombre() {
+        return txtNombre;
+    }
+
+    public JTextField getComponentTxtInsumoEntrada(){
+        return txtInsumoEntrada;
+    }
+
+    public JTextField getComponentTxtCantidadEmpleados() {
+        return txtCantidadEmpleados;
+    }
+
+    public JTextField getComponentTxtSueldoBase() {
+        return txtSueldoBase;
+    }
+
+    public JTextField getComponentTxtHoraEntrada() {
+        return txtHoraEntrada;
+    }
+
+    public JTextField getComponentTxtHoraSalida() {
+        return txtHoraSalida;
+    }
+
     public void setTxtNombre(JTable jtabla, int filas) {
         txtNombre.setText(String.valueOf(jtabla.getValueAt(filas, 1)));
     }

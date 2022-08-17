@@ -324,6 +324,18 @@ public class InsumosVista extends JFrame {
         return txtBuscar;
     }
 
+    public JTextField getComponentTxtNombre() {
+        return txtNombre;
+    }
+
+    public JTextField getComponentTxtProveedor() {
+        return txtProveedor;
+    }
+
+    public JTextField getComponentTxtPrecio() {
+        return txtPrecio;
+    }
+
      /* ESTABLECER TEXTO EN LAS CAJAS DE TEXTO */
      public void setTxtFolio(JTable jtabla, int filas) {
         txtFolio.setText(String.valueOf(jtabla.getValueAt(filas, 0)));

@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -17,6 +19,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 public class PagosVista extends JFrame {
+    DateTimeFormatter dft = DateTimeFormatter.ofPattern("yyy/MM/dd HH:mm:ss");
+
     protected JPanel pFondo, pContenedor, pSeparador,
                     pFolio, pTotal, pTipoPago, pFecha,
                     pEmpleado, pDetallePedido, pContenedorBotones;
@@ -183,6 +187,7 @@ public class PagosVista extends JFrame {
     }
 
     public void crearTextField() {
+        
         txtFolio = new JTextField();
         txtFolio.setSize(300, 35);
         txtFolio.setLocation((pContenedor.getWidth() - txtFolio.getWidth()) / 2, 40);
@@ -231,6 +236,7 @@ public class PagosVista extends JFrame {
         txtFecha.setCaretColor(Color.BLACK);
         txtFecha.setBorder(null);
         txtFecha.setHorizontalAlignment(SwingConstants.CENTER);
+        txtFecha.setText(dft.format(LocalDateTime.now()));
         pContenedor.add(txtFecha);
 
         txtEmpleado = new JTextField();
@@ -312,7 +318,7 @@ public class PagosVista extends JFrame {
         txtFolio.setText("");
         txtTotal.setText("");
         txtTipoPago.setText("");
-        txtFecha.setText("");
+        txtFecha.setText(dft.format(LocalDateTime.now()));
         txtEmpleado.setText("");
         txtDetallesPedido.setText("");
     }
@@ -383,6 +389,19 @@ public class PagosVista extends JFrame {
 
     public JTextField getTxtFiltrar() {
         return txtBuscar;
+    }
+
+    /* OBTENER JTEXTFIELD */
+    public JTextField getComponentTxtTotal(){
+        return txtTotal;
+    }
+
+    public JTextField getComponentTxtEmpleado() {
+        return txtEmpleado;
+    }
+
+    public JTextField getComponentTxtDetalles() {
+        return txtDetallesPedido;
     }
 
     /* ESTABLECER TEXTO EN LAS CAJAS DE TEXTO */

@@ -8,7 +8,7 @@ public class Principal {
         Runnable runApplication = new Runnable() {
             public void run() {
                 LoginControlador login = new LoginControlador();
-                 login.getClass();
+                login.getClass();
             }
         };
         SwingUtilities.invokeLater(runApplication); 
