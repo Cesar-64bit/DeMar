@@ -16,7 +16,6 @@ public class resaltarCampo extends Thread {
         this.resaltado = resaltado;
         this.repeticiones = repeticiones;
     }
-
     //Encapsulamiento
     public void setComponente(JComponent componente){
         this.componente = componente;

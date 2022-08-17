@@ -303,6 +303,19 @@ public class ProveedoresVista extends JFrame{
         return txtBuscar;
     }
 
+    /* OBTENER COMPONENTE JTEXTFIELD */
+    public JTextField getComponentTxtNombre() {
+        return txtNombre;
+    }
+
+    public JTextField getComponentTxtInsumo() {
+        return txtInsumo;
+    }
+
+    public JTextField getComponentTxtTelefono() {
+        return txtTelefono;
+    }
+
     /* ESTABLECER TEXTO EN LAS CAJAS DE TEXTO */
     public void setTxtNumerpProveedor(JTable jtabla, int filas) {
         txtNumeroProveedor.setText(String.valueOf(jtabla.getValueAt(filas, 0)));

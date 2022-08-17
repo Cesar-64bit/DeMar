@@ -40,7 +40,7 @@ public class MenuPrincipalVista extends JFrame {
         this.crearLabels();
         this.crearButtons();
         this.otorgarAcceso(tipoUsuario);
-
+;
         setSize(1200, 600);
         setLocationRelativeTo(this);
         setLayout(null);
@@ -319,6 +319,7 @@ public class MenuPrincipalVista extends JFrame {
         btnCerrarSesion.setFocusable(false);
         //btnPerfiles.setBorder(null);
         btnCerrarSesion.setHorizontalAlignment(SwingConstants.CENTER);
+        btnCerrarSesion.addActionListener(mnControlador);
         pUsuario.add(btnCerrarSesion);
     }
 
@@ -389,5 +390,9 @@ public class MenuPrincipalVista extends JFrame {
 
     public JButton getBtnUsuarios() {
         return btnUsuarios;
+    }
+
+    public JButton getBtnCerrarSesion() {
+        return btnCerrarSesion;
     }
 }

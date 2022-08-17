@@ -1,19 +1,27 @@
 package DeMar.src.Insumos;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
+import DeMar.src.resaltarCampo;
+
 public class InsumosControlador implements ActionListener, MouseListener, KeyListener{
+    ArrayList<JComponent> arregloComponent = new ArrayList<JComponent>();
+    private resaltarCampo resaltado;
+    
     InsumosModelo modInsumo = new InsumosModelo();
     
     TableRowSorter<DefaultTableModel> filtro;
@@ -74,12 +82,14 @@ public class InsumosControlador implements ActionListener, MouseListener, KeyLis
 
         }
         if(e.getSource() == insumosVista.getBtnAgregar()) {
-            boolean registro = modInsumo.registrar(
-                                                    insumosVista.getTxtNombre(),
-                                                    insumosVista.getTxtProveedor(),
-                                                    insumosVista.getTxtPrecio());
-            insumosVista.confirmarRegistro(registro);
-            mostrarDatosIniciales();
+            if(verificarCampos() == 0) {
+                boolean registro = modInsumo.registrar(
+                                                        insumosVista.getTxtNombre(),
+                                                        insumosVista.getTxtProveedor(),
+                                                        insumosVista.getTxtPrecio());
+                insumosVista.confirmarRegistro(registro);
+                mostrarDatosIniciales();
+            }
         }
         if(e.getSource() == insumosVista.getBtnModificar()) {
             if(insumosVista.confirmarAccion(insumosVista.getBtnModificar().getText()) == 0)
@@ -150,5 +160,32 @@ public class InsumosControlador implements ActionListener, MouseListener, KeyLis
         if(e.getSource() == insumosVista.getTxtFiltrar()) {
             filtrar();
         }   
+    }
+
+    /*  Verifica la cantidad de campos vacíos y los almacena en un arrelo
+     * de tipo JComponent para posteriormente recorrer el arreglo y
+     * pintar el fondo de los campos que no tienen datos
+    */
+    public int verificarCampos() {
+        if(insumosVista.txtNombre.getText().length() == 0)
+            arregloComponent.add(insumosVista.getComponentTxtNombre());
+        if(insumosVista.txtProveedor.getText().length() == 0)
+            arregloComponent.add(insumosVista.getComponentTxtProveedor());
+        if(insumosVista.txtPrecio.getText().length() == 0)
+            arregloComponent.add(insumosVista.getComponentTxtPrecio());
+
+        int camposVacios = arregloComponent.size();
+        
+        resaltar();
+
+        return camposVacios;
+    }
+
+     public void resaltar() {
+        for(int indice = 0; indice < arregloComponent.size(); indice++) {
+            resaltado = new resaltarCampo(arregloComponent.get(indice), new Color(214, 181, 178), 4);
+            resaltado.start();
+        }
+        arregloComponent.clear();
     }
 }

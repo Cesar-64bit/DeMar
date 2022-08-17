@@ -7,6 +7,7 @@ import javax.swing.JOptionPane;
 
 import DeMar.src.menuPrincipal.MenuPrincipalControlador;
 
+
 public class LoginControlador extends MouseAdapter implements ActionListener {
     LoginModelo lgnModelo = new LoginModelo();
     private LoginVista loginVista;
@@ -30,6 +31,8 @@ public class LoginControlador extends MouseAdapter implements ActionListener {
 
                     String nombreUsuario = lgnModelo.nombreEmpleado(loginVista.getTxtNombreUsuario());
                     String tipoUsuario = lgnModelo.tipoUsuario(loginVista.getTxtNombreUsuario());
+                    loginVista.limpiar();
+                    loginVista.setVisible(false);
                     
                     MenuPrincipalControlador principalControlador = new MenuPrincipalControlador(nombreUsuario, tipoUsuario);
                     principalControlador.getClass();
