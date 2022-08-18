@@ -47,8 +47,6 @@ public class PagosControlador implements ActionListener, MouseListener, KeyListe
         filtro = new TableRowSorter<>(modelo);
         tabla.setRowSorter(filtro);
 
-        scroll.setViewportView(tabla);
-
         this.pagosVista.diseñarJTable(tabla, scroll);
     }
 
@@ -107,8 +105,10 @@ public class PagosControlador implements ActionListener, MouseListener, KeyListe
             }
         }
         if(e.getSource() == pagosVista.getBtnEliminar()) {
-            if(pagosVista.confirmarAccion(pagosVista.getBtnEliminar().getText()) == 0)
+            if(pagosVista.confirmarAccion(pagosVista.getBtnEliminar().getText()) == 0) {
                 modPagos.eliminar(pagosVista.getTxtFolio());
+                mostrarDatosIniciales();
+            }
         }
         if(e.getSource() == pagosVista.getBtnLimpiar()) {
             pagosVista.limpiar();

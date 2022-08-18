@@ -44,9 +44,6 @@ public class ProveedoresControlador implements ActionListener, MouseListener, Ke
         tabla.setAutoCreateRowSorter(true);
         filtro = new TableRowSorter<>(modelo);
         tabla.setRowSorter(filtro);
-
-        scroll.setViewportView(tabla);
-
         this.pVista.diseñarJTable(tabla, scroll);
     }
 
@@ -101,8 +98,10 @@ public class ProveedoresControlador implements ActionListener, MouseListener, Ke
             }
         }
         if(e.getSource() == pVista.getBtnEliminar()) {
-            if(pVista.confirmarAccion(pVista.getBtnEliminar().getText()) == 0)
+            if(pVista.confirmarAccion(pVista.getBtnEliminar().getText()) == 0) {
                 modProveedores.eliminar(pVista.getTxtNumeroProveedor());
+                mostrarDatosIniciales();
+            }
         }
         if(e.getSource() == pVista.getBtnLimpiar()) {
             pVista.limpiar();

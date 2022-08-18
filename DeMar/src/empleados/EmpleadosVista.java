@@ -35,6 +35,7 @@ public class EmpleadosVista extends JFrame {
     protected JTable obtenerTabla;
 
     protected EmpleadosControlador eControlador;
+    protected JScrollPane scroll;
 
     public EmpleadosVista(EmpleadosControlador eControlador) {
         super("Empleados");
@@ -57,6 +58,7 @@ public class EmpleadosVista extends JFrame {
 
         tabla.setBounds(380,125,690,200);
         scroll.setBounds(380,125,690,200);
+        scroll.setViewportView(tabla);
         pFondo.add(scroll);
     }
 

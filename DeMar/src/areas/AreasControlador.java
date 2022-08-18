@@ -47,8 +47,6 @@ public class AreasControlador implements ActionListener, MouseListener, KeyListe
         filtro = new TableRowSorter<>(modelo);
         tabla.setRowSorter(filtro);
 
-        scroll.setViewportView(tabla);
-
         this.aVista.diseñarJTable(tabla, scroll);
     }
 

@@ -309,7 +309,7 @@ public class MenuPrincipalVista extends JFrame {
         btnPerfiles.setFocusable(false);
         //btnPerfiles.setBorder(null);
         btnPerfiles.setHorizontalAlignment(SwingConstants.CENTER);
-        pUsuario.add(btnPerfiles);
+        //pUsuario.add(btnPerfiles);
 
         // BOTON CERRAR SESIÓN
         btnCerrarSesion = new JButton("Cerrar sesión");

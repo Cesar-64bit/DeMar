@@ -47,9 +47,6 @@ public class RecepcionControlador implements ActionListener, MouseListener, KeyL
         tabla.setAutoCreateRowSorter(true);
         filtro = new TableRowSorter<>(modelo);
         tabla.setRowSorter(filtro);
-
-        scroll.setViewportView(tabla);
-
         this.recepcionVista.diseñarJTable(tabla, scroll);
     }
 
@@ -93,16 +90,22 @@ public class RecepcionControlador implements ActionListener, MouseListener, KeyL
             }
         }
         if(e.getSource() == recepcionVista.getBtnModificar()) {
-            if(recepcionVista.confirmarAccion(recepcionVista.getBtnEliminar().getText()) == 0)
-                modRecepcion.modificar(
-                                        recepcionVista.getTxtFolio(),
-                                        recepcionVista.getTxtFecha(),
-                                        recepcionVista.getTxtCantidad(),
-                                        recepcionVista.getTxtEmpleado());
+            if(recepcionVista.confirmarAccion(recepcionVista.getBtnModificar().getText()) == 0) {
+                if(verificarCampos() == 0) {
+                    modRecepcion.modificar(
+                                            recepcionVista.getTxtFolio(),
+                                            recepcionVista.getTxtFecha(),
+                                            recepcionVista.getTxtCantidad(),
+                                            recepcionVista.getTxtEmpleado());
+                    mostrarDatosIniciales();
+                }
+            }
         }
         if(e.getSource() == recepcionVista.getBtnEliminar()) {
-            if(recepcionVista.confirmarAccion(recepcionVista.getBtnEliminar().getText()) == 0)
+            if(recepcionVista.confirmarAccion(recepcionVista.getBtnEliminar().getText()) == 0) {
                 modRecepcion.eliminar(recepcionVista.getTxtFolio());
+                mostrarDatosIniciales();
+            }
         }
         if(e.getSource() == recepcionVista.getBtnLimpiar()) {
             recepcionVista.limpiar();
