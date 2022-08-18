@@ -47,8 +47,6 @@ public class AreasControlador implements ActionListener, MouseListener, KeyListe
         filtro = new TableRowSorter<>(modelo);
         tabla.setRowSorter(filtro);
 
-        scroll.setViewportView(tabla);
-
         this.aVista.diseñarJTable(tabla, scroll);
     }
 
@@ -73,32 +71,51 @@ public class AreasControlador implements ActionListener, MouseListener, KeyListe
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == aVista.getBtnBuscar()) {
-            buscarID(Integer.parseInt(aVista.getTxtBuscar()));
+            try{
+                buscarID(Integer.parseInt(aVista.getTxtBuscar()));
+            }
+            catch(Exception exception) {
+                verificarBuscar();
+            }
         }
         if(e.getSource() == aVista.getBtnAgregar()) {
-            if(verificarCampos() == 0) {
-                boolean registro = modAreas.registrar(
-                                                    aVista.getTxtNombre(), aVista.getTxtInsumo(),
-                                                    aVista.getTxtEmpleados(), aVista.getTxtSueldo(), 
-                                                    aVista.getTxtEntrada(), aVista.getTxtSalida());
-                aVista.confirmarRegistro(registro);
-                mostrarDatosIniciales();
+            try{
+                if(verificarCampos() == 0) {
+                    boolean registro = modAreas.registrar(
+                                                        aVista.getTxtNombre(), aVista.getTxtInsumo(),
+                                                        aVista.getTxtEmpleados(), aVista.getTxtSueldo(), 
+                                                        aVista.getTxtEntrada(), aVista.getTxtSalida());
+                    aVista.confirmarRegistro(registro);
+                    aVista.limpiar();
+                    mostrarDatosIniciales();
+                }
+            }
+            catch(NumberFormatException ex) {
+                //JOptionPane.showMessageDialog(null, "Error en la captura de datos");
             }
         }
         if(e.getSource() == aVista.getBtnModificar()) {
-            if(aVista.confirmarAccion(aVista.getBtnModificar().getText()) == 0) {
-                boolean modificar = modAreas.modificar(
-                                                    aVista.getTxtNombre(), aVista.getTxtInsumo(),
-                                                    aVista.getTxtEmpleados(), aVista.getTxtSueldo(), 
-                                                    aVista.getTxtEntrada(), aVista.getTxtSalida(),
-                                                    aVista.getAuxNombre());
-                aVista.confirmarRegistro(modificar);
-                mostrarDatosIniciales();
+            try {
+                if(aVista.confirmarAccion(aVista.getBtnModificar().getText()) == 0) {
+                    if(verificarCampos() == 0) {
+                        boolean modificar = modAreas.modificar(
+                                                            aVista.getTxtNombre(), aVista.getTxtInsumo(),
+                                                            aVista.getTxtEmpleados(), aVista.getTxtSueldo(), 
+                                                            aVista.getTxtEntrada(), aVista.getTxtSalida(),
+                                                            aVista.getAuxNombre());
+                        aVista.confirmarRegistro(modificar);
+                        mostrarDatosIniciales();
+                    }
+                }
+            }
+            catch(NumberFormatException ex) {
+                //JOptionPane.showMessageDialog(null, "Rellenar los campos que se indican");
             }
         }
         if(e.getSource() == aVista.getBtnEliminar()) {
             if(aVista.confirmarAccion(aVista.getBtnEliminar().getText()) == 0) {
                 modAreas.eliminar(aVista.getTxtNombre());
+                aVista.limpiar();
                 mostrarDatosIniciales();
             }
         }
@@ -120,6 +137,7 @@ public class AreasControlador implements ActionListener, MouseListener, KeyListe
                 aVista.setTxtSalida(aVista.getTabla(), filas);
 
                 aVista.setAuxNombre(aVista.getTxtNombre());
+                aVista.getBtnAgregar().setEnabled(false);
             }
         }
     }
@@ -166,16 +184,23 @@ public class AreasControlador implements ActionListener, MouseListener, KeyListe
             arregloComponent.add(aVista.getComponentTxtHoraEntrada());
         if(aVista.txtHoraEntrada.getText().length() == 0)
             arregloComponent.add(aVista.getComponentTxtHoraSalida());
-
-        int camposVacios = arregloComponent.size();
         
-        resaltar();
+        int tamaño = arregloComponent.size();
 
-        return camposVacios;
+        resaltar(arregloComponent.size());
+
+        return tamaño;
     }
 
-     public void resaltar() {
-        for(int indice = 0; indice < arregloComponent.size(); indice++) {
+    public void verificarBuscar() {
+        if(aVista.txtBuscar.getText().length() == 0)
+            arregloComponent.add(aVista.getComponentTxtBuscar());
+
+        resaltar(arregloComponent.size());
+    }
+
+    public void resaltar(int size) {
+        for(int indice = 0; indice < size; indice++) {
             resaltado = new resaltarCampo(arregloComponent.get(indice), new Color(214, 181, 178), 4);
             resaltado.start();
         }

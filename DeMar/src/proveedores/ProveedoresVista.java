@@ -50,6 +50,7 @@ public class ProveedoresVista extends JFrame{
 
         tabla.setBounds(380,125,690,200);
         scroll.setBounds(380,125,690,200);
+        scroll.setViewportView(tabla);
         pFondo.add(scroll);
     }
 
@@ -235,14 +236,14 @@ public class ProveedoresVista extends JFrame{
         btnLimpiar.addActionListener((ActionListener) pControlador);
         pContenedorBotones.add(btnLimpiar);
 
-        btnBuscar = new JButton("Buscar");
+        /*btnBuscar = new JButton("Buscar");
         btnBuscar.setSize(100, 35);
         btnBuscar.setLocation(700, 75);
         btnBuscar.setBackground(Color.WHITE);
         btnBuscar.setForeground(Color.DARK_GRAY);
         btnBuscar.setFocusable(false);
         btnBuscar.addActionListener((ActionListener) pControlador);
-        pFondo.add(btnBuscar);
+        pFondo.add(btnBuscar);*/
     }
 
     public void limpiar() {
@@ -250,6 +251,7 @@ public class ProveedoresVista extends JFrame{
         txtNombre.setText("");
         txtInsumo.setText("");
         txtTelefono.setText("");
+        btnAgregar.setEnabled(true);
     }
 
     /* OBTENER TABLA */
@@ -314,6 +316,10 @@ public class ProveedoresVista extends JFrame{
 
     public JTextField getComponentTxtTelefono() {
         return txtTelefono;
+    }
+
+    public JTextField getComponentTxtBuscar() {
+        return txtBuscar;
     }
 
     /* ESTABLECER TEXTO EN LAS CAJAS DE TEXTO */

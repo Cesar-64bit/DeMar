@@ -46,8 +46,6 @@ public class GastosControlador implements ActionListener, MouseListener, KeyList
         filtro = new TableRowSorter<>(modelo);
         tabla.setRowSorter(filtro);
 
-        scroll.setViewportView(tabla);
-
         this.gastosVista.diseñarJTable(tabla, scroll);
     }
 
@@ -87,21 +85,28 @@ public class GastosControlador implements ActionListener, MouseListener, KeyList
                                                         gastosVista.getTxtFecha(),
                                                         gastosVista.getTxtEmpleado());
                 gastosVista.confirmarRegistro(registro);
+                gastosVista.limpiar();
                 mostrarDatosIniciales();
             }
         }
         if(e.getSource() == gastosVista.getBtnModificar()) {
-            if(gastosVista.confirmarAccion(gastosVista.getBtnModificar().getText()) == 0)
-                modGastos.modificar(
-                                    gastosVista.getTxtGasto(),
-                                    gastosVista.getTxtTipo(),
-                                    gastosVista.getTxtCantidad(),
-                                    gastosVista.getTxtFecha(),
-                                    gastosVista.getTxtEmpleado());
+            if(gastosVista.confirmarAccion(gastosVista.getBtnModificar().getText()) == 0) {
+                if(verificarCampos() == 0) {
+                    modGastos.modificar(
+                                        gastosVista.getTxtGasto(),
+                                        gastosVista.getTxtTipo(),
+                                        gastosVista.getTxtCantidad(),
+                                        gastosVista.getTxtFecha(),
+                                        gastosVista.getTxtEmpleado());
+                    mostrarDatosIniciales();
+                }
+            }
         }
         if(e.getSource() == gastosVista.getBtnEliminar()) {
-            if(gastosVista.confirmarAccion(gastosVista.getBtnEliminar().getText()) == 0)
+            if(gastosVista.confirmarAccion(gastosVista.getBtnEliminar().getText()) == 0) {
                 modGastos.eliminar(gastosVista.getTxtGasto());
+                mostrarDatosIniciales();
+            }
 
         }
         if(e.getSource() == gastosVista.getBtnLimpiar()) {
@@ -124,6 +129,7 @@ public class GastosControlador implements ActionListener, MouseListener, KeyList
                 gastosVista.setTxtFecha(gastosVista.getTabla(), filas);
                 gastosVista.setTxtEmpleado(gastosVista.getTabla(), filas);
             }
+            gastosVista.getBtnAgregar().setEnabled(false);;
         }
     }
 

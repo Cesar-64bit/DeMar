@@ -23,6 +23,7 @@ import javax.swing.table.TableRowSorter;
 public class EmpleadosControlador implements ActionListener, MouseListener, KeyListener {
     ArrayList<JComponent> arregloComponent = new ArrayList<JComponent>();
     private resaltarCampo resaltado;
+    DefaultTableModel modelo = new DefaultTableModel();
 
     EmpleadosModelo modEmpleados = new EmpleadosModelo();
 
@@ -41,18 +42,17 @@ public class EmpleadosControlador implements ActionListener, MouseListener, KeyL
 
     /* ESTE MÉTODO MUESTRA LOS VALORES ACTUALES Y SE CARGAN AL ABRIR LA VENTA */
     public void mostrarDatosIniciales() {
-        DefaultTableModel modelo = new DefaultTableModel();
         modelo = modEmpleados.selecEmpleadosActivos();
 
         tabla.setModel(modelo);
+
         tabla.setAutoCreateRowSorter(true);
         filtro = new TableRowSorter<>(modelo);
         tabla.setRowSorter(filtro);
 
-        scroll.setViewportView(tabla);
-
         this.eVista.diseñarJTable(tabla, scroll);
     }
+
 
     /* ESTE MÉTODO MUESTRA EL VALOR BUSCADO POR ID */
     public void buscarID(int ID) {
@@ -86,10 +86,15 @@ public class EmpleadosControlador implements ActionListener, MouseListener, KeyL
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == eVista.getBtnBuscar()) {
-            buscarID(Integer.parseInt(eVista.getTxtBuscar()));
+            try{
+                buscarID(Integer.parseInt(eVista.getTxtBuscar()));
+            }
+            catch(Exception exception) {
+                verificarBuscar();
+            }
         }
         if(e.getSource() == eVista.getBtnAgregar()) {
-            if(verificarCampos() == 0) {
+            try {
                 boolean registro = modEmpleados.registrar(
                                                     eVista.getTxtNombre(),
                                                     eVista.getTxtTelefono(), 
@@ -99,26 +104,37 @@ public class EmpleadosControlador implements ActionListener, MouseListener, KeyL
                                                     eVista.getTxtAreas(),
                                                     eVista.getTxtRutaImagen());
                 eVista.confirmarRegistro(registro);
+                eVista.limpiar();
                 mostrarDatosIniciales();
-            }   
+            }
+            catch(Exception exception) {
+                verificarCampos();
+            }
         }
         if(e.getSource() == eVista.getBtnModificar()) {
-            if(eVista.confirmarAccion(eVista.getBtnModificar().getText()) == 0) {
-                modEmpleados.modificar(
-                                        eVista.getTxtNumeroEmpleado(),
-                                        eVista.getTxtNombre(),
-                                        eVista.getTxtTelefono(), 
-                                        eVista.getTxtDireccion(),
-                                        eVista.getTxtDiasLaborados(), 
-                                        eVista.getTxtFechaContrato(),
-                                        eVista.getTxtAreas(),
-                                        eVista.getTxtRutaImagen());
+            try{
+                if(eVista.confirmarAccion(eVista.getBtnModificar().getText()) == 0) {
+                    modEmpleados.modificar(
+                                            eVista.getTxtNumeroEmpleado(),
+                                            eVista.getTxtNombre(),
+                                            eVista.getTxtTelefono(), 
+                                            eVista.getTxtDireccion(),
+                                            eVista.getTxtDiasLaborados(), 
+                                            eVista.getTxtFechaContrato(),
+                                            eVista.getTxtAreas(),
+                                            eVista.getTxtRutaImagen());
+                    mostrarDatosIniciales();
+                }
+            }
+            catch(Exception exception) {
+                verificarCampos();
             }
         }
 
         if(e.getSource() == eVista.getBtnEliminar()) {
             if(eVista.confirmarAccion(eVista.getBtnEliminar().getText()) == 0) {
                 modEmpleados.eliminar(eVista.getTxtNumeroEmpleado());
+                mostrarDatosIniciales();
             }
         }
 
@@ -154,6 +170,7 @@ public class EmpleadosControlador implements ActionListener, MouseListener, KeyL
                 eVista.setTxtDiasLaborados(eVista.getTabla(), filas);
                 eVista.setTxtRuta(eVista.getTabla(), filas);
             }
+            eVista.getBtnAgregar().setEnabled(false);;
         }
     }
 
@@ -195,7 +212,7 @@ public class EmpleadosControlador implements ActionListener, MouseListener, KeyL
      * de tipo JComponent para posteriormente recorrer el arreglo y
      * pintar el fondo de los campos que no tienen datos
     */
-    public int verificarCampos() {
+    public void verificarCampos() {
         if(eVista.txtNombre.getText().length() == 0)
             arregloComponent.add(eVista.getComponentTxtNombre());
         if(eVista.txtTelefono.getText().length() == 0)
@@ -204,16 +221,19 @@ public class EmpleadosControlador implements ActionListener, MouseListener, KeyL
             arregloComponent.add(eVista.getComponentTxtDireccion());
         if(eVista.txtDiasLaborados.getText().length() == 0)
             arregloComponent.add(eVista.getComponentTxtDiasLaborados());
-
-        int camposVacios = arregloComponent.size();
         
-        resaltar();
-
-        return camposVacios;
+        resaltar(arregloComponent.size());
     }
 
-     public void resaltar() {
-        for(int indice = 0; indice < arregloComponent.size(); indice++) {
+    public void verificarBuscar() {
+        if(eVista.txtBuscar.getText().length() == 0)
+            arregloComponent.add(eVista.getComponentTxtBuscar());
+
+        resaltar(arregloComponent.size());
+    }
+
+     public void resaltar(int size) {
+        for(int indice = 0; indice < size; indice++) {
             resaltado = new resaltarCampo(arregloComponent.get(indice), new Color(214, 181, 178), 4);
             resaltado.start();
         }

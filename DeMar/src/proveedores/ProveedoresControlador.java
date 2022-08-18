@@ -44,9 +44,6 @@ public class ProveedoresControlador implements ActionListener, MouseListener, Ke
         tabla.setAutoCreateRowSorter(true);
         filtro = new TableRowSorter<>(modelo);
         tabla.setRowSorter(filtro);
-
-        scroll.setViewportView(tabla);
-
         this.pVista.diseñarJTable(tabla, scroll);
     }
 
@@ -70,7 +67,12 @@ public class ProveedoresControlador implements ActionListener, MouseListener, Ke
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == pVista.getBtnBuscar()) {
-            buscarID(Integer.parseInt(pVista.getTxtBuscar()));
+            try{
+                buscarID(Integer.parseInt(pVista.getTxtBuscar()));
+            }
+            catch(Exception exception) {
+                verificarBuscar();
+            }
         }
         if(e.getSource() == pVista.getBtnAgregar()) {
             if(verificarCampos() == 0) {
@@ -79,21 +81,27 @@ public class ProveedoresControlador implements ActionListener, MouseListener, Ke
                                                             pVista.getTxtInsumo(),
                                                             pVista.getTxtTelefono());
                 pVista.confirmarRegistro(registro);
+                pVista.limpiar();
                 mostrarDatosIniciales();
             }
         }
         if(e.getSource() == pVista.getBtnModificar()) {
             if(pVista.confirmarAccion(pVista.getBtnModificar().getText()) == 0) {
-                modProveedores.modificar(
-                                        pVista.getTxtNumeroProveedor(),
-                                        pVista.getTxtNombre(),
-                                        pVista.getTxtInsumo(),
-                                        pVista.getTxtTelefono());
+                if(verificarCampos() == 0) {
+                    modProveedores.modificar(
+                                            pVista.getTxtNumeroProveedor(),
+                                            pVista.getTxtNombre(),
+                                            pVista.getTxtInsumo(),
+                                            pVista.getTxtTelefono());
+                    mostrarDatosIniciales();
+                }
             }
         }
         if(e.getSource() == pVista.getBtnEliminar()) {
-            if(pVista.confirmarAccion(pVista.getBtnEliminar().getText()) == 0)
+            if(pVista.confirmarAccion(pVista.getBtnEliminar().getText()) == 0) {
                 modProveedores.eliminar(pVista.getTxtNumeroProveedor());
+                mostrarDatosIniciales();
+            }
         }
         if(e.getSource() == pVista.getBtnLimpiar()) {
             pVista.limpiar();
@@ -110,6 +118,7 @@ public class ProveedoresControlador implements ActionListener, MouseListener, Ke
                 pVista.setTxtInsumo(pVista.getTabla(), filas);
                 pVista.setTxtTelefono(pVista.getTabla(), filas);
             }
+            pVista.getBtnAgregar().setEnabled(false);
         }
     }
 
@@ -161,16 +170,23 @@ public class ProveedoresControlador implements ActionListener, MouseListener, Ke
             arregloComponent.add(pVista.getComponentTxtInsumo());
         if(pVista.txtTelefono.getText().length() == 0)
             arregloComponent.add(pVista.getComponentTxtTelefono());
-
-        int camposVacios = arregloComponent.size();
         
-        resaltar();
+        int tamaño = arregloComponent.size();
 
-        return camposVacios;
+        resaltar(arregloComponent.size());
+
+        return tamaño;
     }
 
-     public void resaltar() {
-        for(int indice = 0; indice < arregloComponent.size(); indice++) {
+    public void verificarBuscar() {
+        if(pVista.txtBuscar.getText().length() == 0)
+            arregloComponent.add(pVista.getComponentTxtBuscar());
+
+        resaltar(arregloComponent.size());
+    }
+
+    public void resaltar(int size) {
+        for(int indice = 0; indice < size; indice++) {
             resaltado = new resaltarCampo(arregloComponent.get(indice), new Color(214, 181, 178), 4);
             resaltado.start();
         }

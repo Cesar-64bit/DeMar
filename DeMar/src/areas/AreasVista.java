@@ -51,6 +51,7 @@ public class AreasVista extends JFrame {
 
         tabla.setBounds(400,100,600,400);
         scroll.setBounds(400,100,600,400);
+        scroll.setViewportView(tabla);
         pFondo.add(scroll);
     }
 
@@ -252,14 +253,14 @@ public class AreasVista extends JFrame {
     }
 
     public void crearButtons() {
-        btnBuscar = new JButton("Buscar");
+        /*btnBuscar = new JButton("Buscar");
         btnBuscar.setSize(140, 40);
         btnBuscar.setLocation(750, 20);
         btnBuscar.setBackground(Color.WHITE);
         btnBuscar.setForeground(Color.DARK_GRAY);
         btnBuscar.setFocusable(false);
         btnBuscar.addActionListener(aControlador);
-        pFondo.add(btnBuscar);
+        pFondo.add(btnBuscar);*/
 
         btnAgregar = new JButton("Agregar");
         btnAgregar.setSize(120, 40);
@@ -305,6 +306,7 @@ public class AreasVista extends JFrame {
         txtSueldoBase.setText("");
         txtHoraEntrada.setText("");
         txtHoraSalida.setText("");
+        btnAgregar.setEnabled(true);
     }
 
     public void confirmarRegistro(boolean registro) {
@@ -399,6 +401,10 @@ public class AreasVista extends JFrame {
 
     public JTextField getComponentTxtHoraSalida() {
         return txtHoraSalida;
+    }
+
+    public JTextField getComponentTxtBuscar() {
+        return txtBuscar;
     }
 
     public void setTxtNombre(JTable jtabla, int filas) {

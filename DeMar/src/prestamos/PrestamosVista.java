@@ -21,7 +21,7 @@ import javax.swing.JButton;
 
 
 public class PrestamosVista extends JFrame {
-    DateTimeFormatter dft = DateTimeFormatter.ofPattern("yyy/MM/dd HH:mm:ss");
+    DateTimeFormatter dft = DateTimeFormatter.ofPattern("yyy-MM-dd HH:mm:ss");
 
     protected JPanel pFondo, pContenedor, pSeparador, pContenedorBotones,
                     pFolio, pFechaPrestamo, pFechaPagado, pCantidad,
@@ -58,6 +58,7 @@ public class PrestamosVista extends JFrame {
 
         tabla.setBounds(380,125,690,200);
         scroll.setBounds(380,125,690,200);
+        scroll.setViewportView(tabla);
         pFondo.add(scroll);
     }
 
@@ -239,7 +240,7 @@ public class PrestamosVista extends JFrame {
         txtFechaPago.setCaretColor(Color.BLACK);
         txtFechaPago.setBorder(null);
         txtFechaPago.setHorizontalAlignment(SwingConstants.CENTER);
-        txtFechaPago.setText("0000-00-00 00:00:00");
+        txtFechaPago.setText(dft.format(LocalDateTime.now()));
         pContenedor.add(txtFechaPago);
 
         cmbEmpleado = new JComboBox<>();
@@ -349,24 +350,25 @@ public class PrestamosVista extends JFrame {
         btnLimpiar.addActionListener((ActionListener) prestamosControlador);
         pContenedorBotones.add(btnLimpiar);
 
-        btnBuscar = new JButton("Buscar");
+        /*btnBuscar = new JButton("Buscar");
         btnBuscar.setSize(100, 35);
         btnBuscar.setLocation(700, 75);
         btnBuscar.setBackground(Color.WHITE);
         btnBuscar.setForeground(Color.DARK_GRAY);
         btnBuscar.setFocusable(false);
         btnBuscar.addActionListener((ActionListener) prestamosControlador);
-        pFondo.add(btnBuscar);
+        pFondo.add(btnBuscar);*/
     }
 
     public void limpiar() {
         txtFolio.setText("");
         txtFechaPrestamo.setText(dft.format(LocalDateTime.now()));
-        txtFechaPago.setText("0000-00-00 00:00:00");
+        txtFechaPago.setText(dft.format(LocalDateTime.now()));
         txtEmpleado.setText("");
         txtCantidad.setText("");
         txtplazosTotales.setText("");
         txtPlazosPagados.setText("");
+        btnAgregar.setEnabled(true);
     }
 
     public void colocarID(String c) {

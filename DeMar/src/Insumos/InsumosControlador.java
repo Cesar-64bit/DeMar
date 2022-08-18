@@ -47,9 +47,6 @@ public class InsumosControlador implements ActionListener, MouseListener, KeyLis
         tabla.setAutoCreateRowSorter(true);
         filtro = new TableRowSorter<>(modelo);
         tabla.setRowSorter(filtro);
-
-        scroll.setViewportView(tabla);
-
         this.insumosVista.diseñarJTable(tabla, scroll);
     }
 
@@ -88,20 +85,27 @@ public class InsumosControlador implements ActionListener, MouseListener, KeyLis
                                                         insumosVista.getTxtProveedor(),
                                                         insumosVista.getTxtPrecio());
                 insumosVista.confirmarRegistro(registro);
+                insumosVista.limpiar();
                 mostrarDatosIniciales();
             }
         }
         if(e.getSource() == insumosVista.getBtnModificar()) {
-            if(insumosVista.confirmarAccion(insumosVista.getBtnModificar().getText()) == 0)
-                modInsumo.modificar(
-                                    insumosVista.getTxtFolio(),
-                                    insumosVista.getTxtNombre(),
-                                    insumosVista.getTxtProveedor(),
-                                    insumosVista.getTxtPrecio());
+            if(insumosVista.confirmarAccion(insumosVista.getBtnModificar().getText()) == 0) {
+                if(verificarCampos() == 0) {
+                    modInsumo.modificar(
+                                        insumosVista.getTxtFolio(),
+                                        insumosVista.getTxtNombre(),
+                                        insumosVista.getTxtProveedor(),
+                                        insumosVista.getTxtPrecio());
+                    mostrarDatosIniciales();
+                }
+            }
         }
         if(e.getSource() == insumosVista.getBtnEliminar()) {
-            if(insumosVista.confirmarAccion(insumosVista.getBtnEliminar().getText()) == 0)
+            if(insumosVista.confirmarAccion(insumosVista.getBtnEliminar().getText()) == 0) { 
                 modInsumo.eliminar(insumosVista.getTxtFolio());
+                mostrarDatosIniciales();
+            }
         }
         if(e.getSource() == insumosVista.getBtnLimpiar()) {
             insumosVista.limpiar();
@@ -122,6 +126,7 @@ public class InsumosControlador implements ActionListener, MouseListener, KeyLis
                 insumosVista.setTxtProveedor(insumosVista.getTabla(), filas);
                 insumosVista.setTxtPrecio(insumosVista.getTabla(), filas);
             }
+            insumosVista.getBtnAgregar().setEnabled(false);
         }
     }
 

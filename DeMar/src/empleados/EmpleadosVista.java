@@ -35,6 +35,7 @@ public class EmpleadosVista extends JFrame {
     protected JTable obtenerTabla;
 
     protected EmpleadosControlador eControlador;
+    protected JScrollPane scroll;
 
     public EmpleadosVista(EmpleadosControlador eControlador) {
         super("Empleados");
@@ -57,6 +58,7 @@ public class EmpleadosVista extends JFrame {
 
         tabla.setBounds(380,125,690,200);
         scroll.setBounds(380,125,690,200);
+        scroll.setViewportView(tabla);
         pFondo.add(scroll);
     }
 
@@ -337,14 +339,14 @@ public class EmpleadosVista extends JFrame {
         btnLimpiar.addActionListener((ActionListener) eControlador);
         pContenedorBotones.add(btnLimpiar);
 
-        btnBuscar = new JButton("Buscar");
+        /*btnBuscar = new JButton("Buscar");
         btnBuscar.setSize(100, 35);
         btnBuscar.setLocation(700, 75);
         btnBuscar.setBackground(Color.WHITE);
         btnBuscar.setForeground(Color.DARK_GRAY);
         btnBuscar.setFocusable(false);
         btnBuscar.addActionListener((ActionListener) eControlador);
-        pFondo.add(btnBuscar);
+        pFondo.add(btnBuscar);*/
 
         btnCargarFoto = new JButton("Cargar Foto");
         btnCargarFoto.setSize(200, 35);
@@ -362,6 +364,7 @@ public class EmpleadosVista extends JFrame {
         txtTelefono.setText("");
         txtDireccion.setText("");
         txtDiasLaborados.setText("");
+        btnAgregar.setEnabled(true);
     }
 
     public void colocarID(String c) {
@@ -462,6 +465,10 @@ public class EmpleadosVista extends JFrame {
     }
     public JTextField getComponentTxtDiasLaborados() {
         return txtDiasLaborados;
+    }
+
+    public JTextField getComponentTxtBuscar() {
+        return txtBuscar;
     }
 
     /* ESTABLECER TEXTO EN LAS CAJAS DE TEXTO */

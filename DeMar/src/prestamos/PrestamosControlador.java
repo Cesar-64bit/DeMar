@@ -46,9 +46,6 @@ public class PrestamosControlador implements ActionListener, MouseListener, KeyL
         tabla.setAutoCreateRowSorter(true);
         filtro = new TableRowSorter<>(modelo);
         tabla.setRowSorter(filtro);
-
-        scroll.setViewportView(tabla);
-
         this.prestamosVista.diseñarJTable(tabla, scroll);
     }
 
@@ -80,7 +77,7 @@ public class PrestamosControlador implements ActionListener, MouseListener, KeyL
             buscarID(Integer.parseInt(prestamosVista.getTxtBuscar()));
         }
         if(e.getSource() == prestamosVista.getBtnAgregar()) {
-           // if(verificarCampos() == 0) {
+            if(verificarCampos() == 0) {
                 boolean registro = modPrestamos.registrar(
                                                         prestamosVista.getTxtFechaPrestamo(),
                                                         prestamosVista.getTxtFechaPago(),
@@ -90,24 +87,31 @@ public class PrestamosControlador implements ActionListener, MouseListener, KeyL
                                                         prestamosVista.getTxtPlazosTotales(),
                                                         prestamosVista.getTxtPlazosPagados());
                 prestamosVista.confirmarRegistro(registro);
+                prestamosVista.limpiar();
                 mostrarDatosIniciales();
-            //}
+            }
         }
         if(e.getSource() == prestamosVista.getBtnModificar()) {
-            if(prestamosVista.confirmarAccion(prestamosVista.getBtnModificar().getText()) == 0)
-                modPrestamos.modificar(
-                                        prestamosVista.getTxtFolio(),
-                                        prestamosVista.getTxtFechaPrestamo(),
-                                        prestamosVista.getTxtFechaPago(),
-                                        prestamosVista.getTxtEmpleado(),
-                                        prestamosVista.getTxtTipo(),
-                                        prestamosVista.getTxtCantidad(),
-                                        prestamosVista.getTxtPlazosTotales(),
-                                        prestamosVista.getTxtPlazosPagados());
+            if(prestamosVista.confirmarAccion(prestamosVista.getBtnModificar().getText()) == 0) {
+                if(verificarCampos() == 0) {
+                    modPrestamos.modificar(
+                                            prestamosVista.getTxtFolio(),
+                                            prestamosVista.getTxtFechaPrestamo(),
+                                            prestamosVista.getTxtFechaPago(),
+                                            prestamosVista.getTxtEmpleado(),
+                                            prestamosVista.getTxtTipo(),
+                                            prestamosVista.getTxtCantidad(),
+                                            prestamosVista.getTxtPlazosTotales(),
+                                            prestamosVista.getTxtPlazosPagados());
+                    mostrarDatosIniciales();
+                }
+            }
         }
         if(e.getSource() == prestamosVista.getBtnEliminar()) {
-            if(prestamosVista.confirmarAccion(prestamosVista.getBtnEliminar().getText()) == 0)
+            if(prestamosVista.confirmarAccion(prestamosVista.getBtnEliminar().getText()) == 0) {
                 modPrestamos.eliminar(prestamosVista.getTxtFolio());
+                mostrarDatosIniciales();
+            }
         }
         if(e.getSource() == prestamosVista.getBtnLimpiar()) {
             prestamosVista.limpiar();
@@ -131,6 +135,7 @@ public class PrestamosControlador implements ActionListener, MouseListener, KeyL
                 prestamosVista.setTxtPlazosTotales(prestamosVista.getTabla(), filas);
                 prestamosVista.setTxtPlazosPagados(prestamosVista.getTabla(), filas);
             }
+            prestamosVista.getBtnAgregar().setEnabled(false);
         }
     }
 
