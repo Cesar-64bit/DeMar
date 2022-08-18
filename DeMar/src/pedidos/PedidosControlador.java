@@ -86,6 +86,10 @@ public class PedidosControlador{
         pedidosVista.tbInsumos.setModel(tabla);
         pedidosVista.diseñarTbhInsumos();
 
+        double total = calcularTotal();
+        if(calcularTotal() > 0) pedidosVista.lblTotal.setText("$"+calcularTotal());
+        else pedidosVista.lblTotal.setText("");
+
         // Darle formato a las filas
         pedidosVista.tbInsumos.setDefaultRenderer(Object.class, new DefaultTableCellRenderer(){
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,  boolean hasFocus, int row, int column){
@@ -224,8 +228,21 @@ public class PedidosControlador{
             }
         };
 
-        tablaPedidos.setColumnIdentifiers(new String[] {"Folio", "Fecha", "Proveedor", "Total"});
+        tablaPedidos.setColumnIdentifiers(new String[] {"Folio", "Fecha", "Proveedor"});
         estadoTPedidos.setColumnIdentifiers(new String[] {"estado"});
+    }
+
+    public double calcularTotal(){
+        double total = 0;
+
+        int cantFilas = tablaDetalles.getRowCount();
+        if(cantFilas > 0)
+            for(int j=0;
+                j<cantFilas;
+                total += Double.parseDouble(tablaDetalles.getValueAt(j, 3).toString()),
+                j++);
+        
+        return total;
     }
 
     // Constricción tabla pedidos
@@ -257,11 +274,8 @@ public class PedidosControlador{
                     }
                 }
 
-                //Obtiene el total del proveedor
-                String total = "$" + consultaPedidos.getValueAt(j, 0).toString();
-
                 //Agregar una nueva fila con los datos en 'tablaPedidos'
-                tablaPedidos.addRow(new Object[] {id, fechaTexto, nombreProveedor, total});
+                tablaPedidos.addRow(new Object[] {id, fechaTexto, nombreProveedor});
 
                 //Obtiene el estado y lo agrega a la tabla 'estadoTPedidos'
                 estadoTPedidos.addRow(new Object[] {consultaPedidos.getValueAt(j, 4).toString()});

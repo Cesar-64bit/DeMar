@@ -6,7 +6,6 @@ import java.awt.*;
 import java.awt.Graphics;
 import java.text.SimpleDateFormat;
 import javax.swing.*;
-import javax.swing.plaf.PanelUI;
 import javax.swing.plaf.basic.*;
 import javax.swing.table.JTableHeader;
 import javax.swing.border.Border;
@@ -19,7 +18,7 @@ public class PedidosVista extends JFrame {
     protected JPanel pFondo, pInfo, pInformacion, pBus, pBusqueda, pBotones, pDatosGenerales, pDetalles, pTablaDetalles, pFiltros, pColores, pPeriodos, pTablaPedidos, pCPendiente, pCProceso, pCCancelar, pCFinalizado;
     protected JScrollPane psTablaDetalles, psTablaPedidos;
     protected JSeparator sBusqueda1, sBusqueda2, sInformacion1, sInformacion2, sEmpleado;
-    protected JLabel lblFecha, lblNomEmpleado, lblEmpleado, lblProveedor, lbFolio, lbPeriodo, lbProveedor, lbEmpleado, lblCPendiente, lblCProceso, lblCCancelar, lblCFinalizado;
+    protected JLabel lblFecha, lblNomEmpleado, lblEmpleado, lblProveedor, lbFolio, lbPeriodo, lbProveedor, lbEmpleado, lblCPendiente, lblCProceso, lblCCancelar, lblCFinalizado, lblTotal;
     protected JComboBox<String> cbxProveedor, cbxInsumos, cbxProveedor2, cbxEmpleado;
     protected JButton btnGuardar, btnLimpiar, btnCerrar, btnAgregar, btnEliminar;
     protected JRadioButton rbHoy, rbEstaSemana, rbEsteMes, rbEsteAño, rbTodos;
@@ -304,6 +303,7 @@ public class PedidosVista extends JFrame {
         lblCPendiente = new JLabel();
         lblCProceso = new JLabel();
         lblCCancelar = new JLabel();
+        lblTotal = new JLabel();
 
         //Construccion
         lblFecha.setLayout(null);
@@ -342,6 +342,15 @@ public class PedidosVista extends JFrame {
         lblProveedor.setText("Proveedor");
         lblProveedor.setForeground(colorPrimario);
 
+        lblTotal.setBounds(
+            (int)(pInformacion.getWidth()*.1), (int)(pInformacion.getHeight()*.82),
+            (int)(psTablaDetalles.getWidth()*.97), 25);
+        lblTotal.setLayout(null);
+        lblTotal.setFont(fuenteMediana);
+        lblTotal.setHorizontalAlignment(4);
+        lblTotal.setForeground(colorPrimario);
+        lblTotal.setBackground(colorFondo);
+
         lblCFinalizado.setBounds(
             (int)(pColores.getWidth()*.04), 3,
             (int)(pColores.getWidth()*.2), 25);
@@ -372,6 +381,7 @@ public class PedidosVista extends JFrame {
 
         //Mostrar
         pFondo.add(lblFecha);
+        pInformacion.add(lblTotal);
         pDatosGenerales.add(lblNomEmpleado);
         pDatosGenerales.add(lblEmpleado);
         pDatosGenerales.add(lblProveedor);

@@ -432,13 +432,19 @@ DELIMITER ;
 
 
 
+SELECT pedidos.*,
+detalles_pedidos.total
+FROM demar.pedidos
+INNER JOIN demar.detalles_pedidos ON pedidos.id = detalles_pedidos.pedido
+ORDER BY id DESC;
+
 -- PRUEBAS DE LOS PROCESOS ALMACENADOS -- Ignorar --
 call demar.buscarUnPedido('1');
 call demar.seleccionarPedidos();
 call demar.seleccionarPedidosPen('0');
 call demar.seleccionarPedidosPen('1');
 call demar.seleccionarPedidosFiltros('2022-08-15 16:40:46', '', '');
-call demar.seleccionarPedidosFiltros('2021-08-16 00:00:00', '2', '');
+call demar.seleccionarPedidosFiltros('', '', '');
 call demar.agregarPedido('3', 'Nadia Gomez Perez');
 call demar.insumos_selecPorProveedor('2', '');
 call demar.agregarDetallesPedido('6', '5');
