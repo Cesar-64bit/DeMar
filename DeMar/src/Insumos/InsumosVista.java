@@ -52,7 +52,9 @@ public class InsumosVista extends JFrame {
 
         tabla.setBounds(380,125,690,200);
         scroll.setBounds(380,125,690,200);
-        scroll.setViewportView(tabla);
+
+        scroll.setViewportView(null);
+        scroll.setViewportView(tabla);    
         pFondo.add(scroll);
     }
 

@@ -51,6 +51,7 @@ public class AreasVista extends JFrame {
 
         tabla.setBounds(400,100,600,400);
         scroll.setBounds(400,100,600,400);
+        scroll.setViewportView(null);
         scroll.setViewportView(tabla);
         pFondo.add(scroll);
     }

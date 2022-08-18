@@ -43,6 +43,8 @@ public class UsuariosVista extends JFrame{
         tabla.setLocation((pGrupo.getWidth() - tabla.getWidth())/2,(pGrupo.getHeight() - tabla.getHeight())/2);
         scroll.setSize(350,250);
         scroll.setLocation((pGrupo.getWidth() - tabla.getWidth())/2,(pGrupo.getHeight() - tabla.getHeight())/2);
+        scroll.setViewportView(null);
+        scroll.setViewportView(tabla);
         pGrupo.add(scroll);
     }
 

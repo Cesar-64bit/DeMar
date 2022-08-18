@@ -37,8 +37,6 @@ public class UsuariosControlador implements ActionListener, MouseListener, KeyLi
         filtro = new TableRowSorter<>(modelo);
         tabla.setRowSorter(filtro);
 
-        scroll.setViewportView(tabla);
-
         this.usuariosVista.diseñarJTable(tabla, scroll);
     }
 
