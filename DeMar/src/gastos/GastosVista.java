@@ -33,7 +33,6 @@ public class GastosVista extends JFrame {
     protected JButton btnAgregar, btnModificar, btnEliminar, btnLimpiar,
                     btnBuscar;
     protected JTable obtenerTabla;
-
     protected GastosControlador gastosControlador;
 
     public GastosVista(GastosControlador gastosControlador) {
@@ -57,6 +56,7 @@ public class GastosVista extends JFrame {
 
         tabla.setBounds(380,125,690,200);
         scroll.setBounds(380,125,690,200);
+        scroll.setViewportView(tabla);
         pFondo.add(scroll);
     }
 

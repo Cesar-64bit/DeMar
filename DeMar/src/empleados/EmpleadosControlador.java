@@ -23,6 +23,7 @@ import javax.swing.table.TableRowSorter;
 public class EmpleadosControlador implements ActionListener, MouseListener, KeyListener {
     ArrayList<JComponent> arregloComponent = new ArrayList<JComponent>();
     private resaltarCampo resaltado;
+    DefaultTableModel modelo = new DefaultTableModel();
 
     EmpleadosModelo modEmpleados = new EmpleadosModelo();
 
@@ -41,18 +42,17 @@ public class EmpleadosControlador implements ActionListener, MouseListener, KeyL
 
     /* ESTE MÉTODO MUESTRA LOS VALORES ACTUALES Y SE CARGAN AL ABRIR LA VENTA */
     public void mostrarDatosIniciales() {
-        DefaultTableModel modelo = new DefaultTableModel();
         modelo = modEmpleados.selecEmpleadosActivos();
 
         tabla.setModel(modelo);
+
         tabla.setAutoCreateRowSorter(true);
         filtro = new TableRowSorter<>(modelo);
         tabla.setRowSorter(filtro);
 
-        scroll.setViewportView(tabla);
-
         this.eVista.diseñarJTable(tabla, scroll);
     }
+
 
     /* ESTE MÉTODO MUESTRA EL VALOR BUSCADO POR ID */
     public void buscarID(int ID) {
@@ -134,6 +134,7 @@ public class EmpleadosControlador implements ActionListener, MouseListener, KeyL
         if(e.getSource() == eVista.getBtnEliminar()) {
             if(eVista.confirmarAccion(eVista.getBtnEliminar().getText()) == 0) {
                 modEmpleados.eliminar(eVista.getTxtNumeroEmpleado());
+                mostrarDatosIniciales();
             }
         }
 
