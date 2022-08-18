@@ -171,6 +171,14 @@ public class CrearUsuariosVista extends JFrame {
     public String getTxtIDRol() {
         return nombreRol;
     }
+
+    public JTextField getComponentTxtNombre() {
+        return txtNombreUsuario;
+    }
+
+    public JTextField getComponentTxtContraseña() {
+        return txtContraseña;
+    }
     
     public void setTxtNombreUsuario(String nombreUsuario) {
         txtNombreUsuario.setText(nombreUsuario);

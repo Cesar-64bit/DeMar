@@ -88,6 +88,7 @@ public class RecepcionControlador implements ActionListener, MouseListener, KeyL
                                                         recepcionVista.getTxtCantidad(), 
                                                         recepcionVista.getTxtEmpleado());
                 recepcionVista.confirmarRegistro(registro);
+                recepcionVista.limpiar();
                 mostrarDatosIniciales();
             }
         }
@@ -122,6 +123,7 @@ public class RecepcionControlador implements ActionListener, MouseListener, KeyL
                 recepcionVista.setTxtCantidad(recepcionVista.getTabla(), filas);
                 recepcionVista.setTxtEmpleado(recepcionVista.getTabla(), filas);
             }
+            recepcionVista.getBtnAgregar().setEnabled(false);
         }
     }
 
