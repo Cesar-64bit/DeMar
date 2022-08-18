@@ -247,14 +247,14 @@ public class InsumosVista extends JFrame {
         btnLimpiar.addActionListener((ActionListener) insumosControlador);
         pContenedorBotones.add(btnLimpiar);
 
-        btnBuscar = new JButton("Buscar");
+        /*btnBuscar = new JButton("Buscar");
         btnBuscar.setSize(100, 35);
         btnBuscar.setLocation(700, 75);
         btnBuscar.setBackground(Color.WHITE);
         btnBuscar.setForeground(Color.DARK_GRAY);
         btnBuscar.setFocusable(false);
         btnBuscar.addActionListener((ActionListener) insumosControlador);
-        pFondo.add(btnBuscar);
+        pFondo.add(btnBuscar);*/
     }
 
     public void limpiar() {
@@ -262,6 +262,7 @@ public class InsumosVista extends JFrame {
         txtNombre.setText("");
         txtProveedor.setText("");
         txtPrecio.setText("");
+        btnAgregar.setEnabled(true);
     }
 
     public void colocarID(String c) {

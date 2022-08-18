@@ -6,12 +6,14 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import java.awt.Font;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.border.Border;
 
 public class AreasVista extends JFrame {
     // VARIABLES PARA OBJETOS GRÁFICOS
@@ -26,6 +28,8 @@ public class AreasVista extends JFrame {
     protected JButton btnBuscar, btnAgregar, btnModificar, btnEliminar, btnLimpiar;
     protected String auxNombre;
     protected JTable obtenerTabla;
+    private Color colorPrimario = new Color(51, 62, 80);
+    private Border bordeSencillo = BorderFactory.createLineBorder(colorPrimario, 1);
 
     protected AreasControlador aControlador;
 
@@ -50,6 +54,7 @@ public class AreasVista extends JFrame {
         obtenerTabla.addMouseListener(aControlador);
 
         tabla.setBounds(400,100,600,400);
+        tabla.setBorder(bordeSencillo);
         scroll.setBounds(400,100,600,400);
         pFondo.add(scroll);
     }
@@ -252,14 +257,14 @@ public class AreasVista extends JFrame {
     }
 
     public void crearButtons() {
-        btnBuscar = new JButton("Buscar");
+        /*btnBuscar = new JButton("Buscar");
         btnBuscar.setSize(140, 40);
         btnBuscar.setLocation(750, 20);
         btnBuscar.setBackground(Color.WHITE);
         btnBuscar.setForeground(Color.DARK_GRAY);
         btnBuscar.setFocusable(false);
         btnBuscar.addActionListener(aControlador);
-        pFondo.add(btnBuscar);
+        pFondo.add(btnBuscar);*/
 
         btnAgregar = new JButton("Agregar");
         btnAgregar.setSize(120, 40);
@@ -305,6 +310,7 @@ public class AreasVista extends JFrame {
         txtSueldoBase.setText("");
         txtHoraEntrada.setText("");
         txtHoraSalida.setText("");
+        btnAgregar.setEnabled(true);
     }
 
     public void confirmarRegistro(boolean registro) {
@@ -399,6 +405,10 @@ public class AreasVista extends JFrame {
 
     public JTextField getComponentTxtHoraSalida() {
         return txtHoraSalida;
+    }
+
+    public JTextField getComponentTxtBuscar() {
+        return txtBuscar;
     }
 
     public void setTxtNombre(JTable jtabla, int filas) {

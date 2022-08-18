@@ -279,14 +279,14 @@ public class GastosVista extends JFrame {
         btnLimpiar.addActionListener((ActionListener) gastosControlador);
         pContenedorBotones.add(btnLimpiar);
 
-        btnBuscar = new JButton("Buscar");
+        /*btnBuscar = new JButton("Buscar");
         btnBuscar.setSize(100, 35);
         btnBuscar.setLocation(700, 75);
         btnBuscar.setBackground(Color.WHITE);
         btnBuscar.setForeground(Color.DARK_GRAY);
         btnBuscar.setFocusable(false);
         btnBuscar.addActionListener((ActionListener) gastosControlador);
-        pFondo.add(btnBuscar);
+        pFondo.add(btnBuscar);*/
     }
 
     public void limpiar() {
@@ -295,6 +295,7 @@ public class GastosVista extends JFrame {
         txtCantidad.setText("");
         txtFecha.setText(dft.format(LocalDateTime.now()));
         txtEmpleado.setText("");
+        btnAgregar.setEnabled(true);
     }
 
     public void colocarID(String c) {

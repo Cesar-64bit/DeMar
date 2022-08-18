@@ -40,7 +40,8 @@ public class MenuPrincipalVista extends JFrame {
         this.crearLabels();
         this.crearButtons();
         this.otorgarAcceso(tipoUsuario);
-;
+
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(1200, 600);
         setLocationRelativeTo(this);
         setLayout(null);

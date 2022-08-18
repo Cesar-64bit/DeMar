@@ -76,14 +76,14 @@ public class UsuariosVista extends JFrame{
     }
 
     public void crearButtons() {
-        btnBuscar = new JButton("Buscar");
+        /*btnBuscar = new JButton("Buscar");
         btnBuscar.setSize(250, 35);
         btnBuscar.setLocation((pGrupo.getWidth() - btnBuscar.getWidth()) / 2, 65);
         btnBuscar.setBackground(Color.WHITE);
         btnBuscar.setForeground(Color.DARK_GRAY);
         btnBuscar.setFocusable(false);
         btnBuscar.addActionListener((ActionListener) usuariosControlador);
-        pGrupo.add(btnBuscar);
+        pGrupo.add(btnBuscar);*/
 
         btnCrearUsuario = new JButton("Crear usuario");
         btnCrearUsuario.setSize(250, 35);

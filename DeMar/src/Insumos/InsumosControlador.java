@@ -88,6 +88,7 @@ public class InsumosControlador implements ActionListener, MouseListener, KeyLis
                                                         insumosVista.getTxtProveedor(),
                                                         insumosVista.getTxtPrecio());
                 insumosVista.confirmarRegistro(registro);
+                insumosVista.limpiar();
                 mostrarDatosIniciales();
             }
         }
@@ -122,6 +123,7 @@ public class InsumosControlador implements ActionListener, MouseListener, KeyLis
                 insumosVista.setTxtProveedor(insumosVista.getTabla(), filas);
                 insumosVista.setTxtPrecio(insumosVista.getTabla(), filas);
             }
+            insumosVista.getBtnAgregar().setEnabled(false);
         }
     }
 

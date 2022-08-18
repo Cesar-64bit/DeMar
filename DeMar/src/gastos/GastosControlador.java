@@ -87,6 +87,7 @@ public class GastosControlador implements ActionListener, MouseListener, KeyList
                                                         gastosVista.getTxtFecha(),
                                                         gastosVista.getTxtEmpleado());
                 gastosVista.confirmarRegistro(registro);
+                gastosVista.limpiar();
                 mostrarDatosIniciales();
             }
         }
@@ -124,6 +125,7 @@ public class GastosControlador implements ActionListener, MouseListener, KeyList
                 gastosVista.setTxtFecha(gastosVista.getTabla(), filas);
                 gastosVista.setTxtEmpleado(gastosVista.getTabla(), filas);
             }
+            gastosVista.getBtnAgregar().setEnabled(false);;
         }
     }
 

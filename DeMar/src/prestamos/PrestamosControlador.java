@@ -90,6 +90,7 @@ public class PrestamosControlador implements ActionListener, MouseListener, KeyL
                                                         prestamosVista.getTxtPlazosTotales(),
                                                         prestamosVista.getTxtPlazosPagados());
                 prestamosVista.confirmarRegistro(registro);
+                prestamosVista.limpiar();
                 mostrarDatosIniciales();
             }
         }
@@ -131,6 +132,7 @@ public class PrestamosControlador implements ActionListener, MouseListener, KeyL
                 prestamosVista.setTxtPlazosTotales(prestamosVista.getTabla(), filas);
                 prestamosVista.setTxtPlazosPagados(prestamosVista.getTabla(), filas);
             }
+            prestamosVista.getBtnAgregar().setEnabled(false);
         }
     }
 

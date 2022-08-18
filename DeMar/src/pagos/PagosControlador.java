@@ -72,7 +72,12 @@ public class PagosControlador implements ActionListener, MouseListener, KeyListe
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == pagosVista.getBtnBuscar()) {
-            buscarID(Integer.parseInt(pagosVista.getTxtBuscar()));
+            try{
+                buscarID(Integer.parseInt(pagosVista.getTxtBuscar()));
+            }
+            catch(Exception exception) {
+                verificarBuscar();
+            }
         }
         if(e.getSource() == pagosVista.getBtnAgregar()) {
             if(verificarCampos() == 0) {
@@ -83,18 +88,23 @@ public class PagosControlador implements ActionListener, MouseListener, KeyListe
                                                     pagosVista.getTxtTEmpleado(), 
                                                     pagosVista.getTxtDetallePedido());
                 pagosVista.confirmarRegistro(registro);
+                pagosVista.limpiar();
                 mostrarDatosIniciales();
             }
         }
         if(e.getSource() == pagosVista.getBtnModificar()) {
-            if(pagosVista.confirmarAccion(pagosVista.getBtnModificar().getText()) == 0)
-                modPagos.modificar(
-                                    pagosVista.getTxtFolio(),
-                                    pagosVista.getTxtTotal(), 
-                                    pagosVista.getTxtTipoPago(), 
-                                    pagosVista.getTxtFecha(), 
-                                    pagosVista.getTxtTEmpleado(), 
-                                    pagosVista.getTxtDetallePedido());
+            if(pagosVista.confirmarAccion(pagosVista.getBtnModificar().getText()) == 0) {
+                if(verificarCampos() == 0) {
+                    modPagos.modificar(
+                                        pagosVista.getTxtFolio(),
+                                        pagosVista.getTxtTotal(), 
+                                        pagosVista.getTxtTipoPago(), 
+                                        pagosVista.getTxtFecha(), 
+                                        pagosVista.getTxtTEmpleado(), 
+                                        pagosVista.getTxtDetallePedido());
+                    mostrarDatosIniciales();
+                }
+            }
         }
         if(e.getSource() == pagosVista.getBtnEliminar()) {
             if(pagosVista.confirmarAccion(pagosVista.getBtnEliminar().getText()) == 0)
@@ -120,6 +130,7 @@ public class PagosControlador implements ActionListener, MouseListener, KeyListe
                 pagosVista.setTxtEmpleado(pagosVista.getTabla(), filas);
                 pagosVista.setTxtDetallePedido(pagosVista.getTabla(), filas);
             }
+            pagosVista.getBtnAgregar().setEnabled(false);
         }
     }
 
@@ -174,13 +185,20 @@ public class PagosControlador implements ActionListener, MouseListener, KeyListe
 
         int camposVacios = arregloComponent.size();
         
-        resaltar();
+        resaltar(camposVacios);
 
         return camposVacios;
     }
 
-     public void resaltar() {
-        for(int indice = 0; indice < arregloComponent.size(); indice++) {
+    public void verificarBuscar() {
+        if(pagosVista.txtBuscar.getText().length() == 0)
+            arregloComponent.add(pagosVista.getComponentTxtBuscar());
+
+        resaltar(arregloComponent.size());
+    }
+
+     public void resaltar(int size) {
+        for(int indice = 0; indice < size; indice++) {
             resaltado = new resaltarCampo(arregloComponent.get(indice), new Color(214, 181, 178), 4);
             resaltado.start();
         }

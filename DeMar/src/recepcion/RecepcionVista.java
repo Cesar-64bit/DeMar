@@ -252,14 +252,14 @@ public class RecepcionVista extends JFrame {
         btnLimpiar.addActionListener((ActionListener) recepcionControlador);
         pContenedorBotones.add(btnLimpiar);
 
-        btnBuscar = new JButton("Buscar");
+        /*btnBuscar = new JButton("Buscar");
         btnBuscar.setSize(100, 35);
         btnBuscar.setLocation(700, 75);
         btnBuscar.setBackground(Color.WHITE);
         btnBuscar.setForeground(Color.DARK_GRAY);
         btnBuscar.setFocusable(false);
         btnBuscar.addActionListener((ActionListener) recepcionControlador);
-        pFondo.add(btnBuscar);
+        pFondo.add(btnBuscar);*/
     }
 
     public void limpiar() {
@@ -267,6 +267,7 @@ public class RecepcionVista extends JFrame {
         txtFecha.setText(dft.format(LocalDateTime.now()));
         txtCantidad.setText("");
         txtEmpleado.setText("");
+        btnAgregar.setEnabled(true);
     }
 
     public void colocarID(String c) {
